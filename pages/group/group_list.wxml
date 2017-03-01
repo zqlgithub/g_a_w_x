@@ -1,0 +1,34 @@
+<!--pages/group/group_list.wxml-->
+<view class="container">
+    <image wx:if="{{loading}}" class="loading" src="/resource/loading.png"></image>
+    <view class="default-bg" wx:elif="{{group_data.length == 0}}" bindtap="onTapBg">
+        <image class="default-img" src="/resource/album_bg.png"></image>
+        <text class="default-title">{{default_title}}</text>
+    </view>
+    <scroll-view wx:else class="group-scroll" scroll-y="true" bindtap="onTapBg">
+        <view wx:for="{{group_data}}" wx:for-item="group" class="group" bindtap="onSelectGroup" bindlongtap="onLongTapGroup" data-group="{{group.id}}">
+            <image class="group-cover" src="{{group.front_cover || '/resource/group.png'}}" mode="aspectFill"></image>
+            <view class="group-name-and-btn">
+                <text class="group_name_txt">{{group.name}}</text>
+                <view class="group-icon-bar">
+                    <image class="group-icon" wx:for="{{group.icon_urls}}" src="{{item}}"></image>
+                </view>
+            </view>
+            <image wx:if="{{group.master}}" style="width:48rpx;height:48rpx;margin-right:8rpx" src="/resource/host.png"></image>
+            <image class="group_settings_btn" src="/resource/detail.png" catchtap="onTapSettings" data-groupid="{{group.id}}" data-groupname="{{group.name}}" data-master="{{group.master}}"></image>
+            <!--<image class="group_top_btn" src="/resource/top.png" catchtap="onTapTop" data-groupid="{{group.id}}"></image>-->
+            
+        </view>
+        <view style="width:100%;height:160rpx;"></view>
+    </scroll-view>
+    
+    <view class="create-panel" animation="{{panel_animation}}" hidden="{{!show_panel}}">
+        <view class="submit">
+            <input id="group-name-input" placeholder="输入你们群的名字" bindinput="onInputGroupName" value="{{group_input_default}}"/>
+            <image id="confirm-group-btn" bindtap="onCreateGroup" src="/resource/arrow.png"></image>
+        </view>
+        
+    </view>
+    <image id="create-btn" src="/resource/create.png" bindtap="onTapCreate" animation="{{plus_btn_animation}}"></image>
+    
+</view>

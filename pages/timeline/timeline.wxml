@@ -1,0 +1,145 @@
+<!--pages/timeline/timeline.wxml-->
+<view class="container">
+    <view class="search-bar">
+        <text class="search-bar-date">{{search_date_txt}}</text>
+        <view class="search-input-container">
+            <input class="search-input" placeholder="搜索" placeholder-style="color:white;" value="{{search_txt}}" bindinput="onSearchInput" bindfocus="onSearchFocus" bindblur="onSearchBlur" bindconfirm="onSearch"/>
+        </view>
+        <contact-button class="contact-btn" type="default-light" size="20" session-from="weapp">
+        </contact-button>
+    </view>
+
+    <image wx:if="{{loading}}" class="loading" src="/resource/loading.png"></image>
+    <view wx:elif="{{timeline_data.length == 0}}" class="default-bg" bindtap="onTapBg">
+        <image class="default-img" src="/resource/album_bg.png"></image>
+        <text class="default-title">{{default_title}}</text>
+    </view>
+    <scroll-view wx:else class="album-scroll" scroll-y="true" bindscrolltoupper="onScrollToTop" bindscrolltolower="onScrollToBottom"   bindscroll="onScroll" bindtap="onTapBg" scroll-into-view="{{top_album_id}}" style="height:{{scroll_height}}rpx;">
+        <view style="width:100%;text-align:center">
+            <text style="width:200rpx;margin:auto;font-size:12pt;color:#999999;" hidden="{{scroll_start_txt.length == 0}}">{{scroll_start_txt}}</text>
+        </view>
+        <view wx:for="{{timeline_data}}" wx:for-item="album" class="album" wx:key="title" id="album-{{album.id}}">
+            <view class="album-banner">
+                <text class="album-txt" bindtap="onTapAlbumTitle" data-album_id="{{album.id}}">{{album.date_txt}} {{album.name}}</text>
+                <!--<text class="album-txt" id="album-title">{{album.name}}</text>-->
+                <image class="remove-album-btn" src="/resource/detail.png" bindtap="onAlbumDetail" data-album="{{album.id}}" data-album_name="{{album.name}}" data-album_date="{{album.date}}"></image>
+            </view>
+
+            <view class="photo-container">
+                <view wx:for="{{album.photos}}" wx:for-item="photo" class="photo" style="position:relative;">
+                    <image class="photo-img" src="{{photo.thumbnail}}" mode="aspectFill" style="opacity:{{photo.loading || (page_state == 2 && select_photo[photo.id]) ? 0.6 : 1}}" data-index="{{index}}" data-album="{{album.id}}" data-photo="{{photo}}" bindtap="onTapPhoto" bindlongtap="onLongTapPhoto"></image>
+                    <!--<image class="photo-img" src="{{photo.thumbnail}}" mode="aspectFill" style="opacity:{{photo.loading || (page_state === 2 && photo.creator.id != userInfo.id && !is_master) ? 0.5 : 1}}" data-index="{{index}}" data-album="{{album.id}}" data-photo="{{photo}}" bindtap="onTapPhoto"></image>-->
+                    <!--<image hidden="{{page_state != 2}}" class="photo-top" bindtap="onTapTop" data-photo="{{photo.id}}" data-album="{{album.id}}" src="/resource/top.png"></image>-->
+                    <image hidden="{{page_state != 2}}" class="creator-avatar" src="{{photo.creator.avatar}}"></image>
+                    <icon hidden="{{page_state != 2}}" class="select-icon" bindtap="onTapPhoto" data-index="{{index}}" data-album="{{album.id}}" data-photo="{{photo}}" type="circle" color="#ffffff"></icon>
+                    <icon hidden="{{page_state != 2 || !select_photo[photo.id]}}" class="select-icon" type="success" color="#4bbccc" bindtap="onTapPhoto" data-index="{{index}}" data-album="{{album.id}}" data-photo="{{photo}}"></icon>
+                </view>
+                <view class="photo" id="add-photo-btn" style="opacity:{{page_state === 2 ? 0.5 : 1}}" bindtap="onAddPhoto" data-album="{{album.id}}">
+                    <image src="/resource/add.png" style="width:64rpx;height:64rpx;"></image>
+                </view>
+            </view>
+        </view>
+        <view style="width:100%;height:180rpx;text-align:center">
+            <text style="width:200rpx;margin:auto;font-size:12pt;color:#999999;">{{scroll_end_txt}}</text>
+        </view>
+    </scroll-view>
+
+    <view wx:if="{{show_tip}}" id="tips" style="position:fixed;bottom:95rpx;width:100%;height:60rpx;text-align:center;background-color:#4bbccc;display:flex;align-items: center;">
+        <text style="margin:auto;font-size:12pt;color:white;">{{bottom_tip}}</text>
+    </view>
+
+    <view class="bottom-navigator">
+        <!--<view class="bottom-btn" bindtap="onTop" data-group="{{group_id}}">
+            <image wx:if="{{to_top}}" class="bottom-btn-img" src="/resource/totop_blue.png"></image>
+            <image wx:else class="bottom-btn-img" src="/resource/totop.png"></image>
+            <text class="bottom-btn-txt" style="color:{{to_top ? '#4bbccc' : '#8a8a8a'}}">{{to_top ? '已置顶' : '置顶'}}</text>
+        </view>-->
+        <view class="bottom-btn" bindtap="onSelectState">
+            <!--<image wx:if="{{page_state == 2}}" class="bottom-btn-img" src="/resource/settings_blue.png"></image>-->
+            <image class="bottom-btn-img" src="/resource/settings.png"></image>
+            <text class="bottom-btn-txt" style="color:#8a8a8a">编辑</text>
+        </view>
+        <view>
+            <image class="bottom_create_btn" bindtap="onTapCreate" src="/resource/create.png" animation="{{plus_btn_animation}}"></image>
+        </view>
+        <!--<view class="bottom-btn" catchtap="onTapFeeds">
+            <image class="bottom-btn-img" src="/resource/feeds.png"></image>
+            <text class="bottom-btn-txt" style="color:#8a8a8a">动态</text>
+        </view>-->
+        <view class="bottom-btn" bindtap="onTapGroup">
+            <image class="bottom-btn-img" src="/resource/group_tab.png"></image>
+            <text class="bottom-btn-txt" style="color:#8a8a8a">成员({{member_count}})</text>
+        </view>
+    </view>
+
+    <view class="search-panel" hidden="{{!show_search_panel}}" style="height:{{scroll_height}}rpx;" bindtap="onTapSearchBg">
+        <image id="search-btn" catchtap="onSearch" src="/resource/search.png"></image>
+        <view class="search-panel-item">
+            <text class="search-panel-title">日期选择</text>
+            <block wx:for="{{search_date_options}}">
+            <scroll-view class="search-panel-date-scroll" scroll-x="true">
+                <view class="search-panel-date-container">
+                    <view wx:for="{{item.options}}" wx:for-item="option" class="search-panel-date-btn" catchtap="onTapSearchDate" data-name="{{item.name}}" data-value="{{item.values[index]}}" style="border-color:{{search_date[item.name] == item.values[index] ? '#4bbccc': '#999999'}}">
+                        <text class="search-panel-date-txt" style="color:{{search_date[item.name] == item.values[index] ? '#4bbccc': '#999999'}}">{{option}}</text>
+                    </view>
+                </view>
+            </scroll-view>
+            </block>
+        </view>
+        
+    </view>
+
+    <view class="create-panel" animation="{{panel_animation}}" hidden="{{!show_panel}}">
+        <view class="submit">
+            <view class="input-form">
+                
+                <input class="album-input" placeholder="某次旅行，某次活动，某次聚会..." bindinput="onInputAlbumName" value="{{album_input_default}}"/>
+                <picker mode="date" value="{{to_create_album_date}}" start="1970-01-01" bindchange="onChangeDate">
+                    <view class="album-input">
+                    选择日期: {{to_create_album_date}}
+                    </view>
+                </picker>
+                <!--<image id="confirm-btn" bindtap="onCreateAlbum" src="/resource/arrow.png"></image>-->
+            </view>
+            <button id="panel-confirm-btn" bindtap="onCreateAlbum" >创建相册</button>
+        </view>
+        <icon id="panel-cancel" type="cancel" bindtap="onCancelPanel"></icon>
+    </view>
+
+    <view class="edit-panel" animation="{{edit_panel_animation}}" hidden="{{!show_edit_panel}}">
+        <view class="edit-btn" catchtap="onCancelEditPanel">
+            <image class="edit-btn-img" src="/resource/remove.png"></image>
+        </view>
+        <view class="edit-btn" catchtap="onSetCover">
+            <image class="edit-btn-img" src="/resource/cover.png" ></image>
+            <text class="edit-btn-txt" style="color:#8a8a8a">设为封面</text>
+        </view>
+        <view class="edit-btn" catchtap="onBatchTop">
+            <image class="edit-btn-img" src="/resource/batch_top.png"></image>
+            <text class="edit-btn-txt" style="color:#8a8a8a">置顶</text>
+        </view>
+        <view class="edit-btn" catchtap="onTapTrash">
+            <image class="edit-btn-img" src="/resource/trash.png"></image>
+            <text class="edit-btn-txt" style="color:#8a8a8a">删除</text>
+        </view>
+    </view>
+
+
+    <!--暂时废弃-->
+    <!--<view class="photo-detail-container" hidden="{{true}}">
+        <swiper style="height:100%" current="{{swiper_current}}"  bindchange="onPhotoSwiperChange" duration="{{photo_swipe_duration}}">
+            <block wx:for="{{showing_photos}}" wx:for-item="photo">
+                <swiper-item>
+                <image class="photo-detail" src="{{photo.url}}" mode="aspectFit"  data-photo="{{photo}}" catchtap="onTapPhotoDetail" data-index="{{index}}" animation="{{photo.animation}}"></image>
+                </swiper-item>
+            </block>
+        </swiper>
+        <image wx:if="{{single_photo_mode}}" class="single-photo" src="{{single_photo_url}}" mode="aspectFit" bindload="onLoadSinglePhoto" animation="{{single_photo_animation}}" bindtap="onSinglePhotoTap" catchtouchstart="onSinglePhotoTouchStart" catchtouchmove="onSinglePhotoTouchMove" catchtouchend="onSinglePhotoTouchEnd"></image>
+        <view class="bottom-bar">
+            <image class="creator-icon" src="{{showing_photos[last_swiper_current].creator.avatar}}"></image>
+            <text class="creator-name-txt">{{showing_photos[last_swiper_current].creator.name}}</text>
+            <image src="/resource/remove.png" wx:if="{{showing_photos[last_swiper_current].creator.id == userInfo.id}}" class="remove-btn" catchtap="onRemovePhoto" data-photo="{{showing_photos[last_swiper_current].id}}"></image>
+        </view>
+    </view>-->
+    
+</view>

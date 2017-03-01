@@ -1,0 +1,17 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/timeline/timeline",
+    "pages/album/album_settings",
+    "pages/group/group_list",
+    "pages/group/group_settings/group_settings",
+    "pages/group/group_feeds/group_feeds"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "一刻相册",
+    "navigationBarTextStyle":"black"
+  }
+}

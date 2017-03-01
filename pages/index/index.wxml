@@ -1,0 +1,5 @@
+<!--index.wxml-->
+<view class="container">
+  <image class="icon" src="/resource/icon.png"></image>
+  <text class="motto">{{motto}}</text>
+</view>

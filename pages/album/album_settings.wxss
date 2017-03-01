@@ -1,0 +1,60 @@
+page {
+  height: 100%;
+}
+
+.container {
+  width: 100%;
+  background-color: #f4f5f9;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.bg {
+    width: 100%;
+    height: 100%;
+}
+
+.item {
+  width: 100%;
+  height: 92rpx;
+  background-color: white;
+}
+
+.item-first {
+    margin-top: 20rpx;
+}
+
+.item-inner {
+    width: 100%;
+    height: 92rpx;
+    margin-left: 20rpx;
+    border-top: 1rpx solid #cdcdcd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-inner-first {
+    border-top: 0rpx;
+}
+
+.album-name-hover {
+  background-color: #8a8a8a;
+}
+
+.item-title {
+  flex-grow: 1;
+  font-size: 12pt;
+}
+
+.item-txt {
+  margin-right: 10rpx;
+  font-size: 12pt;
+}
+
+.item-edit {
+  width: 60rpx;
+  height: 60rpx;
+  margin-right: 10rpx;
+}
