@@ -8,7 +8,9 @@ Page({
     panel_animation: {},
     show_panel: false,
     group_name_input_default: "",
-    to_create_group_name: ""
+    to_create_group_name: "",
+    finger_animation: {},
+    show_finger: false,
   },
   onInputGroupName:function(e) {
     this.setData({
@@ -89,6 +91,36 @@ Page({
       }
     })
   },
+  onTapInviteBtn: function(e) {
+    var self = this
+    wx.showModal({
+      title: "提示",
+      content: "点击“本页面”或者“相册页面”右上角的按钮，分享给微信好友或者群",
+      showCancel: false,
+      success: function(res) {
+        self.setData({
+          show_finger: true
+        })
+
+        // var animation = wx.createAnimation({
+        //   timingFunction: 'ease', 
+        //   duration: 300,
+        //   transformOrigin: '50% 0 0',
+        // })
+        // animation.top('50rpx').step()
+        // animation.top('10rpx').step()
+        // self.setData({
+        //   finger_animation: animation.export()
+        // })
+
+        setTimeout(function(){
+          self.setData({
+            show_finger: false
+          })
+        }, 1000)
+      }
+    })
+  },
   onRemoveGroup: function(e) {
     var self = this
     wx.showModal({
@@ -162,6 +194,16 @@ Page({
     var self = this
     var group_id = options.id
 
+    try {
+      var res = wx.getSystemInfoSync()
+      var scroll_height = Math.floor(750 * res.windowHeight / res.windowWidth) - 400
+      this.setData({
+        scroll_height: scroll_height,
+      })
+    } catch (e) {
+      // Do something when catch error
+    }
+
     getApp().getUserInfo(function(userInfo){
       console.log('userinfo: ', userInfo)
       self.setData({
@@ -206,5 +248,19 @@ Page({
         console.log(res, new Date())
       }
     })
+  },
+  onShareAppMessage: function () {
+    wx.setStorage({
+      key: 'has_invited',
+      data: true
+    })
+
+    var userInfo = this.data.userInfo
+    var inviteCode = userInfo ? userInfo.invite_code : ''
+    return {
+      title: this.data.group_name,
+      desc: userInfo.nickName + '邀请你加入' + this.data.group_name,
+      path: '/pages/group/group_list?action=join_group&id='+this.data.group_id+'&invite_code='+inviteCode
+    }
   },
 })

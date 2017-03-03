@@ -236,19 +236,14 @@ Page({
       })
 
       self.syncGroupData()
-      console.log('syn group data')
+      
+      if(options.action == 'join_group'){
+        wx.navigateTo({
+          url: '../timeline/timeline?action='+options.action+'&id='+options.id+'&invite_code='+options.invite_code
+        })
+      }
     })
-
-    if(options.action == 'join_group'){
-      self.setData({
-        invite_code: options.invite_code
-      })
-    }
-    if(options.action == 'join_group'){
-      wx.navigateTo({
-        url: '../timeline/timeline?action='+options.action+'&id='+options.group_id+'&invite_code='+options.invite_code
-      })
-    }
+    
   },
   onReady:function(){
     // 页面渲染完成

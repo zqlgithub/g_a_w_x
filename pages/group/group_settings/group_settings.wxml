@@ -6,7 +6,7 @@
         <image wx:if="{{is_master}}" class="group-name-edit" src="/resource/edit.png"></image>
     </view>
 
-    <scroll-view class="member-scroll" scroll-y="true" bindtap="onTapBg">
+    <scroll-view class="member-scroll" scroll-y="true" style="height:{{scroll_height}}rpx;" bindtap="onTapBg">
         <view class="member-item" wx:for="{{member_data}}" wx:for-item="member">
             <view class="member-item-inner" style="{{index > 0 ? 'border-top: 1rpx solid #cdcdcd' : ''}}">
                 <image class="member-icon" src="{{member.avatar}}"></image>
@@ -17,7 +17,15 @@
         </view>
     </scroll-view>
 
-    <button style="position:fixed;width:700rpx;left:25rpx;bottom:32rpx;color:white;background-color: #e64340;" catchtap="onRemoveGroup">退出该群</button>
+    <view class="group-btn invite-btn" bindtap="onTapInviteBtn">
+        <text class="group-btn-txt invite-member-txt">邀请好友</text>
+    </view>
+
+    <view class="group-btn" bindtap="onRemoveGroup">
+        <text class="group-btn-txt remove-group-txt">退出该群</text>
+    </view>
+
+    <!--<button style="position:fixed;width:700rpx;left:25rpx;bottom:32rpx;color:white;background-color: #e64340;" catchtap="onRemoveGroup">退出该群</button>-->
 
     <!--<view class="remove-btn">
         <button style="width:700rpx;color: white;background-color: #e64340;"  catchtap="onRemoveGroup">退出该群</button>
@@ -32,5 +40,7 @@
         </view>
         <icon id="panel-cancel" type="cancel" catchtap="onCancelPanel"></icon>
     </view>
+
+    <image class="finger" hidden="{{!show_finger}}" animation="{{finger_animation}}" src="/resource/finger.png"></image>
     
 </view>

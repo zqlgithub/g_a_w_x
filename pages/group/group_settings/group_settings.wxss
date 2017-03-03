@@ -102,6 +102,31 @@ page {
     align-items: center;
 }
 
+.group-btn {
+  width: 100%;
+  height: 92rpx;
+  margin-top: 20rpx;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.group-btn-txt {
+  height: 30rpx;
+  line-height: 30rpx;
+  font-size: 12pt;
+}
+
+.invite-member-txt {
+  color: #09bb07;
+}
+
+.remove-group-txt {
+  color: #e64340;
+}
+
 .submit {
     width: 100%;
     display: flex;
@@ -135,4 +160,12 @@ page {
 
 #panel-cancel {
     margin-top: 50rpx;
+}
+
+.finger {
+  width: 100rpx;
+  height: 100rpx;
+  position:fixed;
+  top:10rpx;
+  right:10rpx;
 }

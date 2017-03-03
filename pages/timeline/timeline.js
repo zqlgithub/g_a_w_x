@@ -1277,12 +1277,13 @@ Page({
       key: 'has_invited',
       data: true
     })
-
-    var inviteCode = this.data.userInfo ? this.data.userInfo.invite_code : ''
+    
+    var userInfo = this.data.userInfo
+    var inviteCode = userInfo ? userInfo.invite_code : ''
     return {
       title: this.data.group_name,
-      desc: '来自一刻相册的邀请',
-      path: '/pages/timeline/timeline?action=join_group&id='+this.data.group_id+'&invite_code='+inviteCode
+      desc: userInfo.nickName + '邀请你加入' + this.data.group_name,
+      path: '/pages/group/group_list?action=join_group&id='+this.data.group_id+'&invite_code='+inviteCode
     }
   },
   onScrollToTop: function(e){

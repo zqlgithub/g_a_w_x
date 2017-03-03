@@ -72,23 +72,6 @@
         </view>
     </view>
 
-    <view class="search-panel" hidden="{{!show_search_panel}}" style="height:{{scroll_height}}rpx;" bindtap="onTapSearchBg">
-        <image id="search-btn" catchtap="onSearch" src="/resource/search.png"></image>
-        <view class="search-panel-item">
-            <text class="search-panel-title">日期选择</text>
-            <block wx:for="{{search_date_options}}">
-            <scroll-view class="search-panel-date-scroll" scroll-x="true">
-                <view class="search-panel-date-container">
-                    <view wx:for="{{item.options}}" wx:for-item="option" class="search-panel-date-btn" catchtap="onTapSearchDate" data-name="{{item.name}}" data-value="{{item.values[index]}}" style="border-color:{{search_date[item.name] == item.values[index] ? '#4bbccc': '#999999'}}">
-                        <text class="search-panel-date-txt" style="color:{{search_date[item.name] == item.values[index] ? '#4bbccc': '#999999'}}">{{option}}</text>
-                    </view>
-                </view>
-            </scroll-view>
-            </block>
-        </view>
-        
-    </view>
-
     <view class="create-panel" animation="{{panel_animation}}" hidden="{{!show_panel}}">
         <view class="submit">
             <view class="input-form">
@@ -121,6 +104,22 @@
         <view class="edit-btn" catchtap="onTapTrash">
             <image class="edit-btn-img" src="/resource/trash.png"></image>
             <text class="edit-btn-txt" style="color:#8a8a8a">删除</text>
+        </view>
+    </view>
+
+    <view class="search-panel" hidden="{{!show_search_panel}}" style="height:{{scroll_height}}rpx;" bindtap="onTapSearchBg">
+        <image id="search-btn" catchtap="onSearch" src="/resource/search.png"></image>
+        <view class="search-panel-item">
+            <text class="search-panel-title">日期选择</text>
+            <block wx:for="{{search_date_options}}">
+            <scroll-view class="search-panel-date-scroll" scroll-x="true">
+                <view class="search-panel-date-container">
+                    <view wx:for="{{item.options}}" wx:for-item="option" class="search-panel-date-btn" catchtap="onTapSearchDate" data-name="{{item.name}}" data-value="{{item.values[index]}}" style="border-color:{{search_date[item.name] == item.values[index] ? '#4bbccc': '#999999'}}">
+                        <text class="search-panel-date-txt" style="color:{{search_date[item.name] == item.values[index] ? '#4bbccc': '#999999'}}">{{option}}</text>
+                    </view>
+                </view>
+            </scroll-view>
+            </block>
         </view>
     </view>
 
