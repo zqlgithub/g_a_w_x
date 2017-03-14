@@ -95,7 +95,7 @@ Page({
     var self = this
     wx.showModal({
       title: "提示",
-      content: "点击“本页面”或者“相册页面”右上角的按钮，分享给微信好友或者群",
+      content: "点击“本页面”或“相册页面”右上角的按钮，分享给微信好友或群聊",
       showCancel: false,
       success: function(res) {
         self.setData({
@@ -136,8 +136,11 @@ Page({
             },
             success: function(resp) {
               console.log('REMOVE GROUP SUCCESS')
-              wx.redirectTo({
-                url: '../group_list'
+              // wx.redirectTo({
+              //   url: '../group_list'
+              // })
+              wx.navigateBack({
+                delta: 2, 
               })
             }
           })
@@ -219,6 +222,11 @@ Page({
           self.setData({
             group_name: resp.data.name,
             member_data: resp.data.members
+          })
+
+          events.center.dispatch('update_group', {
+            id: group_id,
+            member_count: resp.data.members.length
           })
         },
         complete: function(e) {

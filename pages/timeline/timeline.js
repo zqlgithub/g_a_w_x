@@ -349,10 +349,15 @@ Page({
         }
         to_showing_photos.push(photos[i].url)
       }
-      wx.previewImage({
-        current: current, // 当前显示图片的链接，不填则默认为 urls 的第一张
-        urls: to_showing_photos
+      // wx.previewImage({
+      //   current: current, // 当前显示图片的链接，不填则默认为 urls 的第一张
+      //   urls: to_showing_photos
+      // })
+
+      wx.navigateTo({
+        url: '/pages/photo/photo_detail?album_id='+album_id+'&init_photo='+photos[photo_index].id
       })
+
     // 选择模式
     }else if(page_state === 2){
       var select_photo = this.data.select_photo
@@ -1238,6 +1243,9 @@ Page({
         var to_update = {}
         if('name' in data){
           to_update['group_name'] = data.name
+        }
+        if('member_count' in data){
+          to_update['member_count'] = data.member_count
         }
         self.setData(to_update)
       }

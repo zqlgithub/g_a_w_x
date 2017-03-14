@@ -6,7 +6,9 @@
     "pages/album/album_settings",
     "pages/group/group_list",
     "pages/group/group_settings/group_settings",
-    "pages/group/group_feeds/group_feeds"
+    "pages/group/group_feeds/group_feeds",
+    "pages/photo/photo_detail",
+    "pages/photo/photo_comments"
   ],
   "window":{
     "backgroundTextStyle":"light",

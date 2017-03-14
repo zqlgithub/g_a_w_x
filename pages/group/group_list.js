@@ -1,5 +1,6 @@
 var requests = require('../../utils/requests.js')
 var util = require('../../utils/util.js')
+var events = require('../../utils/events.js')
 
 var app = getApp()
 Page({
@@ -252,6 +253,7 @@ Page({
     if(this.data.userInfo){
       this.syncGroupData()
     }
+    console.log(events.center.detail())
   },
   onHide:function(){
     // 页面隐藏

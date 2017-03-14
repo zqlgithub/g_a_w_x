@@ -377,7 +377,7 @@ page {
 }
 
 .edit-btn {
-    width: 110rpx;
+    width: 150rpx;
     height: 110rpx;
     flex-grow: 1;
     margin: 2rpx;
