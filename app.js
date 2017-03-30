@@ -99,6 +99,7 @@ App({
 
                 userinfo.id = data.id
                 userinfo.invite_code = data.invite_code
+                userinfo.msg_list = data.user_msg
                 that.globalData.userInfo = userinfo
                 typeof cb == "function" && cb(userinfo)
               })
@@ -119,6 +120,11 @@ App({
         // complete
       }
     })
+  },
+  listen: function(event_type, cb){
+    
+  },
+  dispatch: function(event_type){
     
   },
   globalData:{

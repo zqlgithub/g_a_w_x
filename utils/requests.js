@@ -50,7 +50,8 @@ function req(obj) {
   }
   obj.success = function(res){
     if(res.data.code == 0){
-      to_success(res.data)
+      if(to_success) 
+        to_success(res.data)
     } else{
       console.log('业务请求失败: ' + obj.url)
       if(to_fail)

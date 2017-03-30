@@ -45,6 +45,7 @@ page {
 .group {
     width: 100%;
     height: 160rpx;
+    position: relative;
     background-color: white;
     border-top: 1px solid #f4f4f4;
     display: flex;
@@ -58,6 +59,14 @@ page {
     height: 120rpx;
     margin: 20rpx;
     background-color: #f4f4f4;
+}
+
+.group-dot {
+    width: 24rpx;
+    height: 24rpx;
+    position: absolute;
+    top: 8rpx;
+    left: 128rpx;
 }
 
 .group-name-and-btn {

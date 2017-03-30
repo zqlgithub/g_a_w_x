@@ -34,6 +34,10 @@ Page({
     },
     search_date_txt: '',
 
+    // 新照片通知
+    photo_msg: [],
+    new_photo: {},
+
     panel_timer: null,
     show_panel: false,
     album_input_default: '',
@@ -244,8 +248,6 @@ Page({
       show_search_panel:false
     })
     this.syncTimeline()
-
-
   },
 
   onTapSearchBg: function(e) {
@@ -1176,7 +1178,7 @@ Page({
 
         getApp().getUserInfo(function(userInfo){
           self.setData({
-            userInfo: userInfo
+            userInfo: userInfo,
           })
           self.syncTimeline()
         })
@@ -1268,6 +1270,42 @@ Page({
         title: this.data.group_name
       })
     }
+
+    var self = this
+    requests.get({
+      url: '/user/msg/list',
+      data: {
+        group_id: this.data.group_id
+      },
+      success: function(resp) {
+        var photo_new_msg = {}
+        var new_photo = {}
+        for(var i in resp.data){
+          var msg = resp.data[i]
+          if(!msg.read && 'photo_id' in msg){
+            photo_new_msg[msg.photo_id] = true
+          }
+          if(!msg.read && msg.type == 'new_photo'){
+            var photo_ids = String(msg.data).split(',')
+            for(var j in photo_ids){
+              new_photo[photo_ids[j]] = true
+            }
+          }
+        }
+        self.setData({
+            photo_msg: photo_new_msg,
+            new_photo: new_photo
+        })
+
+        requests.post({
+          url: '/user/msg/read',
+          data: {
+            group_id: self.data.group_id,
+            msg_type: 'new_photo'
+          }
+        })
+      }
+    })
   },
   onHide:function(){
     // 页面隐藏

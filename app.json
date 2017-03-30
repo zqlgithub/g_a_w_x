@@ -8,7 +8,8 @@
     "pages/group/group_settings/group_settings",
     "pages/group/group_feeds/group_feeds",
     "pages/photo/photo_detail",
-    "pages/photo/photo_comments"
+    "pages/photo/photo_comments",
+    "pages/photo/photo_edit"
   ],
   "window":{
     "backgroundTextStyle":"light",

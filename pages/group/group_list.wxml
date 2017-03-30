@@ -8,6 +8,7 @@
     <scroll-view wx:else class="group-scroll" scroll-y="true" bindtap="onTapBg">
         <view wx:for="{{group_data}}" wx:for-item="group" class="group" bindtap="onSelectGroup" bindlongtap="onLongTapGroup" data-group="{{group.id}}">
             <image class="group-cover" src="{{group.front_cover || '/resource/group.png'}}" mode="aspectFill"></image>
+            <image hidden="{{!group_msg[group.id]}}" class="group-dot" src="/resource/dot.png"></image>
             <view class="group-name-and-btn">
                 <text class="group_name_txt">{{group.name}}</text>
                 <view class="group-icon-bar">

@@ -2,6 +2,7 @@
 <view class="container">
     <view class="search-bar">
         <text class="search-bar-date">{{search_date_txt}}</text>
+        <!--<text wx:else class="new-photo-btn">110张新照片</text>-->
         <view class="search-input-container">
             <input class="search-input" placeholder="搜索" placeholder-style="color:white;" value="{{search_txt}}" bindinput="onSearchInput" bindfocus="onSearchFocus" bindblur="onSearchBlur" bindconfirm="onSearch"/>
         </view>
@@ -28,6 +29,8 @@
             <view class="photo-container">
                 <view wx:for="{{album.photos}}" wx:for-item="photo" class="photo" style="position:relative;">
                     <image class="photo-img" src="{{photo.thumbnail}}" mode="aspectFill" style="opacity:{{photo.loading || (page_state == 2 && select_photo[photo.id]) ? 0.6 : 1}}" data-index="{{index}}" data-album="{{album.id}}" data-photo="{{photo}}" bindtap="onTapPhoto" bindlongtap="onLongTapPhoto"></image>
+                    <image wx:if="{{photo_msg[photo.id]}}" class="photo-dot" src="/resource/dot.png"></image>
+                    <image wx:elif="{{new_photo[photo.id]}}" class="photo-new" src="/resource/new.png"></image>
                     <!--<image class="photo-img" src="{{photo.thumbnail}}" mode="aspectFill" style="opacity:{{photo.loading || (page_state === 2 && photo.creator.id != userInfo.id && !is_master) ? 0.5 : 1}}" data-index="{{index}}" data-album="{{album.id}}" data-photo="{{photo}}" bindtap="onTapPhoto"></image>-->
                     <!--<image hidden="{{page_state != 2}}" class="photo-top" bindtap="onTapTop" data-photo="{{photo.id}}" data-album="{{album.id}}" src="/resource/top.png"></image>-->
                     <image hidden="{{page_state != 2}}" class="creator-avatar" src="{{photo.creator.avatar}}"></image>
@@ -47,6 +50,8 @@
     <view wx:if="{{show_tip}}" id="tips" style="position:fixed;bottom:95rpx;width:100%;height:60rpx;text-align:center;background-color:#4bbccc;display:flex;align-items: center;">
         <text style="margin:auto;font-size:12pt;color:white;">{{bottom_tip}}</text>
     </view>
+
+    <!--<text wx:if="{{new_photo_count > 0}}" class="new-photo-btn-2" catchtap="onTapNewPhoto">{{new_photo_count}}张新照片</text>-->
 
     <view class="bottom-navigator">
         <!--<view class="bottom-btn" bindtap="onTop" data-group="{{group_id}}">
@@ -75,7 +80,6 @@
     <view class="create-panel" animation="{{panel_animation}}" hidden="{{!show_panel}}">
         <view class="submit">
             <view class="input-form">
-                
                 <input class="album-input" placeholder="某次旅行，某次活动，某次聚会..." bindinput="onInputAlbumName" value="{{album_input_default}}"/>
                 <picker mode="date" value="{{to_create_album_date}}" start="1970-01-01" bindchange="onChangeDate">
                     <view class="album-input">

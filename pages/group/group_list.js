@@ -10,6 +10,7 @@ Page({
     group_icon_width: 114,
 
     group_data: [],
+    group_msg: {},
     show_panel: false,
 
     plus_btn_animation: {},
@@ -232,6 +233,7 @@ Page({
 
     var self = this
     getApp().getUserInfo(function(userInfo){
+
       self.setData({
         userInfo: app.globalData.userInfo
       })
@@ -253,7 +255,23 @@ Page({
     if(this.data.userInfo){
       this.syncGroupData()
     }
-    console.log(events.center.detail())
+
+    var self = this
+    requests.get({
+      url: '/user/msg/list',
+      success: function(resp) {
+        var group_new_msg = {}
+        for(var i in resp.data){
+          var msg = resp.data[i]
+          if(!msg.read && 'group_id' in msg){
+            group_new_msg[msg.group_id] = true
+          }
+        }
+        self.setData({
+            group_msg: group_new_msg
+        })
+      }
+    })
   },
   onHide:function(){
     // 页面隐藏
