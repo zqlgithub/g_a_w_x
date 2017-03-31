@@ -1,0 +1,46 @@
+<!--pages/photo/photo_detail.wxml-->
+<view class="bg">
+    <swiper class="photo-swiper" current="{{curr_photo_index}}" circular="true" bindchange="onPhotoSwiperChange" bindtap="onTapBg">
+        <block wx:for="{{photos}}" wx:for-item="photo">
+            <swiper-item>
+            <image class="photo" src="{{photo.url}}" mode="aspectFit" bindtap="onTapPhoto" data-index="{{index}}"></image>
+            </swiper-item>
+        </block>
+    </swiper>
+
+    <text class="index-txt">{{curr_index_txt}}</text>
+
+    <view class="bottom-bar-bg"></view>
+    <view class="bottom-bar">
+        <image class="bottom-avatar" src="{{user_avatar}}"></image>
+        
+        <!--<switch class="bottom-switch" type="switch" checked="{{show_bullet}}" bindchange="onBulletChange" color="#27808B"/>-->
+        <view class="bottom-divider"></view>
+        <text class="bottom-txt-bullet" bindtap="onBulletChange" style="color:{{show_bullet ? '#4bbccc': '#999999'}};border:1rpx solid {{show_bullet ? '#4bbccc': '#999999'}}">弹幕</text>
+        <!--<text class="bottom-txt-edit" bindtap="onTapEdit" style="border:1rpx solid #999999">编辑</text>-->
+        <image wx:if="{{like}}" class="bottom-btn" bindtap="onLike" src="/resource/like_blue.png"></image>
+        <image wx:else class="bottom-btn" bindtap="onLike" src="/resource/like.png"></image>
+        <text class="bottom-txt">{{like_count}}</text>
+        <image class="bottom-btn" bindtap="onTapComment" src="/resource/comment.png"></image>
+        <text class="bottom-txt" bindtap="onTapCommentList">{{comment_count}}</text>
+        <view style="position:relative;">
+            <image class="bottom-btn-list" bindtap="onTapCommentList" src="/resource/list.png"></image>
+            <image hidden="{{!new_msg}}" class="msg_dot" src="/resource/dot.png"></image>
+        </view>
+        
+    </view>
+
+    <view animation="{{panel_animation}}" hidden="{{!show_panel}}" style="position: fixed;bottom:-240rpx;width: 100%;height: 240rpx;background-color: #f4f4f4;display: flex;flex-flow: column wrap;align-items: center;">
+        <view class="input-form" style="width: 100%; margin-top: 20rpx;background-color: white;">
+            <input class="album-input" bindinput="onInputComment" bindconfirm="onComment" value="{{to_comment_content}}" placeholder="评论" style="width: 700rpx;font-size:14pt;margin-top: 16rpx;margin-left: 20rpx;margin-bottom: 16rpx;"/>
+        </view>
+        <!--<button id="panel-confirm-btn" bindtap="onComment" loading="{{comment_btn_loading}}" style="width: 710rpx;margin-top: 32rpx;color: white;background-color: #4bbccc;">评论</button>-->
+        <icon type="cancel" bindtap="onCancelPanel" style="margin-top: 50rpx;"></icon>
+    </view>
+</view>
+
+<view hidden="{{!show_bullet}}" style="position:fixed;top:0rpx;">
+    <block wx:for="{{comments}}" wx:for-item="comment">
+        <text class="comment-txt" animation="{{bullet_animations[index]}}" style="width:{{bullet_widths[index]}};left:{{bullet_lefts[index]}}rpx;top:{{bullet_tops[index]}}rpx;">{{comment.content}}</text>
+    </block>
+</view>

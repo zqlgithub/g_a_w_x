@@ -19,8 +19,8 @@ Page({
     page_state: 1,  //1 正常 2 选择删除模式
     select_photo: {},
     show_scroll_to_end: false, // 是否展示滚到底部的标识
-    scroll_end_txt: '',
-    scroll_start_txt: '',
+    scroll_end_txt: '',   // 底部提示
+    scroll_start_txt: '',  // 顶部提示
     top_album_id: '',
     show_tip: false,
     
@@ -33,6 +33,7 @@ Page({
       day: -1
     },
     search_date_txt: '',
+    search_new: false,   // 是否筛选最新照片
 
     // 新照片通知
     photo_msg: [],
@@ -696,6 +697,10 @@ Page({
   onCancelPanel: function(e) {
     this.onTapBg()
   },
+
+  onTapNewPhoto: function(e){
+
+  },
   
   //---------------
   // 删除照片
@@ -1280,35 +1285,38 @@ Page({
       success: function(resp) {
         var photo_new_msg = {}
         var new_photo = {}
+        var new_photo_count = 0
         for(var i in resp.data){
           var msg = resp.data[i]
           if(!msg.read && 'photo_id' in msg){
             photo_new_msg[msg.photo_id] = true
           }
           if(!msg.read && msg.type == 'new_photo'){
-            var photo_ids = String(msg.data).split(',')
+            var photo_ids = msg.data
             for(var j in photo_ids){
               new_photo[photo_ids[j]] = true
+              new_photo_count++
             }
           }
         }
         self.setData({
-            photo_msg: photo_new_msg,
-            new_photo: new_photo
+            photo_msg: photo_new_msg,  // 照片的评论等信息
+            new_photo: new_photo,      // 新照片
+            new_photo_count: new_photo_count
         })
-
-        requests.post({
+      }
+    })
+  },
+  onHide:function(){
+    if(this.data.new_photo){
+      requests.post({
           url: '/user/msg/read',
           data: {
             group_id: self.data.group_id,
             msg_type: 'new_photo'
           }
         })
-      }
-    })
-  },
-  onHide:function(){
-    // 页面隐藏
+    }
   },
   onUnload:function(){
     // 页面关闭

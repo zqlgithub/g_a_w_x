@@ -1,0 +1,23 @@
+
+<view class="bg">
+    <view wx:if="{{!loading && comments.length == 0}}" class="default-bg">
+        <text class="default-bg-txt">目前还没有评论，来抢沙发~~</text>
+    </view>
+    <view wx:for="{{comments}}" wx:for-item="comment" class="comment-item" bindtap="onTapResp" data-comment="{{comment}}">
+        <image class="avatar" src="{{comment.user_avatar}}"></image>
+        <view style="display:flex;flex-direction:column;">
+            <view style="width:620rpx;display:flex;flex-direction:row;align-items:center;">
+                <text class="user-name-txt">{{comment.user_name}}</text>
+                <text class="comment-time-txt">{{comment.create_time_txt}}</text>
+            </view>
+            <text class="comment-content">{{comment.resp_user_name ? "回复" : ""}}<text style="color:#4c7dcd;font-weight: bold;">{{comment.resp_user_name || ''}}</text>{{comment.resp_user_name ? "：" : ""}}{{comment.content}}</text>
+        </view>
+    </view>
+    <view class="comment-bottom"></view>
+
+    <view class="input-container">
+        <input class="comment-input" bindinput="onInputComment" bindconfirm="onComment" bindblur="onBlur" value="{{to_comment_content}}" placeholder="{{input_holder}}" focus="{{input_focus}}"/>                 
+    </view>
+</view>
+
+
