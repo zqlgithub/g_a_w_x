@@ -109,7 +109,7 @@ page {
 }
 
 .comment-txt {
-    width: 750rpx;
+    width: 720rpx;
     position: absolute;
     left: 750rpx;
     font-size: 16pt;

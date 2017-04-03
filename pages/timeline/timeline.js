@@ -1312,7 +1312,7 @@ Page({
       requests.post({
           url: '/user/msg/read',
           data: {
-            group_id: self.data.group_id,
+            group_id: this.data.group_id,
             msg_type: 'new_photo'
           }
         })
@@ -1344,14 +1344,12 @@ Page({
     this.extendTimeline(1)
   },
   onScrollToBottom: function(e){
-    console.log('scroll to bottom')
     this.extendTimeline(-1)
     this.setData({
       scroll_end_txt: '加载中...'
     })
   },
   onScroll: function(e) {
-    console.log('scroll')
   },
   onPullDownRefresh: function () {
     console.log('onPullDownRefresh', new Date())

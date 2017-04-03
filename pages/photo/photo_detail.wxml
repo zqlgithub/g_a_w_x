@@ -40,7 +40,7 @@
 </view>
 
 <view hidden="{{!show_bullet}}" style="position:fixed;top:0rpx;">
-    <block wx:for="{{comments}}" wx:for-item="comment">
-        <text class="comment-txt" animation="{{bullet_animations[index]}}" style="width:{{bullet_widths[index]}};left:{{bullet_lefts[index]}}rpx;top:{{bullet_tops[index]}}rpx;">{{comment.content}}</text>
+    <block wx:for="{{comments}}" wx:key="id" wx:for-item="comment">
+        <text class="comment-txt" animation="{{bullet_animations[index]}}" style="left:750rpx;">{{comment}}</text>
     </block>
 </view>

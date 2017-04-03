@@ -11,12 +11,14 @@ Page({
 
     curr_bullet_index: 0, 
     last_bullet_time: 0,
+    photo_comments_map: {},
     comments: [],
     bullet_animations: [],
-    bullet_tops: [],
+    bullet_tops: [80, 80],
     bullet_lefts: [],
     bullet_widths: [],
     bullet_line_last_time: [],
+    test_animation: {},
 
     curr_photo_index: 0,
     curr_index_txt: '',
@@ -45,41 +47,60 @@ Page({
     })
   },
 
-  initBullets: function() {
+  initBullets: function(comments) {
     var width = []
     var left = []
     var top = []
-    var animations = []
-    var comments = this.data.comments
+    var animations = [{}]
     for(var i in comments){
-      width.push(util.strByteLen(comments[i].content) * 30)
-      left.push(700)
-      top.push(0)
+      width.push(util.strByteLen(comments[i]) * 30)
+      left.push(750)
+      top.push(80)
       animations.push({})
     }
     this.setData({
       bullet_widths: width,
-      bullet_tops: top,
       bullet_lefts: left,
       curr_bullet_index: 0, 
       last_bullet_time: 0,
-      bullet_animations: animations
+      bullet_animations: animations,
+      comments: comments
     })
   },  
 
-  refreshBullet: function(){
+  stopBullet: function(){
     this.stopBulletTimer()
     clearTimeout(this.bulletEndTimer)
-    this.initBullets()
-    this.startBulletTimer()
+    this.setData({
+      comments: []
+    })
   },
 
-  startBulletTimer: function(){
-    this.bullet_timer = setTimeout(this.startBulletTimer, 2000)
+  refreshBullet: function(comments=null){
+    console.log('refresh bullet timer')
+    comments = comments || this.data.comments
+    this.stopBulletTimer()
+    clearTimeout(this.bulletEndTimer)
+    this.setData({
+      comments: []
+    })
+
+    this.initBullets(comments)
+    this.startBulletTimer(true)
+  },
+
+  startBulletTimer: function(is_first=false){
+    console.log('start bullet timer')
+    // 防止重复调用startBulletTimer
+    clearTimeout(this.bullet_timer)
+    // 为了onBulletTimer可以停止timer，放后面
+    var interval = is_first ? 10 : 2400
+    this.bullet_timer = setTimeout(this.startBulletTimer, interval)
     this.onBulletTimer()
   },
 
   stopBulletTimer: function() {
+    console.log('stop bullet timer')
     clearTimeout(this.bullet_timer)
   },
 
@@ -105,7 +126,7 @@ Page({
     // var to_set_data = {}
     // to_set_data['bullet_tops['+index+']'] = LINE_HEIGHT * i
     // this.setData(to_set_data)
-
+    console.log('shooting:', index)
     var animation = wx.createAnimation({
       duration: 6000,
       timingFunction: 'linear', 
@@ -114,7 +135,7 @@ Page({
     })
 
     var w = this.data.bullet_widths[index]
-    animation.left('0rpx').step()
+    animation.left('-'+w+'rpx').step()
 
     var to_set_data = {}
     to_set_data['bullet_animations['+index+']'] = animation.export()
@@ -123,46 +144,59 @@ Page({
 
   onBulletTimer: function(){
     var curr_index = this.data.curr_bullet_index
-    var curr_comment = this.data.comments[curr_index]
-    var last_comment = curr_index > 0 ? this.data.comments[curr_index - 1] : null
-    var last_bullet_time = this.data.last_bullet_time
-    var now_ts = Date.now()
+    // var curr_comment = this.data.comments[curr_index]
+    // var last_comment = curr_index > 0 ? this.data.comments[curr_index - 1] : null
+    // var last_bullet_time = this.data.last_bullet_time
+    // var now_ts = Date.now()
+
+    if(curr_index >= this.data.comments.length){
+      console.log('on timer to end')
+      this.stopBulletTimer()
+      this.bulletEndTimer = setTimeout(this.onBulletEnd, 6000)
+      return
+    }
 
     this.shoot_bullet(curr_index)
 
-    curr_index = curr_index + 1
+    curr_index += 1
     this.setData({
       curr_bullet_index: curr_index,
-      last_bullet_time: now_ts
+      // last_bullet_time: now_ts
     })
-
-    if(curr_index >= this.data.comments.length){
-      this.bulletEndTimer = setTimeout(this.onBulletEnd, 6000)
-      this.stopBulletTimer()
-    }
-
   },
 
   onBulletEnd: function() {
+    console.log('on bullet end')
     this.refreshBullet()
   },
 
   syncComments: function() {
     var curr_photo = this.getCurrPhoto()
     var self = this
-    requests.get({
-      url: '/album/photo/comment/list',
-      data: {
-        photo_id: curr_photo.id
-      },
-      success: function(resp) {
-        self.setData({
-          comments: resp.data
-        })
-        // self.startBulletTimer()
-        self.refreshBullet()
-      }
-    })
+    var photo_comments_map = this.data.photo_comments_map
+    if(curr_photo.id in photo_comments_map){
+      self.refreshBullet(photo_comments_map[curr_photo.id])
+    }else{
+      requests.get({
+        url: '/album/photo/comment/list',
+        data: {
+          photo_id: curr_photo.id
+        },
+        success: function(resp) {
+          var comments = resp.data
+          //  这个地方有点尴尬，因为第一个评论总会有概率出问题，所以弄了一个填充的
+          var comment_txts = ['']
+          for(var i in comments){
+            comment_txts.push(comments[i].user.name+':'+comments[i].content)
+          }
+          photo_comments_map[curr_photo.id] = comment_txts
+          self.setData({
+            photo_comments_map: photo_comments_map
+          })
+          self.refreshBullet(comment_txts)
+        }
+      })
+    }
   },
 
   syncBottomBarData: function() {
@@ -226,6 +260,12 @@ Page({
 
   onBulletChange: function(e) {
     var show_bullet = !this.data.show_bullet
+    if(!show_bullet){
+      this.stopBullet()
+    }else{
+      this.syncComments()
+    }
+
     wx.setStorage({
       key: 'show_bullet',
       data: show_bullet
@@ -258,6 +298,11 @@ Page({
     })
     this.syncBottomBarData()
     this.updatePhotoIndex(curr)
+
+    if(this.data.show_bullet){
+      this.stopBullet()
+      this.syncComments()
+    }
   },
 
   onLike: function(){
@@ -310,17 +355,29 @@ Page({
 
     var self = this
     var curr_photo = this.getCurrPhoto()
+    var content = this.data.to_comment_content
     requests.post({
       url: '/album/photo/comment',
       data: {
         photo_id: curr_photo.id,
-        content: this.data.to_comment_content
+        content: content
       },
       success: function(resp) {
         var curr_index = self.data.curr_photo_index
+        var photo_comments_map = self.data.photo_comments_map
+        var comments = self.data.comments
+        var comment_txt = self.data.userInfo.nickName+':'+content
+        if(!photo_comments_map[curr_photo.id]){
+          photo_comments_map[curr_photo.id] = []
+        }
+        photo_comments_map[curr_photo.id].push(comment_txt)
+        comments.push(comment_txt)
         curr_photo.comment_count += 1
-        var to_set_data = {}
-        to_set_data['to_comment_content'] = ''
+        var to_set_data = {
+          to_comment_content: '',
+          comments: comments,
+          photo_comments_map: photo_comments_map
+        }
         to_set_data['photos['+curr_index+']'] = curr_photo
         self.setData(to_set_data)
         self.syncBottomBarData()
@@ -375,6 +432,12 @@ Page({
     }
 
     var self = this
+    getApp().getUserInfo(function(userInfo){
+      self.setData({
+        userInfo: userInfo,
+      })
+    })
+
     requests.get({
       url: '/album/photos',
       data: {
