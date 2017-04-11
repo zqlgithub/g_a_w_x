@@ -1,0 +1,10 @@
+<!--pages/slider/slider.wxml-->
+<text style="animation: text-focus-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;">test</text>
+
+<!--为什么这个可以动-->
+<view animation="{{config.entity[0].animationObj}}" style="background:red;height:100rpx;width:100rpx;"></view>
+
+<!--为什么这个动不了-->
+<block wx:for="{{config.entity}}">
+    <image animation="{{item.animationObj}}" style="display:block;position:absolute;top:{{item.pos.top}};left:{{item.pos.left}};width:100rpx;height:100px;" src="{{item.src}}" />
+</block>

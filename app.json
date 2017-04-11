@@ -9,7 +9,8 @@
     "pages/group/group_feeds/group_feeds",
     "pages/photo/photo_detail",
     "pages/photo/photo_comments",
-    "pages/photo/photo_edit"
+    "pages/photo/photo_edit",
+    "pages/slider/slider"
   ],
   "window":{
     "backgroundTextStyle":"light",
