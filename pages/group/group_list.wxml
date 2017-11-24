@@ -25,7 +25,7 @@
     
     <view class="create-panel" animation="{{panel_animation}}" hidden="{{!show_panel}}">
         <view class="submit">
-            <input id="group-name-input" placeholder="输入你们群的名字" bindinput="onInputGroupName" value="{{group_input_default}}"/>
+            <input id="group-name-input" placeholder="输入相册名" bindinput="onInputGroupName" value="{{group_input_default}}"/>
             <image id="confirm-group-btn" bindtap="onCreateGroup" src="/resource/arrow.png"></image>
         </view>
         

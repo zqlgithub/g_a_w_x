@@ -15,18 +15,25 @@
         <image class="bottom-avatar" src="{{user_avatar}}"></image>
         
         <!--<switch class="bottom-switch" type="switch" checked="{{show_bullet}}" bindchange="onBulletChange" color="#27808B"/>-->
-        <view class="bottom-divider"></view>
+        
+        
         <text class="bottom-txt-bullet" bindtap="onBulletChange" style="color:{{show_bullet ? '#4bbccc': '#999999'}};border:1rpx solid {{show_bullet ? '#4bbccc': '#999999'}}">弹幕</text>
+        <text hidden="{{!show_bullet}}" class="bottom-btn-bullet" bindtap="onTapComment">发布</text>
+        <view class="bottom-divider"></view>
         <!--<text class="bottom-txt-edit" bindtap="onTapEdit" style="border:1rpx solid #999999">编辑</text>-->
         <image wx:if="{{like}}" class="bottom-btn" bindtap="onLike" src="/resource/like_blue.png"></image>
         <image wx:else class="bottom-btn" bindtap="onLike" src="/resource/like.png"></image>
         <text class="bottom-txt">{{like_count}}</text>
-        <image class="bottom-btn" bindtap="onTapComment" src="/resource/comment.png"></image>
+        <view class="">
+          <image class="bottom-btn" bindtap="onTapCommentList" src="/resource/comment.png"></image>
+          <image hidden="{{!new_msg}}" class="msg_dot" src="/resource/dot.png"></image>
+        </view>
+        
         <text class="bottom-txt" bindtap="onTapCommentList">{{comment_count}}</text>
-        <view style="position:relative;">
+        <!--<view style="position:relative;">
             <image class="bottom-btn-list" bindtap="onTapCommentList" src="/resource/list.png"></image>
             <image hidden="{{!new_msg}}" class="msg_dot" src="/resource/dot.png"></image>
-        </view>
+        </view>-->
         
     </view>
 
@@ -40,7 +47,7 @@
 </view>
 
 <view hidden="{{!show_bullet}}" style="position:fixed;top:0rpx;">
-    <block wx:for="{{comments}}" wx:key="id" wx:for-item="comment">
-        <text class="comment-txt" animation="{{bullet_animations[index]}}" style="left:750rpx;">{{comment}}</text>
+    <block wx:for="{{display_comment_list}}" wx:key="index" wx:for-item="comment_obj">
+        <text class="comment-txt" id="bullet_{{index}}" style="left:{{comment_obj.left}}px;top:{{comment_obj.top}}rpx;width:{{comment_obj.width}}px;" animation="{{comment_obj.animation}}">{{comment_obj.content}}</text>
     </block>
 </view>

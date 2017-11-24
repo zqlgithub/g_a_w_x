@@ -77,11 +77,23 @@ page {
 
 .bottom-txt-bullet {
     width: 80rpx;
-    margin: 12rpx;
+    margin-left: 12rpx;
     line-height: 50rpx;
     font-size: 11pt;
     text-align: center;
     color: white;
+    border-radius: 10rpx;
+}
+
+.bottom-btn-bullet {
+    width: 80rpx;
+    margin-left: 12rpx;
+    line-height: 50rpx;
+    font-size: 11pt;
+    text-align: center;
+    color: #4bbccc;
+    background-color: white;
+    border:1rpx solid #4bbccc;
     border-radius: 10rpx;
 }
 
@@ -109,9 +121,23 @@ page {
 }
 
 .comment-txt {
-    width: 720rpx;
+    width: 750rpx;
+    height: 50rpx;
     position: absolute;
     left: 750rpx;
     font-size: 16pt;
-    color: #999999;
+    color: white;
+    text-shadow:0px 2px 7px #000;
+}
+
+.comment-input {
+  width: 100rpx;
+  height: 58rpx;
+  line-height: 58rpx;
+  padding-left: 10rpx;
+  padding-right: 10rpx;
+  background-color: white;
+  font-size:14pt;
+  border: 1px solid #f4f4f4; 
+  border-radius: 20rpx;
 }

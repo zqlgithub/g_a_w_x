@@ -25,6 +25,8 @@ Page({
     show_tip: false,
     
     show_search_panel: false,
+    show_search_bar: false,
+    search_bar_animation: {},
     search_date_options: [],
     search_txt: '',
     search_date: {
@@ -48,17 +50,6 @@ Page({
 
     edit_panel_animation: {},
     show_edit_panel: false,
-    // 以下的参数暂时废弃
-    // show_photo_detail: false,
-    // showing_album_id: null,
-    // showing_photos: [],  //传给swiper的照片数组
-    // swiper_current: 0,
-    // last_swiper_current: 0,
-    // curr_showing_start: 0,
-    // curr_showing_end: 0,
-    // curr_showing_index: 0,
-    // photo_swipe_duration: 500,
-    
   },
 
   //---------------
@@ -154,6 +145,49 @@ Page({
 
   // 搜索相关
   // 初始化搜索弹框的数据
+  showSearchBar: function() {
+    if (this.show_search_bar) return
+
+    console.log('show search bar')
+    this.show_search_bar = true
+    clearTimeout(this.hide_bar_timer)
+    
+    var animation = wx.createAnimation({
+      duration: 1000,
+      timingFunction: 'linear'
+    })
+
+    animation.opacity(1).step()
+    this.setData({
+      show_search_bar: true,
+      search_bar_animation: animation.export(),
+    })
+  },
+
+  hideSearchBar: function() {
+    if (!this.show_search_bar) return
+    this.show_search_bar = false
+
+    console.log('hide search bar')
+    var animation = wx.createAnimation({
+      duration: 1000,
+      timingFunction: 'linear'
+    })
+
+    animation.opacity(0).step()
+    this.setData({
+      show_search_bar: true,
+      search_bar_animation: animation.export(),
+    })
+
+    var self = this
+    this.hide_bar_timer = setTimeout(function() {
+      self.setData({
+        show_search_bar: false,
+      })
+    }, 1000)
+  },
+
   initSearchOptions: function() {
     // 初始化筛选条件
     var this_year = new Date().getFullYear()
@@ -352,10 +386,6 @@ Page({
         }
         to_showing_photos.push(photos[i].url)
       }
-      // wx.previewImage({
-      //   current: current, // 当前显示图片的链接，不填则默认为 urls 的第一张
-      //   urls: to_showing_photos
-      // })
 
       wx.navigateTo({
         url: '/pages/photo/photo_detail?album_id='+album_id+'&init_photo='+photos[photo_index].id
@@ -427,8 +457,16 @@ Page({
   onAddPhoto: function(e){
     var page_state = this.data.page_state
     if(page_state === 1){
+      if(!this.data.is_master && !this.data.co_edit){
+        wx.showToast({
+          title: '群主设置了权限，您暂时不能上传照片哦',
+        })
+        return
+      }
+
       var self = this
       var select_album_id = e.currentTarget.dataset.album
+
       wx.chooseImage({
         count: 9, 
         sizeType: ['original', 'compressed'], 
@@ -700,6 +738,17 @@ Page({
 
   onTapNewPhoto: function(e){
 
+  },
+
+  onTapDownLoad: function(e) {
+
+  },
+
+  downloadPhotos: function(urls) {
+    while(urls.length > 0){
+      this_url = urls.pop()
+      
+    }
   },
   
   //---------------
@@ -1007,6 +1056,8 @@ Page({
           loading: false,
           group_id: resp.data.id,
           group_name: resp.data.name,
+          co_edit: resp.data.co_edit,
+          co_invite: resp.data.co_invite,
           is_master: resp.data.master,
           timeline_data: resp.data.timeline,
           member_count: resp.data.member_count
@@ -1344,12 +1395,25 @@ Page({
     this.extendTimeline(1)
   },
   onScrollToBottom: function(e){
-    this.extendTimeline(-1)
-    this.setData({
-      scroll_end_txt: '加载中...'
-    })
+    if(!this.to_bottom){
+      this.extendTimeline(-1)
+      this.setData({
+        scroll_end_txt: '加载中...'
+      })
+      this.to_bottom = true
+      var self = this
+      setTimeout(function(){
+        self.to_bottom = false
+      }, 1000)
+    }
   },
   onScroll: function(e) {
+    var delta_y = e.detail.deltaY
+    if (delta_y > 0){
+      this.hideSearchBar()
+    } else if (delta_y < 0){
+      this.showSearchBar()
+    }
   },
   onPullDownRefresh: function () {
     console.log('onPullDownRefresh', new Date())

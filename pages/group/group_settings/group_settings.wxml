@@ -1,9 +1,14 @@
 <!--pages/group/group_settings/group_settings.wxml-->
 <view class="container">
     <view class="group-name" bindtap="onTapGroupName">
-        <text class="group-name-title">群名</text>
+        <text class="group-name-title">相册名</text>
         <text class="group-name-txt">{{group_name}}</text>
         <image wx:if="{{is_master}}" class="group-name-edit" src="/resource/edit.png"></image>
+    </view>
+
+    <view class="group-setting">
+        <text class="group-name-title">允许成员上传</text>
+        <switch bindchange="onSetEdit" checked='{{group_data.co_edit}}'/>
     </view>
 
     <scroll-view class="member-scroll" scroll-y="true" style="height:{{scroll_height}}rpx;" bindtap="onTapBg">
@@ -17,13 +22,13 @@
         </view>
     </scroll-view>
 
-    <view class="group-btn invite-btn" bindtap="onTapInviteBtn">
+    <button class="group-btn invite-btn" open-type="share">
         <text class="group-btn-txt invite-member-txt">邀请好友</text>
-    </view>
+    </button>
 
-    <view class="group-btn" bindtap="onRemoveGroup">
-        <text class="group-btn-txt remove-group-txt">退出该群</text>
-    </view>
+    <button class="group-btn" bindtap="onRemoveGroup">
+        <text class="group-btn-txt remove-group-txt">退出相册</text>
+    </button>
 
     <!--<button style="position:fixed;width:700rpx;left:25rpx;bottom:32rpx;color:white;background-color: #e64340;" catchtap="onRemoveGroup">退出该群</button>-->
 
@@ -34,9 +39,9 @@
     <view class="create-panel" animation="{{panel_animation}}" hidden="{{!show_panel}}">
         <view class="submit">
             <view class="input-form">
-                <input class="album-input" placeholder="输入新的群名" bindinput="onInputGroupName" value="{{group_name_input_default}}"/>
+                <input class="album-input" placeholder="输入新的相册名" bindinput="onInputGroupName" value="{{group_name_input_default}}"/>
             </view>
-            <button id="panel-confirm-btn" catchtap="onEditGroupName" >更改群名</button>
+            <button id="panel-confirm-btn" catchtap="onEditGroupName" >更改相册名</button>
         </view>
         <icon id="panel-cancel" type="cancel" catchtap="onCancelPanel"></icon>
     </view>

@@ -16,6 +16,7 @@ page {
 }
 
 .search-bar {
+    position: fixed;
     width: 100%;
     height: 64rpx;
     background-color: #4bbccc;

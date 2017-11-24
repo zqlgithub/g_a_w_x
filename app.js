@@ -121,6 +121,12 @@ App({
       }
     })
   },
+  getSystemInfo:function(){
+    if (this.globalData == null){
+      this.globalData.systemInfo = wx.getSystemInfoSync()
+    }
+    return this.globalData.systemInfo
+  },
   listen: function(event_type, cb){
     
   },
@@ -128,6 +134,7 @@ App({
     
   },
   globalData:{
-    userInfo:null
+    userInfo: null,
+    systemInfo: null
   }
 })

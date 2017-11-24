@@ -20,13 +20,13 @@ Page({
         userInfo:userInfo
       })
 
-      wx.redirectTo({
-        url: '../slider/slider'
-      })
-
       // wx.redirectTo({
-      //   url: '../group/group_list'
+      //   url: '../slider/slider'
       // })
+
+      wx.redirectTo({
+        url: '../group/group_list'
+      })
     })
   },
 

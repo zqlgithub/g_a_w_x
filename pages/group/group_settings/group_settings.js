@@ -4,6 +4,7 @@ var events = require('../../../utils/events.js')
 var app = getApp()
 Page({
   data:{
+    group_data: {},
     member_data: [],
     panel_animation: {},
     show_panel: false,
@@ -38,6 +39,23 @@ Page({
           id: self.data.group_id,
           name: new_group_name
         })
+      }
+    })
+  },
+  
+  onSetEdit: function(e) {
+    var self = this
+    var co_edit = e.detail.value
+    requests.post({
+      url: "/album/group/update",
+      data: {
+        id: this.data.group_id,
+        co_edit: co_edit ? 1: 0
+      },
+      success: function (resp) {
+        self.onTapBg()
+        var to_set_data = { 'group_data.co_edit': co_edit}
+        self.setData(to_set_data)
       }
     })
   },
@@ -220,6 +238,7 @@ Page({
         success: function(resp) {
           console.log('GET MEMBER LIST SUCCESS')
           self.setData({
+            group_data: resp.data,
             group_name: resp.data.name,
             member_data: resp.data.members
           })

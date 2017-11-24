@@ -1,21 +1,13 @@
 <!--pages/timeline/timeline.wxml-->
 <view class="container">
-    <view class="search-bar">
-        <text class="search-bar-date">{{search_date_txt}}</text>
-        <!--<text wx:else class="new-photo-btn">110张新照片</text>-->
-        <view class="search-input-container">
-            <input class="search-input" placeholder="搜索" placeholder-style="color:white;" value="{{search_txt}}" bindinput="onSearchInput" bindfocus="onSearchFocus" bindblur="onSearchBlur" bindconfirm="onSearch"/>
-        </view>
-        <contact-button class="contact-btn" type="default-light" size="20" session-from="weapp">
-        </contact-button>
-    </view>
 
     <image wx:if="{{loading}}" class="loading" src="/resource/loading.png"></image>
     <view wx:elif="{{timeline_data.length == 0}}" class="default-bg" bindtap="onTapBg">
         <image class="default-img" src="/resource/album_bg.png"></image>
         <text class="default-title">{{default_title}}</text>
     </view>
-    <scroll-view wx:else class="album-scroll" scroll-y="true" bindscrolltoupper="onScrollToTop" bindscrolltolower="onScrollToBottom"   bindscroll="onScroll" bindtap="onTapBg" scroll-into-view="{{top_album_id}}" style="height:{{scroll_height}}rpx;">
+
+    <scroll-view wx:else class="album-scroll" scroll-y="true" bindscrolltoupper="onScrollToTop" bindscrolltolower="onScrollToBottom"   bindscroll="onScroll" bindtap="onTapBg" scroll-into-view="{{top_album_id}}" style="height:{{scroll_height}}rpx;" enable-back-to-top="true">
         <view style="width:100%;text-align:center">
             <text style="width:200rpx;margin:auto;font-size:12pt;color:#999999;" hidden="{{scroll_start_txt.length == 0}}">{{scroll_start_txt}}</text>
         </view>
@@ -76,6 +68,15 @@
             <text class="bottom-btn-txt" style="color:#8a8a8a">成员({{member_count}})</text>
         </view>
     </view>
+
+    <view class="search-bar" hidden="{{!show_search_bar}}" animation="{{search_bar_animation}}">
+        <text class="search-bar-date">{{search_date_txt}}</text>
+        <view class="search-input-container">
+            <input class="search-input" placeholder="搜索" placeholder-style="color:white;" value="{{search_txt}}" bindinput="onSearchInput" bindfocus="onSearchFocus" bindblur="onSearchBlur" bindconfirm="onSearch"/>
+        </view>
+        <contact-button class="contact-btn" type="default-light" size="20" session-from="weapp">
+        </contact-button>
+    </view> 
 
     <view class="create-panel" animation="{{panel_animation}}" hidden="{{!show_panel}}">
         <view class="submit">
