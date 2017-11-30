@@ -1,32 +1,33 @@
 // pages/photo/photo_comments.js
 var requests = require('../../utils/requests.js')
 var events = require('../../utils/events.js')
-
+var utils = require('../../utils/util.js')
 Page({
   data:{
     loading: true,
     photo_id: 0,
+    phone_url:undefined,
     comment_data: [],
     comments: [],
     to_comment_content: '',
-    input_holder: '评论',
+    input_holder: '你觉得怎么样？',
     input_focus: false
   },
-  formatTime: function(date) {
-    function formatNumber(n) {
-      n = n.toString()
-      return n[1] ? n : '0' + n
-    }
+  // formatTime: function(date) {
+  //   function formatNumber(n) {
+  //     n = n.toString()
+  //     return n[1] ? n : '0' + n
+  //   }
 
-    var year = date.getFullYear()
-    var month = date.getMonth() + 1
-    var day = date.getDate()
+  //   var year = date.getFullYear()
+  //   var month = date.getMonth() + 1
+  //   var day = date.getDate()
 
-    var hour = date.getHours()
-    var minute = date.getMinutes()
+  //   var hour = date.getHours()
+  //   var minute = date.getMinutes()
 
-    return year + '年' + month + '月' + day + '日' + ' ' + [hour, minute].join(':')
-  },
+  //   return  month + '-' + day + ' ' + [hour, minute].join(':')
+  // },
   onComment: function(e) {
     if(!this.data.to_comment_content){
       wx.showToast({
@@ -96,7 +97,7 @@ Page({
     if(this.data.resp_comment){
       this.setData({
         resp_comment: null,
-        input_holder: '评论'
+        input_holder: '你觉得怎么样？'
       })
     }
   },
@@ -133,7 +134,7 @@ Page({
             user_id: data[i].user.id,
             user_avatar: data[i].user.avatar,
             user_name: data[i].user.name,
-            create_time_txt: self.formatTime(new Date(data[i].createTime * 1000))
+            create_time_txt: utils.formatTime2(new Date(data[i].createTime * 1000))
           })
         }
 
@@ -157,8 +158,9 @@ Page({
   onLoad:function(options){
     var photo_id = Number.parseInt(options.id)
     this.setData({
-      photo_id: photo_id
-    })
+      photo_id: photo_id,
+      phone_url: options.url
+    });
     var self = this
     getApp().getUserInfo(function(userInfo){
       self.setData({

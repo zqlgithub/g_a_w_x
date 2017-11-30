@@ -1,5 +1,6 @@
 
 <view class="bg">
+
     <view wx:if="{{!loading && comments.length == 0}}" class="default-bg">
         <text class="default-bg-txt">目前还没有评论，来抢沙发~~</text>
     </view>
@@ -10,14 +11,19 @@
                 <text class="user-name-txt">{{comment.user_name}}</text>
                 <text class="comment-time-txt">{{comment.create_time_txt}}</text>
             </view>
-            <text class="comment-content">{{comment.resp_user_name ? "回复" : ""}}<text style="color:#4c7dcd;font-weight: bold;">{{comment.resp_user_name || ''}}</text>{{comment.resp_user_name ? "：" : ""}}{{comment.content}}</text>
+            <text class="comment-content">{{comment.resp_user_name ? "回复" : ""}}<text style="color:#999;">{{comment.resp_user_name || ''}}</text>{{comment.resp_user_name ? "：" : ""}}{{comment.content}}</text>
         </view>
     </view>
     <view class="comment-bottom"></view>
-
+    
     <view class="input-container">
-        <input class="comment-input" bindinput="onInputComment" bindconfirm="onComment" bindblur="onBlur" value="{{to_comment_content}}" placeholder="{{input_holder}}" focus="{{input_focus}}"/>                 
+        <button size="mini" style="float:right" bindtap="onComment" class="send" type="primary">发送</button>
+         <input class="comment-input" bindblur="onBlur" bindinput="onInputComment" focus="{{input_focus}}" placeholder="{{input_holder}}" value="{{to_comment_content}}"/> 
+
+        <!-- <input class="comment-input" bindinput="onInputComment" bindconfirm="onComment" bindblur="onBlur" value="{{to_comment_content}}" placeholder="{{input_holder}}" focus="{{input_focus}}"/>                  -->
     </view>
 </view>
+<view class="bg-mask"></view>
+<image src="{{phone_url}}" mode="aspectFill" class="bg-image"></image>
 
 

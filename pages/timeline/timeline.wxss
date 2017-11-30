@@ -337,8 +337,8 @@ page {
     width: 40rpx;
     height: 40rpx;
     position: absolute;
-    left: 0rpx;
-    bottom: 0rpx;
+    left: 10rpx;
+    bottom: 10rpx;
     border-radius: 50%;
 }
 

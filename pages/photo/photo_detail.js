@@ -20,11 +20,13 @@ Page({
     like: false,
     like_count: 0,
     comment_count: 0,
-
     comment_btn_loading: false,
     to_comment_content: '',
     panel_animation: {},
     show_panel: false,
+    theme:{
+      
+    }
   },
 
   getCurrPhoto: function(){
@@ -289,8 +291,14 @@ Page({
   onBulletChange: function(e) {
     var show_bullet = !this.data.show_bullet
     if(!show_bullet){
+      wx.showToast({
+        title:"弹幕已屏蔽"
+      });
       this.clearBullet()
     }else{
+      wx.showToast({
+        title: "弹幕已开启"
+      });
       this.syncComments()
       this.refreshBullet()
     }
@@ -439,8 +447,8 @@ Page({
     var photo = this.data.photos[this.data.curr_photo_index]
     
     wx.navigateTo({
-      url: '/pages/photo/photo_comments?id='+photo.id
-    })
+      url: '/pages/photo/photo_comments?id='+photo.id +"&url=" + photo.url
+    });
 
     requests.post({
       url: '/user/msg/read',
