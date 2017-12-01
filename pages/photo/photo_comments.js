@@ -10,7 +10,7 @@ Page({
     comment_data: [],
     comments: [],
     to_comment_content: '',
-    input_holder: '你觉得怎么样？',
+    input_holder: '点击输入评论',
     input_focus: false
   },
   // formatTime: function(date) {

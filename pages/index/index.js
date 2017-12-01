@@ -21,7 +21,7 @@ Page({
       })
 
       // wx.redirectTo({
-      //   url: '../slider/slider'
+      //   url: '../video/video'
       // })
 
       wx.redirectTo({

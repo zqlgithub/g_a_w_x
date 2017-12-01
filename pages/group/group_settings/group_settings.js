@@ -4,6 +4,7 @@ var events = require('../../../utils/events.js')
 var app = getApp()
 Page({
   data:{
+    co_edit: true,
     group_data: {},
     member_data: [],
     panel_animation: {},
@@ -56,6 +57,16 @@ Page({
         self.onTapBg()
         var to_set_data = { 'group_data.co_edit': co_edit}
         self.setData(to_set_data)
+      },
+      fail: function(resp) {
+        self.setData({
+          co_edit: self.data.group_data.co_edit
+        })
+        wx.showToast({
+          title: resp.msg,
+          icon: 'success',
+          duration: 2000
+        })
       }
     })
   },
@@ -240,7 +251,8 @@ Page({
           self.setData({
             group_data: resp.data,
             group_name: resp.data.name,
-            member_data: resp.data.members
+            member_data: resp.data.members,
+            co_edit: resp.data.co_edit
           })
 
           events.center.dispatch('update_group', {

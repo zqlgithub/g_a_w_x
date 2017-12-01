@@ -38,7 +38,7 @@
              <text class="bottom-txt">{{like_count}}</text>
         </view> -->
         <button size="mini" style="float:right" bindtap="onComment" class="send" type="primary">发送</button>
-         <input class="album-input" placeholder-style="color:#ccc;" bindinput="onInputComment" value="{{to_comment_content}}" placeholder="来发弹幕吧" style=""/> 
+         <input class="album-input" placeholder-style="color:#ccc;" bindinput="onInputComment" value="{{to_comment_content}}" placeholder="点击输入评论弹幕" style=""/> 
          
         
         <!-- <text class="bottom-txt-bullet" bindtap="onBulletChange" style="color:{{show_bullet ? '#4bbccc': '#999999'}};border:1rpx solid {{show_bullet ? '#4bbccc': '#999999'}}">弹幕</text>

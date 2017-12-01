@@ -7,8 +7,8 @@
     </view>
 
     <view class="group-setting">
-        <text class="group-name-title">允许成员上传</text>
-        <switch bindchange="onSetEdit" checked='{{group_data.co_edit}}'/>
+        <text class="group-name-title">允许成员编辑</text>
+        <switch bindchange="onSetEdit" checked='{{co_edit}}'/>
     </view>
 
     <scroll-view class="member-scroll" scroll-y="true" style="height:{{scroll_height}}rpx;" bindtap="onTapBg">

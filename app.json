@@ -1,5 +1,5 @@
 {
-  "pages":[
+  "pages": [
     "pages/index/index",
     "pages/logs/logs",
     "pages/timeline/timeline",
@@ -10,12 +10,13 @@
     "pages/photo/photo_detail",
     "pages/photo/photo_comments",
     "pages/photo/photo_edit",
-    "pages/slider/slider"
+    "pages/slider/slider",
+    "pages/video/video"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "一刻相册",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black"
   }
 }

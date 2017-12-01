@@ -33,6 +33,7 @@ Page({
     return this.data.photos[this.data.curr_photo_index]
   },
 
+  // 因为swiper控件的current和照片的逻辑index不一样，需要计算下
   updatePhotoIndex: function(curr){
     var offset = this.data.offset
     var length = this.data.photos.length
@@ -43,6 +44,7 @@ Page({
   },
 
   initBullets: function(comments) {
+    console.log('init bullets')
     var animations = [] 
     var display_comment_list = []
     var bullet_intervals = []
@@ -107,11 +109,13 @@ Page({
       last_bullet_time: 0,
       display_comment_list: display_comment_list,
       bullet_intervals: bullet_intervals
+    }, function(){
+      self.startBulletTimer()
     })
   },  
 
   refreshBullet: function(comments=null){
-    // console.log('refresh bullet timer')
+    console.log('refresh bullet timer')
     comments = comments || this.data.comments
     var self = this
     this.stopBulletTimer()
@@ -119,7 +123,6 @@ Page({
       display_comment_list: []
     }, function(){
       self.initBullets(comments)
-      self.startBulletTimer()
     })
   },
 
@@ -168,7 +171,7 @@ Page({
         transformOrigin: '50% 50% 0',
       })
 
-      animation.left(-comment_obj.width).step()
+      animation.translate(-offset).step()
       var to_set_data = {}
       to_set_data['display_comment_list[' + index + '].animation'] = animation.export()
       this.setData(to_set_data)
@@ -181,6 +184,7 @@ Page({
   onBulletTimer: function(){
     var curr_bullet_index = this.data.curr_bullet_index
     var this_duration = this.shoot_bullet(curr_bullet_index++)
+    this.last_bullet_duration = Math.max(this.last_bullet_duration, this_duration)
 
     if (curr_bullet_index >= this.data.display_comment_list.length) {
       // console.log('on timer to end')
@@ -190,7 +194,6 @@ Page({
       // 计算下个子弹的时间间隔
       var next_comment_obj = this.data.display_comment_list[curr_bullet_index]
       var interval = next_comment_obj.interval
-      this.last_bullet_duration = Math.max(this.last_bullet_duration, this_duration)
       this.setData({
         curr_bullet_index: curr_bullet_index
       })
@@ -199,7 +202,8 @@ Page({
   },
 
   onBulletEnd: function() {
-    // console.log('on bullet end')
+    console.log('on bullet end')
+    console.log(this.data.display_comment_list)
     this.refreshBullet()
   },
 
@@ -211,6 +215,7 @@ Page({
       this.setData({
         comments: photo_comments_map[curr_photo.id]
       })
+      this.refreshBullet()
     }else{
       requests.get({
         url: '/album/photo/comment/list',
@@ -224,6 +229,7 @@ Page({
             comments: comments,
             photo_comments_map: photo_comments_map
           })
+          self.refreshBullet()
         }
       })
     }
@@ -300,7 +306,6 @@ Page({
         title: "弹幕已开启"
       });
       this.syncComments()
-      this.refreshBullet()
     }
 
     wx.setStorage({
@@ -338,7 +343,7 @@ Page({
 
     if(this.data.show_bullet){
       this.syncComments()
-      this.refreshBullet()
+      
     }
   },
 
@@ -450,12 +455,6 @@ Page({
       url: '/pages/photo/photo_comments?id='+photo.id +"&url=" + photo.url
     });
 
-    requests.post({
-      url: '/user/msg/read',
-      data: {
-        photo_id: photo.id
-      }
-    })
   },
   onCancelPanel: function(e) {
     this.switchPanel(false)
@@ -535,9 +534,15 @@ Page({
         
         if (self.data.show_bullet) {
           self.syncComments()
-          self.refreshBullet()
         }
 
+      }
+    })
+
+    requests.post({
+      url: '/user/msg/read',
+      data: {
+        photo_id: photo_id
       }
     })
 

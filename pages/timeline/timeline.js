@@ -148,12 +148,11 @@ Page({
   showSearchBar: function() {
     if (this.show_search_bar) return
 
-    console.log('show search bar')
     this.show_search_bar = true
     clearTimeout(this.hide_bar_timer)
     
     var animation = wx.createAnimation({
-      duration: 1000,
+      duration: 400,
       timingFunction: 'linear'
     })
 
@@ -168,9 +167,8 @@ Page({
     if (!this.show_search_bar) return
     this.show_search_bar = false
 
-    console.log('hide search bar')
     var animation = wx.createAnimation({
-      duration: 1000,
+      duration: 400,
       timingFunction: 'linear'
     })
 
@@ -1409,9 +1407,9 @@ Page({
   },
   onScroll: function(e) {
     var delta_y = e.detail.deltaY
-    if (delta_y > 0){
+    if (delta_y > 13){
       this.hideSearchBar()
-    } else if (delta_y < 0){
+    } else if (delta_y < -13){
       this.showSearchBar()
     }
   },
