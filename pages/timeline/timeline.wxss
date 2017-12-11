@@ -16,26 +16,43 @@ page {
 }
 
 .search-bar {
-    position: fixed;
     width: 100%;
-    height: 64rpx;
+    padding: 20rpx 0 5rpx 20rpx;
     background-color: #4bbccc;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: row;
 }
-
+.search-bar-right{
+  /* margin:10rpx  30rpx; */
+  flex-basis: 100rpx;
+  text-align: right;
+  padding-right: 20rpx;
+}
+.search-bar-right image{
+  width: 50rpx;
+  margin:5rpx 10rpx;
+  height: 50rpx;
+}
 .search-bar-date {
-    width: 200rpx;
-    height: 30rpx;
-    line-height: 30rpx;
-    position: absolute;
-    top: 17rpx;
-    left: 17rpx;
+    /* height: 30rpx;*/
+    line-height: 40rpx;
+    padding: 10rpx;
+    
+    background-color: #006670;
     color: white;
-    font-size: 12pt;
+    font-size: 30rpx;
+    border-radius: 20rpx 0 0 20rpx;
+    position: relative;
+    left:-8rpx;
+    float: left;
+    margin: 0 10rpx;
 }
 
+.not-found-tips{
+  color:#999;
+  text-align: center;
+  margin: 30rpx;
+}
 .new-photo-btn {
     /*width: 100rpx;*/
     height: 40rpx;
@@ -76,24 +93,28 @@ page {
 }
 
 .search-input-container{
-    width:320rpx;
-    height: 40rpx;
+    width:100%;
+    height: 60rpx;
+    /* padding: 10rpx; */
     border-radius: 20rpx;
     background-color:#2D929F;
-    display: flex;
     align-items: center;
+    transition: all 0.5s;
 }
 
 .search-input {
     margin-left: 16rpx;
     margin-right: 16rpx;
-    font-size: 12pt;
+    padding: 10rpx;
+    font-size: 30rpx;
+    position: relative;
+    top:-3rpx;
     color: white;
 }
 
 .search-panel {
     position: fixed;
-    top: 64rpx;
+    top: 102rpx;
     width: 100%;
     background: #f4f4f4;
     z-index: 3;
@@ -114,6 +135,8 @@ page {
 }
 
 .search-panel-title {
+  text-align: center;
+  display: block;
     color: #999999;
 }
 
@@ -337,8 +360,8 @@ page {
     width: 40rpx;
     height: 40rpx;
     position: absolute;
-    left: 10rpx;
-    bottom: 10rpx;
+    left: 5rpx;
+    bottom: 5rpx;
     border-radius: 50%;
 }
 
@@ -358,6 +381,10 @@ page {
     right: 0rpx;
     bottom: 0rpx;
 }
+image.select-icon{
+  width: 48rpx;
+  height: 48rpx;
+}
 
 #add-photo-btn {
     color: #999999;
@@ -372,35 +399,39 @@ page {
     position: fixed;
     bottom: 0rpx;
     width: 100%;
-    height: 95rpx;
-    border-top-style: solid;
+    height: 85rpx;
+    box-shadow: 0 -1rpx 3rpx #eee;
+    /* border-top-style: solid;
     border-top-color: #cdcdcd;
-    border-top-width: 1rpx;
-    background-color: #f4f4f4;
+    border-top-width: 1rpx; */
+    background-color: #fff;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
 }
 
 .bottom-btn {
-    width: 90rpx;
-    height: 90rpx;
+    width: 80rpx;
+    height: 80rpx;
     flex-grow: 1;
     margin: 2rpx;
     display: flex;
-    flex-flow: column nowrap;
+    flex-flow: row nowrap;
     justify-content: center;
     align-items: center;
 }   
 
 .bottom-btn-img {
-    width: 40rpx;
-    height: 40rpx;
+    width: 50rpx;
+    height: 50rpx;
+    margin:0 15rpx;
 }
 
 .bottom_create_btn {
     width: 110rpx;
     height: 110rpx;
+    position: relative;
+    top:-20rpx;
 }
 
 .bottom-btn-txt { 
@@ -412,13 +443,11 @@ page {
 
 .edit-panel {
     position: fixed;
-    bottom: -120rpx;
+    bottom: -140rpx;
     width: 100%;
-    height: 120rpx;
-    border-top-style: solid;
-    border-top-color: #cdcdcd;
-    border-top-width: 1rpx;
-    background-color: #f4f4f4;
+    height: 140rpx;
+    box-shadow: 0 -1rpx 3rpx #eee;
+    background-color: white;
     display: flex;
     flex-flow: column wrap;
     align-items: center;
@@ -437,8 +466,12 @@ page {
 }
 
 .edit-btn-img {
-    width: 46rpx;
-    height: 46rpx;
+    width: 60rpx;
+    height: 60rpx;
+}
+.edit-btn-close{
+  width: 30rpx;
+  height: 30rpx;
 }
 
 .edit-btn-txt {

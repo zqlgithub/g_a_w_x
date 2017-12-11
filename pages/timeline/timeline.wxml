@@ -2,12 +2,25 @@
 <view class="container">
 
     <image wx:if="{{loading}}" class="loading" src="/resource/loading.png"></image>
-    <view wx:elif="{{timeline_data.length == 0}}" class="default-bg" bindtap="onTapBg">
+    <view wx:elif="{{timeline_data.length == 0 && !search_txt && !search_date_txt && !show_search_panel}}" class="default-bg" bindtap="onTapBg">
         <image class="default-img" src="/resource/album_bg.png"></image>
         <text class="default-title">{{default_title}}</text>
     </view>
 
     <scroll-view wx:else class="album-scroll" scroll-y="true" bindscrolltoupper="onScrollToTop" bindscrolltolower="onScrollToBottom"   bindscroll="onScroll" bindtap="onTapBg" scroll-into-view="{{top_album_id}}" style="height:{{scroll_height}}rpx;" enable-back-to-top="true">
+     <view class="search-bar">
+        <view class="search-input-container">
+            <text class="search-bar-date" bindtap='onSearch' hidden="{{!search_date_txt}}" >{{search_date_txt}}</text>
+            <input class="search-input"  placeholder="{{show_search_panel?'输入相册名字':'搜索'}}" placeholder-style="color:#ddd" value="{{search_txt}}" bindinput="onSearchInput" bindfocus="showSearchPanel" bindblur="onSearchBlur" />
+        </view>
+        <view class="search-bar-right" style="flex-basis:{{show_search_panel? '200rpx;':'100rpx'}}">
+          <image hidden="{{show_search_panel}}" src="/resource/search2.png" bindtap='showSearchPanel'></image>
+          <image  hidden="{{!show_search_panel}}" src="/resource/cancel.png" bindtap='cancelSearchPanel'></image>
+          <image  hidden="{{!show_search_panel}}" src="/resource/confirm.png" bindtap='onSearch'></image>
+          
+        </view>
+    </view> 
+    <view wx:if="{{timeline_data.length == 0}}" class="not-found-tips">找不到内容哦，重新搜索试试</view>
         <view style="width:100%;text-align:center">
             <text style="width:200rpx;margin:auto;font-size:12pt;color:#999999;" hidden="{{scroll_start_txt.length == 0}}">{{scroll_start_txt}}</text>
         </view>
@@ -27,7 +40,8 @@
                     <!--<image hidden="{{page_state != 2}}" class="photo-top" bindtap="onTapTop" data-photo="{{photo.id}}" data-album="{{album.id}}" src="/resource/top.png"></image>-->
                     <image hidden="{{page_state != 2}}" class="creator-avatar" src="{{photo.creator.avatar}}"></image>
                     <icon hidden="{{page_state != 2}}" class="select-icon" bindtap="onTapPhoto" data-index="{{index}}" data-album="{{album.id}}" data-photo="{{photo}}" type="circle" color="#ffffff"></icon>
-                    <icon hidden="{{page_state != 2 || !select_photo[photo.id]}}" class="select-icon" type="success" color="#4bbccc" bindtap="onTapPhoto" data-index="{{index}}" data-album="{{album.id}}" data-photo="{{photo}}"></icon>
+                    <image src="/resource/selected.png" hidden="{{page_state != 2 || !select_photo[photo.id]}}" class="select-icon" bindtap="onTapPhoto" data-index="{{index}}" data-album="{{album.id}}" data-photo="{{photo}}"></image>
+                    <!-- <icon hidden="{{page_state != 2 || !select_photo[photo.id]}}" class="select-icon" type="success"  color="#4bbccc" bindtap="onTapPhoto" data-index="{{index}}" data-album="{{album.id}}" data-photo="{{photo}}"></icon> -->
                 </view>
                 <view class="photo" id="add-photo-btn" style="opacity:{{page_state === 2 ? 0.5 : 1}}" bindtap="onAddPhoto" data-album="{{album.id}}">
                     <image src="/resource/add.png" style="width:64rpx;height:64rpx;"></image>
@@ -53,30 +67,23 @@
         </view>-->
         <view class="bottom-btn" bindtap="onSelectState">
             <!--<image wx:if="{{page_state == 2}}" class="bottom-btn-img" src="/resource/settings_blue.png"></image>-->
-            <image class="bottom-btn-img" src="/resource/settings.png"></image>
-            <text class="bottom-btn-txt" style="color:#8a8a8a">编辑</text>
+            <image class="bottom-btn-img" src="/resource/live/setting.png"></image>
+            <text class="bottom-btn-txt" style="color:#666">编辑</text>
         </view>
         <view>
-            <image class="bottom_create_btn" bindtap="onTapCreate" src="/resource/create.png" animation="{{plus_btn_animation}}"></image>
+            <image class="bottom_create_btn" bindtap="onTapCreate" src="/resource/live/addphoto.png" animation="{{plus_btn_animation}}"></image>
         </view>
         <!--<view class="bottom-btn" catchtap="onTapFeeds">
             <image class="bottom-btn-img" src="/resource/feeds.png"></image>
             <text class="bottom-btn-txt" style="color:#8a8a8a">动态</text>
         </view>-->
         <view class="bottom-btn" bindtap="onTapGroup">
-            <image class="bottom-btn-img" src="/resource/group_tab.png"></image>
-            <text class="bottom-btn-txt" style="color:#8a8a8a">成员({{member_count}})</text>
+            <image class="bottom-btn-img" src="/resource/member.png"></image>
+            <text class="bottom-btn-txt" style="color:#666">成员({{member_count}})</text>
         </view>
     </view>
 
-    <view class="search-bar" hidden="{{!show_search_bar}}" animation="{{search_bar_animation}}">
-        <text class="search-bar-date">{{search_date_txt}}</text>
-        <view class="search-input-container">
-            <input class="search-input" placeholder="搜索" placeholder-style="color:white;" value="{{search_txt}}" bindinput="onSearchInput" bindfocus="onSearchFocus" bindblur="onSearchBlur" bindconfirm="onSearch"/>
-        </view>
-        <contact-button class="contact-btn" type="default-light" size="20" session-from="weapp">
-        </contact-button>
-    </view> 
+
 
     <view class="create-panel" animation="{{panel_animation}}" hidden="{{!show_panel}}">
         <view class="submit">
@@ -96,26 +103,26 @@
 
     <view class="edit-panel" animation="{{edit_panel_animation}}" hidden="{{!show_edit_panel}}">
         <view class="edit-btn" catchtap="onCancelEditPanel">
-            <image class="edit-btn-img" src="/resource/remove.png"></image>
+            <image  class="edit-btn-close" src="/resource/remove.png"></image>
         </view>
         <view class="edit-btn" catchtap="onSetCover">
             <image class="edit-btn-img" src="/resource/cover.png" ></image>
-            <text class="edit-btn-txt" style="color:#8a8a8a">设为封面</text>
+            <text class="edit-btn-txt" style="color:#666">设为封面</text>
         </view>
         <view class="edit-btn" catchtap="onBatchTop">
             <image class="edit-btn-img" src="/resource/batch_top.png"></image>
-            <text class="edit-btn-txt" style="color:#8a8a8a">置顶</text>
+            <text class="edit-btn-txt" style="color:#666">置顶</text>
         </view>
         <view class="edit-btn" catchtap="onTapTrash">
             <image class="edit-btn-img" src="/resource/trash.png"></image>
-            <text class="edit-btn-txt" style="color:#8a8a8a">删除</text>
+            <text class="edit-btn-txt" style="color:#666">删除</text>
         </view>
     </view>
 
     <view class="search-panel" hidden="{{!show_search_panel}}" style="height:{{scroll_height}}rpx;" bindtap="onTapSearchBg">
-        <image id="search-btn" catchtap="onSearch" src="/resource/search.png"></image>
+        <!-- <image id="search-btn" catchtap="onSearch" src="/resource/search.png"></image> -->
         <view class="search-panel-item">
-            <text class="search-panel-title">日期选择</text>
+            <text class="search-panel-title">按日期选择</text>
             <block wx:for="{{search_date_options}}">
             <scroll-view class="search-panel-date-scroll" scroll-x="true">
                 <view class="search-panel-date-container">

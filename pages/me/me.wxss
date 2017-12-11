@@ -1,0 +1,78 @@
+/* pages/me/me.wxss */
+page{
+  background-color: #F2F2F2;
+}
+.me-header{
+  height: 300rpx;
+}
+.me-header .nickname{
+  color: white;
+  text-shadow: 0 1rpx 1rpx #000;
+  text-align: center;
+  width: 100%;
+  position: absolute;
+  top:200rpx;
+}
+.me-header .icon{
+  width: 40rpx;
+  height: 40rpx;
+  position: relative;
+  left:15rpx;
+  top:5rpx;
+}
+.me-header .bg{
+    filter: blur(10px);
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 300rpx;
+    opacity: 0.4;
+}
+.me-header .avatar{
+  width:120rpx;
+  height:120rpx;
+  position: absolute;
+  margin-left: -60rpx;
+  left:50%;
+  margin-top: -60rpx;
+  top:120rpx;
+  border-radius: 100%;
+}
+
+.me-op{
+  padding-top: 30rpx;
+  background: #f3f3f3;
+  position: relative;
+  z-index: 2;
+}
+
+.me-op-item{
+  position: relative;
+  height: 100rpx;
+  background: white;
+  color:#333;
+  line-height: 100rpx;
+  border-bottom: 1rpx solid  #fafafa;
+  padding-left: 120rpx;
+  font-size: 30rpx;
+}
+.me-op-item text::after{
+  content: ' ';
+  display: inline-block;
+  width: 20rpx;
+  height: 20rpx;
+  border:1rpx solid #ccc;
+  border-width:  1rpx 1rpx 0 0;
+  transform: rotate(45deg);
+  position: absolute;
+  top:40rpx;
+  right: 30rpx;
+}
+.me-op-item image.icon{
+  position: absolute;
+  top:30rpx;
+  left: 50rpx;
+  width: 40rpx;
+  height: 40rpx;
+}

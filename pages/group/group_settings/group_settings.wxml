@@ -3,23 +3,51 @@
     <view class="group-name" bindtap="onTapGroupName">
         <text class="group-name-title">相册名</text>
         <text class="group-name-txt">{{group_name}}</text>
-        <image wx:if="{{is_master}}" class="group-name-edit" src="/resource/edit.png"></image>
+        <image style="{{!is_master?'opacity:0;':''}}" class="group-name-edit" src="/resource/edit.png"></image>
     </view>
 
-    <view class="group-setting">
+    <view class="group-setting" wx:if="{{is_master}}">
         <text class="group-name-title">允许成员编辑</text>
         <switch bindchange="onSetEdit" checked='{{co_edit}}'/>
     </view>
+    <view class="group-setting" wx:if="{{is_master}}">
+        <text class="group-name-title">切换成live模式</text>
+        <switch bindchange="setLiveMode" checked='{{live_mode}}'/>
+    </view>
 
-    <scroll-view class="member-scroll" scroll-y="true" style="height:{{scroll_height}}rpx;" bindtap="onTapBg">
-        <view class="member-item" wx:for="{{member_data}}" wx:for-item="member">
-            <view class="member-item-inner" style="{{index > 0 ? 'border-top: 1rpx solid #cdcdcd' : ''}}">
-                <image class="member-icon" src="{{member.avatar}}"></image>
+
+    <scroll-view class="member-scroll" scroll-y="true" style="max-height:{{scroll_height}}rpx;" bindtap="onTapBg">
+        <view class="member-item" wx:for="{{member_data}}" wx:for-item="member" wx:for-index="idx">
+            <view class="member-item-inner" bindtap="onRemoveMember" data-member="{{member.id}}">
+              <view class="member-icon-wrapper">
+                <image class="member-icon {{(idx>1 && live_mode)?'gray':''}}" src="{{member.avatar}}"></image>     
+                <image wx:if="{{member.role == 1}}" class="qunzhu" src="/resource/qunzhu.png"></image> 
+                <image wx:if="{{member.id!=userInfo.id && deleting}}" class="remove-member-btn" src="/resource/member_remove2.png" ></image> 
+                <image class="offline" wx:if="{{live_mode && idx>1}}" src="/resource/offline.png"></image>
+              </view>
                 <text class="member-name">{{member.name}}</text>
-                <image wx:if="{{member.role == 1}}" style="width:48rpx;height:48rpx;margin-right:8rpx" src="/resource/host.png"></image>
-                <image wx:if="{{is_master && userInfo.id != member.id}}" class="remove-member-btn" src="/resource/remove.png" bindtap="onRemoveMember" data-member="{{member.id}}"></image>
+                 
+                 
             </view>
         </view>
+        <button class="member-item" open-type="share">
+              <view class="member-item-inner">
+                <view class="member-icon-wrapper">
+                <image class="member-icon" src="/resource/member_add.png"></image>
+                </view>
+                <text class="member-name">邀请好友</text>
+              </view>
+          
+        </button>
+        <view class="member-item" bindtap='setDeleting' wx:if="{{is_master}}">
+        <view class="member-item-inner">
+        <view class="member-icon-wrapper">
+          <image class="member-icon" src="/resource/member_remove.png"></image>
+          </view>
+          <text class="member-name">{{!deleting?'移除好友':'取消'}}</text>
+          </view>
+        </view>
+        <view style="clear:both"></view>
     </scroll-view>
 
     <button class="group-btn invite-btn" open-type="share">

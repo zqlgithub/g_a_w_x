@@ -134,24 +134,29 @@ page {
 
 .create-panel {
     position: fixed;
-    bottom: -268rpx;
+    bottom: 0rpx;
     width: 100%;
-    height: 268rpx;
+    /* height: 500rpx; */
     background-color: #f4f4f4;
     display: flex;
-    flex-flow: column wrap;
+    flex-flow: column;
     align-items: center;
-    z-index: 6;
+    z-index: 9;
+    padding-bottom: 30rpx;
+    transform: translateY(150%);
+    transition: all 0.5s ease;
+}
+.create-panel.show{
+  transform:translate(0);
+}
+.create-panel.hide{
+  transform:translateY(150%);
 }
 
-.create-panel-title {
-    margin: 18rpx;
-}
 
 .submit {
-    width: 710rpx;
     height: 80rpx;
-    margin: 20rpx;
+    margin: 80rpx 40rpx 20rpx;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
@@ -159,12 +164,12 @@ page {
 }
 
 #group-name-input {
-    font-size: 16pt;
-    width: 480rpx;
+    font-size: 36rpx;
+    width: 100%;
+    text-align: center;
     padding: 14rpx;
-    flex-grow: 1;
-    border-bottom-width: 2rpx;
-    background-color: white;
+    border-bottom: 5rpx solid #999;
+    /* background-color: white; */
 }
 
 #confirm-group-btn {
@@ -173,4 +178,105 @@ page {
     margin-left: 20rpx;
     color: #ffffff;
     flex-grow: 0;
+}
+
+.create-panel-title{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  text-align: center;
+  margin: -30rpx 30rpx 30rpx 30rpx; 
+  font-weight: bold;
+  transform: translateY(100%);
+  transition: all 1s ease;
+}
+
+.create-panel-cancel,.create-panel-confirm{
+  margin:0 20rpx;
+}
+.create-panel-cancel{
+  color:#666;
+}
+.create-panel-confirm{
+  color: #00BED0;
+}
+
+.mode{
+  margin-top:80rpx;
+  box-sizing: border-box;
+  width: 100%;
+
+}
+.mode-tips{
+  text-align: center;
+  font-size: 36rpx;
+  margin:30rpx;
+}
+.mode-item{
+  width:90%;
+  margin:0 5% 30rpx;
+  position: relative;
+  height: 120rpx;
+  border-radius: 20rpx;
+  border:10rpx solid #fff;
+  box-shadow: 0 4rpx 10rpx #ccc;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.mode-item .mode-mask{
+  position: absolute;
+  width:100%;
+  height: 110rpx;
+  top:0;
+  background-color: rgba(0, 0, 0,0.5);
+  /* border-radius: 20rpx; */
+  z-index: 2;
+  color:white;
+  
+}
+.mode-item .mode-mask .desc{
+  
+  padding:10rpx 20rpx;
+  font-size: 26rpx;
+  line-height: 40rpx;
+}
+.desc input{
+  padding: 14rpx 0 0 0;
+  font-size: 36rpx;
+}
+.mode-item .mode-mask .title{
+  margin:30rpx;
+  font-size: 32rpx;
+  display: flex;
+  float: left;
+  flex-direction: row;
+  justify-content: center;
+}
+.mode-item image.bg{
+  width:100%;
+  border-radius: 20rpx;
+}
+.mode-item .select{
+  position: absolute;
+  z-index: 10;
+  bottom: 0;
+  right: 0;
+  width:60rpx;
+  height: 60rpx;
+}
+.mode-item .live{
+  width: 80rpx; 
+  position: relative;
+  top:0rpx;
+  /* position: absolute;
+  bottom: 10rpx;
+  left:10rpx; */
+  z-index: 5;
+}
+
+.live{
+  width: 70rpx; 
+  position: relative;
+  top:5rpx;
 }

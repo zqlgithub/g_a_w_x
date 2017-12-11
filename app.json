@@ -11,8 +11,26 @@
     "pages/photo/photo_comments",
     "pages/photo/photo_edit",
     "pages/slider/slider",
-    "pages/video/video"
+    "pages/live/live",
+    "pages/me/me"
   ],
+  "tabBar": {
+    "color":"#333",
+    "backgroundColor":"#FFFFFF",
+
+    "list": [{
+      "pagePath": "pages/group/group_list",
+      "text": "相册",
+      "iconPath": "resource/tabbar/album.png",
+      "selectedIconPath": "resource/tabbar/album_on.png"
+    },{
+      "pagePath": "pages/me/me",
+      "text": "我的",
+      "iconPath": "resource/tabbar/me.png",
+      "selectedIconPath": "resource/tabbar/me_on.png"
+    }
+    ]
+  },
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",

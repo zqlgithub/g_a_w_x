@@ -1,0 +1,343 @@
+/* pages/live/live.wxss */
+page{
+  background-color: #f3f3f3;
+}
+.header{
+  
+  background-position:  center center;
+  background-size: 100% auto;
+  height: 360rpx;
+  width: 100%;
+  margin-top: 75rpx;
+  box-shadow: 0 1rpx 4rpx #ccc;
+  position: relative;
+}
+
+.setting{
+  position: absolute;
+   right: 0;
+}
+.setting image{
+  padding: 20rpx;
+  width: 80rpx;
+  height: 60rpx;
+}
+.add-member-btn{
+  position: absolute;
+  bottom: 20rpx;
+  right: 20rpx;
+}
+.header .desc image{
+    width: 35rpx;
+    height: 35rpx;
+    margin: 0 20rpx;
+}
+.header .title{
+  padding:240rpx 20rpx 0 20rpx;
+  color:white;
+}
+.header .desc{
+  color:#fff;
+   padding: 20rpx 0; 
+  font-size: 26rpx;
+}
+.add-member-btn{
+  float: right;
+}
+
+.members{
+  background-color: white;
+  position: fixed;
+  top:0;
+  width:100%;
+   height: 78rpx; 
+  z-index: 6;
+  /* box-shadow: 0 2rpx 8rpx #ccc; */
+}
+.members-footer{
+  width: 100%;
+  height: 1rpx;
+  box-shadow: 0 2rpx 8rpx #ccc;
+  position: relative;
+  top:-6rpx;  
+}
+.add-member{
+  width: 225rpx;
+  height: 60rpx;
+  margin:10rpx;
+}
+.avatar{
+  width: 60rpx;
+  border-radius: 100%;
+  height: 60rpx;
+  float: left;
+  border:8rpx solid white;
+  margin-left:-30rpx;
+}
+.avatar:first-child{
+    margin-left:0;
+}
+.member-text{
+  float: left;
+  color:#333;
+  font-size:30rpx;
+  position: relative;
+  height: 82rpx;
+  display: flex;
+  flex-direction: row;
+  
+  margin-right: 20rpx;
+  top:-5rpx;
+}
+.member-text .live-member{
+  font-size: 40rpx;
+  font-weight:bold;
+  color:white;
+  padding:0 0 0 20rpx; 
+  height: 85rpx;
+  line-height: 95rpx;
+  position: relative;
+  background-color: #00BED0;
+}
+.member-text .member-split{
+  height: 85rpx;
+  width:47rpx;
+}
+.member-text .total-member{
+  color:#00BED0;
+  line-height: 90rpx;
+  position: relative;
+  left:-20rpx;
+  top:15rpx;
+}
+.tips{
+  background-color: #FDFCF5;
+  font-size: 26rpx;
+  color:#666;
+  text-align: center;
+  padding: 10rpx 15rpx 10rpx 10rpx;
+  box-shadow: 0rpx 2rpx 4rpx #ccc; 
+  border-radius: 0 20rpx 20rpx 0;
+  display: inline-block;
+  margin:30rpx 30rpx 30rpx 0;
+  opacity: 0.98;
+}
+
+.tips-wrapper{
+  position: fixed;
+  width: 100%;
+  top:60rpx;
+  text-align:left;
+  z-index: 10;
+  transition: all 0.5s;
+  opacity: 0;
+}
+.tips-wrapper.show{
+  opacity: 1;
+}
+/* .tab{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin:20rpx 0 0 0;
+  background-color: white
+}
+.tab-item{
+  padding: 10rpx 50rpx;
+  font-size: 34rpx;
+  margin:10rpx 100rpx;
+  width: 50%;
+  text-align: center;
+  
+}
+.tab-item.current{
+  border-bottom:8rpx solid #333;
+} */
+.coverpic{}
+
+.flow-item{
+  box-sizing: border-box;
+  padding:15rpx; 
+}
+.flow-item-inner{
+  background-color: white;
+  border-radius: 20rpx;
+  box-shadow: 0rpx 0rpx 10rpx #ccc;
+}
+.flow-item .flow-image{
+  width: 100%;
+  border-radius: 20rpx 20rpx 0 0;
+}
+.flow-left, .flow-right{
+  width: 50%;
+  float: left;
+}
+.icons{
+  position: absolute;
+  top:-55rpx;
+  text-align: right;
+  right: 20rpx;
+  display: flex;
+  flex-direction: row;
+  color:white;
+}
+.like-icon,.comment-icon{
+  width: 35rpx;
+  height: 35rpx;
+  
+}
+.like-icon{
+  
+}
+
+.flow-item .flow-avatar{
+  width: 70rpx;
+  border-radius: 100%;
+  height: 70rpx;
+  position: relative;
+  margin-right: 20rpx;
+  float: left;
+   top:3rpx; 
+}
+.flow-item .flow-desc{
+  padding: 0 20rpx 20rpx;
+  font-size: 24rpx;
+  position: relative;
+  min-height: 64rpx;
+}
+.flow-item .flow-name{
+    color:#333;
+}
+.flow-item .flow-time{
+    color:#999;
+}
+
+/************** bottom*******/
+.bottom-navigator {
+    position: fixed;
+    bottom: 0rpx;
+    width: 100%;
+    height: 85rpx;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    box-shadow: 0 -1rpx 3rpx #eee;
+}
+
+.bottom-btn {
+    width: 80rpx;
+    height: 80rpx;
+    flex-grow: 1;
+    margin: 2rpx;
+    display: flex;
+    flex-direction: row;
+    /* flex-flow: column nowrap; */
+    justify-content: center;
+    align-items: center;
+}   
+
+.bottom-btn-img {
+    width: 50rpx;
+    height: 50rpx;
+    margin:0 15rpx;
+}
+
+.bottom_create_btn {
+    width: 110rpx;
+    height: 110rpx;
+    position:relative;
+    top:-20rpx;
+}
+
+.bottom-btn-txt { 
+    margin-top: 8rpx;
+    font-size: 10pt;
+}
+
+.default-bg{
+  text-align: center;
+  color:#999;
+  margin:50rpx;
+  font-size: 30rpx;
+}
+.default-img{
+  margin: 50rpx 30rpx 30rpx;
+  width: 400rpx;
+}
+
+
+/*********************** 在线成员列表 *************/
+
+.member-scroll {
+  width: 100%;
+  background-color: white;
+  z-index: 6;
+  transition: all 0.5s;
+  max-height: 0;
+  position: relative;
+  top:-4rpx;  
+  opacity: 0;
+  border-top:1rpx solid #f3f3f3;
+
+}
+.member-scroll.show{
+  opacity: 1;
+  max-height: 520rpx;
+}
+.member-scroll.hide{
+  opacity: 0;
+  max-height: 0;
+}
+.member-item {
+  width: 20%;
+  float: left;
+  background-color: white;
+}
+
+button.member-item{
+  line-height:1.4;
+}
+button.member-item::after{
+  border:none;
+}
+
+.member-item-inner {
+  background-color: white;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+.member-icon-wrapper{
+  position: relative;
+}
+.member-icon {
+  padding-top: 20rpx;
+  width: 80rpx;
+  height: 80rpx;
+  /* background-color: #999999; */
+  flex-grow: 0;
+  border-radius: 10rpx;
+}
+.qunzhu{
+  position: absolute;
+  top:20rpx;
+  right:0rpx;
+  width: 40rpx;
+  height: 40rpx;
+}
+.member-name {
+  text-align: center;
+  /* margin-left: 10rpx; */
+  font-size: 24rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  width: 100%;
+  color:#999;
+  white-space: nowrap;  
+  overflow: hidden;  
+  text-overflow: ellipsis;  
+  flex-grow: 1;
+}

@@ -145,46 +145,46 @@ Page({
 
   // 搜索相关
   // 初始化搜索弹框的数据
-  showSearchBar: function() {
-    if (this.show_search_bar) return
+  // showSearchBar: function() {
+  //   if (this.show_search_bar) return
 
-    this.show_search_bar = true
-    clearTimeout(this.hide_bar_timer)
+  //   this.show_search_bar = true
+  //   clearTimeout(this.hide_bar_timer)
     
-    var animation = wx.createAnimation({
-      duration: 400,
-      timingFunction: 'linear'
-    })
+  //   // var animation = wx.createAnimation({
+  //   //   duration: 400,
+  //   //   timingFunction: 'linear'
+  //   // })
 
-    animation.opacity(1).step()
-    this.setData({
-      show_search_bar: true,
-      search_bar_animation: animation.export(),
-    })
-  },
+  //   // animation.opacity(1).step()
+  //   this.setData({
+  //     show_search_bar: true,
+  //     // search_bar_animation: animation.export(),
+  //   })
+  // },
 
-  hideSearchBar: function() {
-    if (!this.show_search_bar) return
-    this.show_search_bar = false
+  // hideSearchBar: function() {
+  //   if (!this.show_search_bar) return
+  //   this.show_search_bar = false
 
-    var animation = wx.createAnimation({
-      duration: 400,
-      timingFunction: 'linear'
-    })
+  //   // var animation = wx.createAnimation({
+  //   //   duration: 400,
+  //   //   timingFunction: 'linear'
+  //   // })
 
-    animation.opacity(0).step()
-    this.setData({
-      show_search_bar: true,
-      search_bar_animation: animation.export(),
-    })
+  //   // animation.opacity(0).step()
+  //   // this.setData({
+  //   //   show_search_bar: true,
+  //   //   search_bar_animation: animation.export(),
+  //   // })
 
-    var self = this
-    this.hide_bar_timer = setTimeout(function() {
-      self.setData({
-        show_search_bar: false,
-      })
-    }, 1000)
-  },
+  //   var self = this
+  //   this.hide_bar_timer = setTimeout(function() {
+  //     self.setData({
+  //       show_search_bar: false,
+  //     })
+  //   }, 1000)
+  // },
 
   initSearchOptions: function() {
     // 初始化筛选条件
@@ -230,7 +230,8 @@ Page({
     var origin_value = search_date[name]
     search_date[name] = (search_date[name] == value) ? -1 : value
 
-    var search_date_txt = ''
+    var search_date_txt = '';
+    // debugger;
     if(search_date.year >= 0){
       search_date_txt += search_date.year
       if(search_date.month >= 0){
@@ -238,14 +239,14 @@ Page({
         if(search_date.day >= 0) {
           search_date_txt += '-' + search_date.day
         }
-      }else if(name == 'day'){
+      } else if (search_date.day>=0){
         wx.showToast({
           title: '请选择月份'
         })
         search_date[name] = origin_value
         return
       }
-    }else if(name != 'year'){
+    } else if (search_date.month>0){
       wx.showToast({
         title: '请选择年份'
       })
@@ -267,9 +268,9 @@ Page({
   },
 
   onSearchFocus: function(e) {
-    this.setData({
-      show_search_panel:true
-    })
+    // this.setData({
+    //   show_search_panel:true
+    // })
   },
 
   onSearchBlur: function(e) {
@@ -284,9 +285,9 @@ Page({
   },
 
   onTapSearchBg: function(e) {
-    this.setData({
-      show_search_panel:false
-    })
+    // this.setData({
+    //   show_search_panel:false
+    // })
   },
 
 
@@ -698,12 +699,12 @@ Page({
     var page_state = this.data.page_state
     var onTimeout = function(){
       self.setData({
-        show_panel: false
+        // show_panel: false
       })
     }
     this.setData({
       panel_timer: setTimeout(onTimeout, 400),
-      show_search_panel: false
+      // show_search_panel: false
     })
     this.switchPanel(false)
       // this.switchPlusBtn(false)
@@ -886,7 +887,7 @@ Page({
       this.edit_panel_animation = panel_animation
     }
     
-    var ty = is_open ? "0rpx" : "-120rpx";
+    var ty = is_open ? "0rpx" : "-140rpx";
     this.edit_panel_animation.bottom(ty).step()
 
     this.setData({
@@ -1408,9 +1409,9 @@ Page({
   onScroll: function(e) {
     var delta_y = e.detail.deltaY
     if (delta_y > 13){
-      this.hideSearchBar()
+      // this.hideSearchBar()
     } else if (delta_y < -13){
-      this.showSearchBar()
+      // this.showSearchBar()
     }
   },
   onPullDownRefresh: function () {
@@ -1562,4 +1563,22 @@ Page({
   onSinglePhotoTouchEnd: function(e) {
     console.log('touch end', e)
   },
+  showSearchPanel:function(e){
+    this.setData({
+      show_search_panel:true
+    });
+  },
+  cancelSearchPanel:function(e){
+    this.setData({
+      show_search_panel: false,
+      search_date_txt:'',
+      search_txt:'',
+      search_date: {
+        year: -1,
+        month: -1,
+        day: -1
+      }
+    });
+    this.syncTimeline();
+  }
 })

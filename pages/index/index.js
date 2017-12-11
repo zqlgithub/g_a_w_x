@@ -24,7 +24,7 @@ Page({
       //   url: '../video/video'
       // })
 
-      wx.redirectTo({
+      wx.switchTab({
         url: '../group/group_list'
       })
     })

@@ -12,7 +12,7 @@ Page({
     group_data: [],
     group_msg: {},
     show_panel: false,
-
+    live_mode: false,
     plus_btn_animation: {},
     create_panel_animation: {},
     panel_animation: {},
@@ -23,12 +23,19 @@ Page({
     if(this.longtaping){
       return
     }
-
-    var curr_group_id = e.currentTarget.dataset.group
-
-    wx.navigateTo({
-      url: '../timeline/timeline?id='+curr_group_id
-    })
+    var curr_group_id = e.currentTarget.dataset.group;
+    var live_mode = e.currentTarget.dataset.mode;
+    // debugger;
+    if(live_mode){
+      wx.navigateTo({
+        url: '../live/live?id=' + curr_group_id
+      });
+    }else{
+      wx.navigateTo({
+        url: '../timeline/timeline?id=' + curr_group_id
+      })
+    }
+    
   },
   onTapSettings: function(e) {
     var curr_group_id = e.currentTarget.dataset.groupid
@@ -86,63 +93,55 @@ Page({
 
   //--------------
   // 创建群相关
-  switchPanel: function(is_open){
-    if(!this.plus_animation){
-      var plus_animation = wx.createAnimation({
-        duration: 300,
-        timingFunction: 'ease', 
-        delay: 0,
-        transformOrigin: '50% 50% 0',
-        success: function(res) {
-          console.log('ANIMATION SUCCESS!!')
-        }
-      })
-      this.plus_animation = plus_animation
-    }
+  // switchPanel: function(is_open){
+  //   if(!this.plus_animation){
+  //     var plus_animation = wx.createAnimation({
+  //       duration: 300,
+  //       timingFunction: 'ease', 
+  //       delay: 0,
+  //       transformOrigin: '50% 50% 0',
+  //       success: function(res) {
+  //         console.log('ANIMATION SUCCESS!!')
+  //       }
+  //     })
+  //     this.plus_animation = plus_animation
+  //   }
     
-    var angel = is_open ? 45: 0;
-    this.plus_animation.rotate(angel).step()
+  //   var angel = is_open ? 45: 0;
+  //   this.plus_animation.rotate(angel).step()
 
-    if(!this.panel_animation){
-      var panel_animation = wx.createAnimation({
-        duration: 300,
-        timingFunction: 'ease', // "linear","ease","ease-in","ease-in-out","ease-out","step-start","step-end"
-        delay: 0,
-        transformOrigin: '50% 0 0',
-      })
-      this.panel_animation = panel_animation
-    }
+  //   if(!this.panel_animation){
+  //     var panel_animation = wx.createAnimation({
+  //       duration: 300,
+  //       timingFunction: 'ease', // "linear","ease","ease-in","ease-in-out","ease-out","step-start","step-end"
+  //       delay: 0,
+  //       transformOrigin: '50% 0 0',
+  //     })
+  //     this.panel_animation = panel_animation
+  //   }
     
-    var ty = is_open ? "0rpx" : "-268rpx";
-    this.panel_animation.bottom(ty).step()
+  //   var ty = is_open ? "0rpx" : "-800rpx";
+  //   this.panel_animation.bottom(ty).step()
 
-    this.setData({
-      plus_btn_animation: this.plus_animation.export(),
-      panel_animation: this.panel_animation.export()
-    })
-  },
+  //   this.setData({
+  //     plus_btn_animation: this.plus_animation.export(),
+  //     panel_animation: this.panel_animation.export()
+  //   })
+  // },
 
   onTapCreate: function(e) {
     var self = this
     var show = !this.data.show_panel
-
-    var onTimeout = function(){
-      self.setData({
-        show_panel: show
-      })
-    }
-
     if(show){
-      clearTimeout(this.data.panel_timer)
       this.setData({
         show_panel: show
       })
     }else{
-      this.setData({
-        panel_timer: setTimeout(onTimeout, 400)
+      self.setData({
+        show_panel: show
       })
     }
-    this.switchPanel(show)
+    // this.switchPanel(show)
   },
   onInputGroupName: function(e) {
     this.setData({
@@ -153,11 +152,11 @@ Page({
     var group_name = this.data.to_create_group_name
     if(!group_name){
       wx.showToast({
-        title: '请输入群名字'
+        title: '请输入相册名字'
       })
     }else if(util.strByteLen(group_name) > 26){
       wx.showToast({
-        title: '群名太长了'
+        title: '名字太长了'
       })
     }else{
       if(this.group_creating){
@@ -168,7 +167,8 @@ Page({
       requests.post({
         url: '/album/group/create',
         data: {
-          name: this.data.to_create_group_name
+          name: this.data.to_create_group_name,
+          live_mode: this.data.live_mode?1:0
         },
         complete: function() {
           self.group_creating = false
@@ -184,14 +184,24 @@ Page({
             show_panel: false,
             group_input_default: ""
           })
-          self.switchPanel(false)
+          // self.switchPanel(false)
 
-          wx.navigateTo({
-            url: '../timeline/timeline?id='+resp.data.id,
-            success: function(res){
-              // success
-            },
-          })
+          if (self.data.live_mode) {
+            wx.navigateTo({
+              url: '../live/live?id=' + resp.data.id
+            });
+          } else {
+            wx.navigateTo({
+              url: '../timeline/timeline?id=' + resp.data.id
+            })
+          }
+
+          // wx.navigateTo({
+          //   url: '../timeline/timeline?id='+resp.data.id,
+          //   success: function(res){
+          //     // success
+          //   },
+          // });
         }
       })
     }
@@ -278,5 +288,15 @@ Page({
   },
   onUnload:function(){
     // 页面关闭
+  },
+  hideMask:function(){
+    if (this.data.show_panel){
+
+    }
+  },
+  setLifeMode:function(){
+    this.setData({
+      live_mode: !this.data.live_mode
+    })
   }
 })

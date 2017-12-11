@@ -5,6 +5,9 @@ var app = getApp()
 Page({
   data:{
     co_edit: true,
+    live_mode:false,
+    front_cover:undefined,
+    deleting:false,
     group_data: {},
     member_data: [],
     panel_animation: {},
@@ -13,6 +16,7 @@ Page({
     to_create_group_name: "",
     finger_animation: {},
     show_finger: false,
+    is_master:false,
   },
   onInputGroupName:function(e) {
     this.setData({
@@ -73,7 +77,9 @@ Page({
   onRemoveMember: function(e){
     var self = this
     var member_id = e.currentTarget.dataset.member
-
+    if(!this.data.deleting){
+      return false;
+    }
     if(!this.data.is_master){
       wx.showToast({
         title: '只有群主才能删除成员'
@@ -247,11 +253,14 @@ Page({
       requests.get({
         url: '/album/group/detail?group_id='+group_id,
         success: function(resp) {
-          console.log('GET MEMBER LIST SUCCESS')
+          console.log('GET MEMBER LIST SUCCESS');
+          debugger;
           self.setData({
             group_data: resp.data,
             group_name: resp.data.name,
             member_data: resp.data.members,
+            front_cover: resp.data.front_cover,
+            live_mode: resp.data.live_mode,
             co_edit: resp.data.co_edit
           })
 
@@ -297,9 +306,50 @@ Page({
     var userInfo = this.data.userInfo
     var inviteCode = userInfo ? userInfo.invite_code : ''
     return {
-      title: this.data.group_name,
-      desc: userInfo.nickName + '邀请你加入' + this.data.group_name,
+      title: userInfo.nickName + '邀请你加入《' + this.data.group_name+"》相册",
+      imageUrl: this.data.front_cover,
       path: '/pages/group/group_list?action=join_group&id='+this.data.group_id+'&invite_code='+inviteCode
     }
   },
+  setDeleting:function(){
+    this.setData({
+      deleting: !this.data.deleting
+    });
+  },
+  setLiveMode:function(){
+    var self = this;
+    if(this.data.liveMode=='live'){
+
+    }else{
+      wx.showModal({
+        title: '您确定要将相册切换成live模式吗',
+        content: '设置后，相册可以实时共享照片，24小时后恢复成普通相册',
+        showCancel: true,
+        cancelText: '返回',
+        cancelColor: '',
+        confirmText: '确定',
+        confirmColor: '',
+        success: function(res) {
+          //todo
+          // debugger;
+          if (res.cancel){
+            self.setData({
+              live_mode: false
+            })
+          }else{
+            self.setData({
+              live_mode: true
+            })
+          }
+          
+        },
+        fail: function(res) {
+          self.setData({
+            live_mode:false
+          })
+        },
+        complete: function(res) {},
+      })
+    }
+  }
 })

@@ -1,7 +1,7 @@
 {
 	"description": "项目配置文件。",
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
@@ -34,6 +34,30 @@
 					"name": "photo_comments",
 					"pathName": "pages/photo/photo_comments",
 					"query": "album_id=1471&init_photo=16006"
+				},
+				{
+					"id": 2,
+					"name": "live",
+					"pathName": "pages/live/live",
+					"query": "id=190"
+				},
+				{
+					"id": 3,
+					"name": "timeline",
+					"pathName": "pages/timeline/timeline",
+					"query": "id=971"
+				},
+				{
+					"id": -1,
+					"name": "me",
+					"pathName": "pages/me/me",
+					"query": ""
+				},
+				{
+					"id": 5,
+					"name": "group_settings",
+					"pathName": "pages/group/group_settings/group_settings",
+					"query": "id=33"
 				}
 			]
 		}

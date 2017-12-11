@@ -1,16 +1,19 @@
 <!--pages/group/group_list.wxml-->
 <view class="container">
+    <view class="mask {{show_panel?'show':'hide'}}" bindtap='onTapCreate'></view>
     <image wx:if="{{loading}}" class="loading" src="/resource/loading.png"></image>
     <view class="default-bg" wx:elif="{{group_data.length == 0}}" bindtap="onTapBg">
         <image class="default-img" src="/resource/album_bg.png"></image>
         <text class="default-title">{{default_title}}</text>
     </view>
     <scroll-view wx:else class="group-scroll" scroll-y="true" bindtap="onTapBg">
-        <view wx:for="{{group_data}}" wx:for-item="group" class="group" bindtap="onSelectGroup" bindlongtap="onLongTapGroup" data-group="{{group.id}}">
+        <view wx:for="{{group_data}}" wx:for-item="group" class="group" bindtap="onSelectGroup" bindlongtap="onLongTapGroup" data-mode="{{group.live_mode}}" data-group="{{group.id}}">
             <image class="group-cover" src="{{group.front_cover || '/resource/group.png'}}" mode="aspectFill"></image>
             <image hidden="{{!group_msg[group.id]}}" class="group-dot" src="/resource/dot.png"></image>
             <view class="group-name-and-btn">
-                <text class="group_name_txt">{{group.name}}</text>
+                <view class="group_name_txt">{{group.name}}
+                  <image  class="live" hidden="{{!group.live_mode}}" src="/resource/live/live.png" mode="widthFix"> </image>
+                </view>
                 <view class="group-icon-bar">
                     <image class="group-icon" wx:for="{{group.icon_urls}}" src="{{item}}"></image>
                 </view>
@@ -23,13 +26,38 @@
         <view style="width:100%;height:160rpx;"></view>
     </scroll-view>
     
-    <view class="create-panel" animation="{{panel_animation}}" hidden="{{!show_panel}}">
-        <view class="submit">
-            <input id="group-name-input" placeholder="输入相册名" bindinput="onInputGroupName" value="{{group_input_default}}"/>
-            <image id="confirm-group-btn" bindtap="onCreateGroup" src="/resource/arrow.png"></image>
+    <view class="create-panel {{show_panel?'show':'hide'}}">
+        <view class="create-panel-title">
+        <text  class="create-panel-cancel" bindtap="onTapCreate">取消</text>
+        <text class="title">创建相册</text>
+        <text class="create-panel-confirm" bindtap="onCreateGroup">确认</text>
         </view>
-        
+        <!-- <view class="submit">
+            <input id="group-name-input" placeholder="为相册起个好名字吧" bindinput="onInputGroupName" value="{{group_input_default}}"/>
+        </view> -->
+        <!-- <view class="mode-tips">选择类型</view> -->
+        <view class="mode">
+          <view class="mode-item">
+            <view class="mode-mask" style="background-color:white;">
+              <view class="title" style="color:#666;margin:30rpx 10rpx;">相册名：</view>
+              <view class="desc" style="">
+              <input style="position:relative;z-index:10;color:#333;height:60rpx;" placeholder="起个名字" bindinput="onInputGroupName" value="{{group_input_default}}"/>
+              </view>
+            </view>
+          </view>
+          <view class="mode-item" bindtap='setLifeMode' style="{{live_mode?'border:10rpx solid #00BED0;':'border:10rpx solid #fafafa;'}}">
+            <view class="mode-mask">
+              <view class="title"><image  class="live" src="/resource/live/live.png" mode="widthFix"> </image></view>
+              <view class="desc">
+                <text style="display:block;font-size:34rpx;">启用 live 模式</text>
+                <text style="color:#ddd;font-size:26rpx;">实时交互，适合婚礼、聚会、现场等</text>
+              </view>  
+            </view>
+             <image  class="select" src="/resource/{{live_mode?'selected_mode':'select_mode'}}.png" mode="widthFix"> </image> 
+            <image class="bg" src="/resource/photo.png" mode="widthFix"> </image>
+          </view>
+        </view>
     </view>
-    <image id="create-btn" src="/resource/create.png" bindtap="onTapCreate" animation="{{plus_btn_animation}}"></image>
+    <image id="create-btn" src="/resource/live/addphoto.png" hidden="{{show_panel}}" bindtap="onTapCreate"></image>
     
 </view>
