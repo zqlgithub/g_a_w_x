@@ -20,10 +20,10 @@
         <view class="member-item" wx:for="{{member_data}}" wx:for-item="member" wx:for-index="idx">
             <view class="member-item-inner" bindtap="onRemoveMember" data-member="{{member.id}}">
               <view class="member-icon-wrapper">
-                <image class="member-icon {{(idx>1 && live_mode)?'gray':''}}" src="{{member.avatar}}"></image>     
+                <image class="member-icon {{(!member.live && live_mode)?'gray':''}}" src="{{member.avatar}}"></image>     
                 <image wx:if="{{member.role == 1}}" class="qunzhu" src="/resource/qunzhu.png"></image> 
                 <image wx:if="{{member.id!=userInfo.id && deleting}}" class="remove-member-btn" src="/resource/member_remove2.png" ></image> 
-                <image class="offline" wx:if="{{live_mode && idx>1}}" src="/resource/offline.png"></image>
+                <image class="offline" wx:if="{{!member.live && live_mode}}" src="/resource/offline.png"></image>
               </view>
                 <text class="member-name">{{member.name}}</text>
                  

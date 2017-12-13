@@ -15,7 +15,7 @@
       </navigator>
       
       <view class="me-op-item" bindtap='tapTucao'>
-        <image src="/resource/finger.png" class="icon" ></image>
+        <image src="/resource/tucao.png" class="icon" ></image>
         <text>我要吐槽</text>
       </view>
     </view>

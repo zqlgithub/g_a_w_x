@@ -2,20 +2,29 @@
 page{
   background-color: #f3f3f3;
 }
+.page{
+  display: none;
+}
+.page.show{
+  display: block;
+}
 .header{
   
   background-position:  center center;
   background-size: 100% auto;
-  height: 360rpx;
   width: 100%;
   margin-top: 75rpx;
-  box-shadow: 0 1rpx 4rpx #ccc;
+  /* box-shadow: 0 1rpx 4rpx #ccc; */
   position: relative;
+}
+.header-image{
+  width: 100%;
 }
 
 .setting{
   position: absolute;
    right: 0;
+   top:10rpx;
 }
 .setting image{
   padding: 20rpx;
@@ -61,18 +70,34 @@ page{
   position: relative;
   top:-6rpx;  
 }
+button.share-btn{
+  margin:10rpx;
+}
 .add-member{
   width: 225rpx;
   height: 60rpx;
-  margin:10rpx;
 }
 .avatar{
   width: 60rpx;
   border-radius: 100%;
   height: 60rpx;
-  float: left;
-  border:8rpx solid white;
   margin-left:-30rpx;
+  position: relative;
+  top:-5rpx;
+  border:8rpx solid white;
+  
+}
+button.add-member-avatar-wrapper{
+    position: relative;
+     display: inline-block;
+      margin:3rpx;
+      top:6rpx;
+      left:-30rpx;
+}
+button.add-member-wrapper{
+   /* float: left;  */
+   
+   display: inline-block;
 }
 .avatar:first-child{
     margin-left:0;
@@ -157,7 +182,9 @@ page{
 
 .flow-item{
   box-sizing: border-box;
-  padding:15rpx; 
+  padding:7.5rpx 0; 
+  /* float: left; */
+  /* width: 50%; */
 }
 .flow-item-inner{
   background-color: white;
@@ -168,9 +195,12 @@ page{
   width: 100%;
   border-radius: 20rpx 20rpx 0 0;
 }
-.flow-left, .flow-right{
-  width: 50%;
-  float: left;
+.flow-left{
+  margin-left: 2%;
+  width: 96%;
+  column-gap:15rpx;
+  column-count:2;
+  /* float: left; */
 }
 .icons{
   position: absolute;
@@ -276,7 +306,7 @@ page{
   transition: all 0.5s;
   max-height: 0;
   position: relative;
-  top:-4rpx;  
+  top:-12rpx;  
   opacity: 0;
   border-top:1rpx solid #f3f3f3;
 
@@ -319,7 +349,6 @@ button.member-item::after{
   height: 80rpx;
   /* background-color: #999999; */
   flex-grow: 0;
-  border-radius: 10rpx;
 }
 .qunzhu{
   position: absolute;

@@ -95,14 +95,14 @@ Page({
       });
       return;
     }
-
+    // debugger;
     var res = wx.getSystemInfoSync();
     console.log(res);
     var data = {
       osVersion: res.system,
       os: res.brand,
       clientVersion: res.SDKVersion,
-      customInfo: wx.getStorageSync('userInfo').wxapp_openid + "|" + wx.getStorageSync('userInfo').nickName
+      customInfo: this.data.userInfo.id + "|" + this.data.userInfo.nickName
     };
     wx.getNetworkType({
       success: function (res) {
@@ -111,7 +111,7 @@ Page({
         wx.navigateToMiniProgram({
           appId: 'wx8abaf00ee8c3202e',
           extraData: {
-            id: '17684',
+            id: '19850',
             customData: data
           },
           success() {

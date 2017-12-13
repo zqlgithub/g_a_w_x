@@ -10,6 +10,7 @@ Page({
     deleting:false,
     group_data: {},
     member_data: [],
+    memberPageNum:undefined,
     panel_animation: {},
     show_panel: false,
     group_name_input_default: "",
@@ -254,26 +255,61 @@ Page({
         url: '/album/group/detail?group_id='+group_id,
         success: function(resp) {
           console.log('GET MEMBER LIST SUCCESS');
-          debugger;
           self.setData({
             group_data: resp.data,
             group_name: resp.data.name,
-            member_data: resp.data.members,
             front_cover: resp.data.front_cover,
             live_mode: resp.data.live_mode,
             co_edit: resp.data.co_edit
           })
 
-          events.center.dispatch('update_group', {
-            id: group_id,
-            member_count: resp.data.members.length
-          })
+          // events.center.dispatch('update_group', {
+          //   id: group_id,
+          //   member_count: resp.data.members.length
+          // })
         },
         complete: function(e) {
         }
-      })
+      });
+      
+      self.getGroupMember();
+
+
+      
 
     })
+  },
+  getGroupMember:function(init){
+    var group_id = this.data.group_id;
+    var self = this;
+
+    if (init) {
+      this.setData({
+        memberPagination: null
+      });
+    }
+    var page = this.data.memberPageNum;
+    var param = {
+      group_id: group_id,
+      live: 0
+    };
+    if (page) {
+      param.pagination = page;
+    }
+    requests.get({
+      url: '/album/group/member/list',
+      data: param,
+      success: function (res) {
+        debugger;
+        self.setData({
+          member_data: res.data,
+          memberPageNum: res.data.length > 0 ? res.data[res.data.length - 1].pagination : null
+        });
+      },
+      fail: function (msg) {
+        debugger;
+      }
+    });
   },
   onReady:function(){
     // 页面渲染完成

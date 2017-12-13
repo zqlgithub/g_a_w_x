@@ -251,9 +251,17 @@ Page({
       self.syncGroupData()
       
       if(options.action == 'join_group'){
-        wx.navigateTo({
-          url: '../timeline/timeline?action='+options.action+'&id='+options.id+'&invite_code='+options.invite_code
-        })
+        if(options.live){
+          console.log(options);
+          wx.navigateTo({
+            url: '../live/live?action=' + options.action + '&id=' + options.id + '&invite_code=' + options.invite_code
+          })
+        }else{
+          wx.navigateTo({
+            url: '../timeline/timeline?action=' + options.action + '&id=' + options.id + '&invite_code=' + options.invite_code
+          })
+        }
+        
       }
     })
     

@@ -1,19 +1,24 @@
-<view class="page">
+<view class="page {{loading?'':'show'}}">
+
   <view class="mask {{showAllMember?'show':'hide'}}" bindtap='tapMask'></view>
   <view class="members">
     <view class="member-text" bindtap='showMembers'>
        <text class="live-member">{{live_member_count}}</text> <image class="member-split" src="/resource/live/member.png"></image> <text class="total-member">{{member_count}}</text>
       </view>
-    <image src="{{member.avatarUrl}}" class="avatar" wx:for-item="member" wx:for="{{members}}" bindtap='showMembers' wx:if="{{idx<6}}" wx:for-index="idx"></image>
-    <image class="avatar" wx:if="{{members.length>6}}" src="/resource/live/addmember.png"></image>
-    <image class="add-member" wx:else src="/resource/live/addmember_big.png"></image>
+    <image src="{{member.avatar}}" class="avatar" wx:for-item="member" wx:for="{{members}}" bindtap='showMembers' wx:if="{{idx<6}}" wx:for-index="idx"></image>
+    <button class="share-btn add-member-avatar-wrapper" open-type='share' wx:if="{{members.length>6}}" > 
+      <image class="avatar" src="/resource/live/addmember.png"></image>
+    </button>
+    <button class="share-btn add-member-wrapper" open-type='share' wx:else >
+    <image class="add-member" src="/resource/live/addmember_big.png"></image>
+    </button>
     
     <view style="clear:both"></view>
      <scroll-view class="member-scroll online-members {{showAllMember?'show':'hide'}}" scroll-y="true" bindtap="onTapBg">
   <view class="member-item" wx:for="{{members}}" wx:for-item="member" wx:for-index="idx" >
       <view class="member-item-inner" bindtap="onRemoveMember" data-member="{{member.id}}">
         <view class="member-icon-wrapper">
-          <image class="member-icon" src="{{member.avatarUrl}}"></image>     
+          <image class="member-icon" src="{{member.avatar}}"></image>     
           <image wx:if="{{member.role == 1}}" class="qunzhu" src="/resource/qunzhu.png"></image> 
         </view>
           <text class="member-name">{{member.name}}</text>
@@ -35,7 +40,8 @@
   <scroll-view style="padding-bottom: 100rpx;">
   
 
-    <view class="header" bindtap='onSetFrontPic' style="background-image:url({{cover_pic?cover_pic:'http://ac-dxntna3i.clouddn.com/1f72cef7e94a22103b6a.jpg'}});">
+    <view class="header" bindtap='onSetFrontPic'>
+    <image class="header-image" mode="widthFix" src="{{cover_pic?cover_pic:'http://ac-dxntna3i.clouddn.com/1f72cef7e94a22103b6a.jpg'}}"></image>
     <view class="setting">
       <image src="/resource/live/live.svg"></image>
     </view>
@@ -44,12 +50,12 @@
 
 
   <view class="flow">
-    <view wx:if="{{!loading && (!album || !album.photos || album.photos.length==0)}}" class="default-bg" bindtap="onAddPhoto">
+    <view wx:if="{{!loading && (!photos || photos.length==0)}}" class="default-bg" bindtap="onAddPhoto">
         <view class="default-title">太好了，还没有人发布，赶紧抢沙发吧~</view>
     </view>
 
     <view class="flow-left">
-      <view class="flow-item" wx:for="{{album.photos}}" wx:for-item="photo" wx:for-index="idx" wx:if="{{idx%2==0}}">
+      <view class="flow-item" wx:for="{{photos}}" wx:for-item="photo" wx:for-index="idx">
         <view class="flow-item-inner">
           <image mode="widthFix" class="flow-image" src="{{photo.thumbnail}}"></image>
           <view class="flow-desc">
@@ -60,25 +66,6 @@
               <text>{{photo.comment_count}}</text>
             </view>
             
-            
-            <image class="flow-avatar" src="{{photo.user.avatar}}"></image>
-            <view class="flow-name">{{photo.user.name}}</view>
-            <view class="flow-time">{{photo.time}}</view>
-          </view>
-        </view>
-      </view>
-    </view>
-    <view class="flow-right">
-      <view class="flow-item" wx:for="{{album.photos}}" wx:for-item="photo" wx:for-index="idx" wx:if="{{idx%2==1}}">
-        <view class="flow-item-inner">
-          <image mode="widthFix" class="flow-image" src="{{photo.url}}"></image>
-          <view class="flow-desc">
-          <view class="icons">
-              <image class="like-icon"  src="/resource/like2.png"></image>
-              <text>2</text>
-              <image class="comment-icon"  src="/resource/comment2.png"></image>
-              <text>2</text>
-            </view>
             
             <image class="flow-avatar" src="{{photo.user.avatar}}"></image>
             <view class="flow-name">{{photo.user.name}}</view>
@@ -105,8 +92,14 @@
             <image class="bottom_create_btn" bindtap="onAddPhoto" src="/resource/live/addphoto.png"></image>
         </view>
         <view class="bottom-btn" bindtap="onTapSettings">
+            <block wx:if="{{is_master}}">
             <image class="bottom-btn-img" src="/resource/live/setting.png"></image>
             <text class="bottom-btn-txt" style="color:#666">设置</text>
+            </block>
+            <block wx:else>
+            <image class="bottom-btn-img" src="/resource/member.png"></image>
+            <text class="bottom-btn-txt" style="color:#666">成员</text>
+            </block>
         </view>
     </view>
 </view>
