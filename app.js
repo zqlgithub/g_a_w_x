@@ -4,27 +4,28 @@ var requests = require('/utils/requests.js')
 App({
   syncUserInfo: function(){
     this.getUserInfo(function(userinfo){
-      requests.post({
-          url: '/user/update',
-          data: {
-            name: userinfo.nickName,
-            avatar: userinfo.avatarUrl,
-            gender: userinfo.gender,
-            province: userinfo.province,
-            city: userinfo.city,
-            country: userinfo.country
-          },
-          success: function(resp){
-            console.log('UPDATE USER INFO SUCCESS')
-          },
-          fail: function(resp){
-            console.log('UPDATE USER INFO FAIL')
-            console.log(resp)
-          }
-        })
+    //   requests.post({
+    //       url: '/user/update',
+    //       data: {
+    //         name: userinfo.nickName,
+    //         avatar: userinfo.avatarUrl,
+    //         gender: userinfo.gender,
+    //         province: userinfo.province,
+    //         city: userinfo.city,
+    //         country: userinfo.country
+    //       },
+    //       success: function(resp){
+    //         console.log('UPDATE USER INFO SUCCESS')
+    //       },
+    //       fail: function(resp){
+    //         console.log('UPDATE USER INFO FAIL')
+    //         console.log(resp)
+    //       }
+    //     })
     })
   },
   login: function(code, userInfo, cb){
+
     // 先用默认的session登录
     console.log('login with: ', userInfo)
     requests.post({
@@ -80,22 +81,22 @@ App({
               console.log('get user info: ', userinfo)
               that.login(code, userinfo, function(data){
                 // 如果用户信息有变动，就更新用户信息
-                if(userinfo.nickName != data.name || userinfo.avatarUrl != data.avatar){
-                  requests.post({
-                    url: '/user/update',
-                    data: {
-                      name: userinfo.nickName,
-                      avatar: userinfo.avatarUrl,
-                      gender: userinfo.gender,
-                      province: userinfo.province,
-                      city: userinfo.city,
-                      country: userinfo.country
-                    },
-                    success: function(resp){
-                      console.log('UPDATE USER INFO SUCCESS')
-                    }
-                  })
-                }
+                // if(userinfo.nickName != data.name || userinfo.avatarUrl != data.avatar){
+                //   requests.post({
+                //     url: '/user/update',
+                //     data: {
+                //       name: userinfo.nickName,
+                //       avatar: userinfo.avatarUrl,
+                //       gender: userinfo.gender,
+                //       province: userinfo.province,
+                //       city: userinfo.city,
+                //       country: userinfo.country
+                //     },
+                //     success: function(resp){
+                //       console.log('UPDATE USER INFO SUCCESS')
+                //     }
+                //   })
+                // }
 
                 userinfo.id = data.id
                 userinfo.invite_code = data.invite_code
