@@ -4,24 +4,24 @@ var requests = require('/utils/requests.js')
 App({
   syncUserInfo: function(){
     this.getUserInfo(function(userinfo){
-      requests.post({
-          url: '/user/update',
-          data: {
-            name: userinfo.nickName,
-            avatar: userinfo.avatarUrl,
-            gender: userinfo.gender,
-            province: userinfo.province,
-            city: userinfo.city,
-            country: userinfo.country
-          },
-          success: function(resp){
-            console.log('UPDATE USER INFO SUCCESS')
-          },
-          fail: function(resp){
-            console.log('UPDATE USER INFO FAIL')
-            console.log(resp)
-          }
-        })
+      // requests.post({
+      //     url: '/user/update',
+      //     data: {
+      //       name: userinfo.nickName,
+      //       avatar: userinfo.avatarUrl,
+      //       gender: userinfo.gender,
+      //       province: userinfo.province,
+      //       city: userinfo.city,
+      //       country: userinfo.country
+      //     },
+      //     success: function(resp){
+      //       console.log('UPDATE USER INFO SUCCESS')
+      //     },
+      //     fail: function(resp){
+      //       console.log('UPDATE USER INFO FAIL')
+      //       console.log(resp)
+      //     }
+      //   })
     })
   },
   login: function(code, userInfo, cb){

@@ -117,7 +117,8 @@ Page({
       display_comment_list: display_comment_list,
       bullet_intervals: bullet_intervals
     }, function(){
-      self.startBulletTimer()
+      if(display_comment_list.length > 0)
+        self.startBulletTimer()
     })
   },  
 
@@ -129,7 +130,8 @@ Page({
     this.setData({
       display_comment_list: []
     }, function(){
-      self.initBullets(comments)
+      if(comments.length > 0)
+        self.initBullets(comments)
     })
   },
 
@@ -218,28 +220,28 @@ Page({
     var curr_photo = this.getCurrPhoto()
     var self = this
     var photo_comments_map = this.data.photo_comments_map
-    if(curr_photo.id in photo_comments_map){
-      this.setData({
-        comments: photo_comments_map[curr_photo.id]
-      })
-      this.refreshBullet()
-    }else{
-      requests.get({
-        url: '/album/photo/comment/list',
-        data: {
-          photo_id: curr_photo.id
-        },
-        success: function(resp) {
-          var comments = resp.data
-          photo_comments_map[curr_photo.id] = comments
-          self.setData({
-            comments: comments,
-            photo_comments_map: photo_comments_map
-          })
-          self.refreshBullet()
-        }
-      })
-    }
+    // if(curr_photo.id in photo_comments_map){
+    //   this.setData({
+    //     comments: photo_comments_map[curr_photo.id]
+    //   })
+    //   this.refreshBullet()
+    // }else{
+    requests.get({
+      url: '/album/photo/comment/list',
+      data: {
+        photo_id: curr_photo.id
+      },
+      success: function(resp) {
+        var comments = resp.data
+        photo_comments_map[curr_photo.id] = comments
+        self.setData({
+          comments: comments,
+          photo_comments_map: photo_comments_map
+        })
+        self.refreshBullet()
+      }
+    })
+    // }
   },
 
   syncBottomBarData: function() {
@@ -330,17 +332,19 @@ Page({
 
   onTapPhoto: function(e) {
     var photos = this.data.photos
-    var curr_index = e.currentTarget.dataset.index
+    var curr_index = this.data.curr_photo_index
     var curr = photos[curr_index].url
     
     wx.previewImage({
       current: curr,
-      urls: this.data.to_showing_photos
+      urls: [curr]
     })
   },
 
   onPhotoSwiperChange: function(e) {
+    
     var curr = e.detail.current;
+    console.log('curr:' + curr)
     // var photo = this.data.photos[curr]
     var photos = this.data.photos;
     var curr_photo_index = this.data.curr_photo_index;
@@ -349,18 +353,17 @@ Page({
     //往左
     if (curr == curr_photo_index- 1 || (curr == photos.length-1 && curr_photo_index==0) ) {
       direction = 1;
-      if(!photos[curr-1].url){
+      if(curr > 0 && !photos[curr-1].url){
         this.getMorePhotos(direction, photos[curr].pagination)
       }
     //往右
     } else if (curr == curr_photo_index + 1 || (curr_photo_index == photos.length - 1 && curr == 0)) {
       direction = -1;
-      if (!photos[curr + 1].url) {
+      if (curr < photos.length - 1 && !photos[curr + 1].url) {
         this.getMorePhotos(direction, photos[curr].pagination)
       }
     }
 
-    
     this.setData({
       curr_photo_index: curr,
     });
@@ -442,8 +445,8 @@ Page({
           content: content,
           createTime: Number.parseInt(Date.now() / 1000),
           user: {
-            name: self.data.userInfo.nickName,
-            avatar: self.data.userInfo.avatarUrl
+            name: self.data.userInfo.name,
+            avatar: self.data.userInfo.avatar
           }
         }
         if(!photo_comments_map[curr_photo.id]){
@@ -557,7 +560,7 @@ Page({
 
         // var postfix_photos = []
         // var to_showing_photos = []
-        debugger;
+        // debugger;
         var photos = [];
 
         for (var i = 0; i < resp.data.photo_count;i++){
