@@ -25,6 +25,7 @@ App({
     })
   },
   login: function(code, userInfo, cb){
+
     // 先用默认的session登录
     console.log('login with: ', userInfo)
     requests.post({
