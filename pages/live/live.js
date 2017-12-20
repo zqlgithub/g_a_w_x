@@ -10,6 +10,105 @@ var app = getApp()
 var socketOpen = false;
 var socketMsgQueue = [];
 
+var loadingMorePhoto = false;
+
+var loadingMoreMembers = false;
+// var members = [
+//   {
+//     role: 1,
+//     avatar: 'https://wx.qlogo.cn/mmopen/vi_32/w8ibVjVnu6Fus9uPlbnjZujUuqO5fJNTnwJyEMrl2AOqteSvJ3V5tfQqYOian22ia93Ryc9vxsQzjYnr4VGVyFWvg/0',
+//     name: 'Ted阿恒泰迪',
+
+//     id: 4,
+
+//     avatar_thumbnail: 'https://wx.qlogo.cn/mmopen/vi_32/w8ibVjVnu6Fus9uPlbnjZujUuqO5fJNTnwJyEMrl2AOqteSvJ3V5tfQqYOian22ia93Ryc9vxsQzjYnr4VGVyFWvg/0',
+//     live: true,
+//     pagination: [0]
+//   },
+//   {
+//     role: 1,
+//     avatar: 'https://wx.qlogo.cn/mmopen/vi_32/w8ibVjVnu6Fus9uPlbnjZujUuqO5fJNTnwJyEMrl2AOqteSvJ3V5tfQqYOian22ia93Ryc9vxsQzjYnr4VGVyFWvg/0',
+//     name: 'Ted阿恒泰迪',
+
+//     id: 4,
+
+//     avatar_thumbnail: 'https://wx.qlogo.cn/mmopen/vi_32/w8ibVjVnu6Fus9uPlbnjZujUuqO5fJNTnwJyEMrl2AOqteSvJ3V5tfQqYOian22ia93Ryc9vxsQzjYnr4VGVyFWvg/0',
+//     live: true,
+//     pagination: [0]
+//   },
+//   {
+//     role: 1,
+//     avatar: 'https://wx.qlogo.cn/mmopen/vi_32/w8ibVjVnu6Fus9uPlbnjZujUuqO5fJNTnwJyEMrl2AOqteSvJ3V5tfQqYOian22ia93Ryc9vxsQzjYnr4VGVyFWvg/0',
+//     name: 'Ted阿恒泰迪',
+
+//     id: 4,
+
+//     avatar_thumbnail: 'https://wx.qlogo.cn/mmopen/vi_32/w8ibVjVnu6Fus9uPlbnjZujUuqO5fJNTnwJyEMrl2AOqteSvJ3V5tfQqYOian22ia93Ryc9vxsQzjYnr4VGVyFWvg/0',
+//     live: true,
+//     pagination: [0]
+//   }, {
+//     role: 1,
+//     avatar: 'https://wx.qlogo.cn/mmopen/vi_32/w8ibVjVnu6Fus9uPlbnjZujUuqO5fJNTnwJyEMrl2AOqteSvJ3V5tfQqYOian22ia93Ryc9vxsQzjYnr4VGVyFWvg/0',
+//     name: 'Ted阿恒泰迪',
+
+//     id: 4,
+
+//     avatar_thumbnail: 'https://wx.qlogo.cn/mmopen/vi_32/w8ibVjVnu6Fus9uPlbnjZujUuqO5fJNTnwJyEMrl2AOqteSvJ3V5tfQqYOian22ia93Ryc9vxsQzjYnr4VGVyFWvg/0',
+//     live: true,
+//     pagination: [0]
+//   }, {
+//     role: 1,
+//     avatar: 'https://wx.qlogo.cn/mmopen/vi_32/w8ibVjVnu6Fus9uPlbnjZujUuqO5fJNTnwJyEMrl2AOqteSvJ3V5tfQqYOian22ia93Ryc9vxsQzjYnr4VGVyFWvg/0',
+//     name: 'Ted阿恒泰迪',
+
+//     id: 4,
+
+//     avatar_thumbnail: 'https://wx.qlogo.cn/mmopen/vi_32/w8ibVjVnu6Fus9uPlbnjZujUuqO5fJNTnwJyEMrl2AOqteSvJ3V5tfQqYOian22ia93Ryc9vxsQzjYnr4VGVyFWvg/0',
+//     live: true,
+//     pagination: [0]
+//   }, {
+//     role: 1,
+//     avatar: 'https://wx.qlogo.cn/mmopen/vi_32/w8ibVjVnu6Fus9uPlbnjZujUuqO5fJNTnwJyEMrl2AOqteSvJ3V5tfQqYOian22ia93Ryc9vxsQzjYnr4VGVyFWvg/0',
+//     name: 'Ted阿恒泰迪',
+
+//     id: 4,
+
+//     avatar_thumbnail: 'https://wx.qlogo.cn/mmopen/vi_32/w8ibVjVnu6Fus9uPlbnjZujUuqO5fJNTnwJyEMrl2AOqteSvJ3V5tfQqYOian22ia93Ryc9vxsQzjYnr4VGVyFWvg/0',
+//     live: true,
+//     pagination: [0]
+//   }, {
+//     role: 1,
+//     avatar: 'https://wx.qlogo.cn/mmopen/vi_32/w8ibVjVnu6Fus9uPlbnjZujUuqO5fJNTnwJyEMrl2AOqteSvJ3V5tfQqYOian22ia93Ryc9vxsQzjYnr4VGVyFWvg/0',
+//     name: 'Ted阿恒泰迪',
+
+//     id: 4,
+
+//     avatar_thumbnail: 'https://wx.qlogo.cn/mmopen/vi_32/w8ibVjVnu6Fus9uPlbnjZujUuqO5fJNTnwJyEMrl2AOqteSvJ3V5tfQqYOian22ia93Ryc9vxsQzjYnr4VGVyFWvg/0',
+//     live: true,
+//     pagination: [0]
+//   }, {
+//     role: 1,
+//     avatar: 'https://wx.qlogo.cn/mmopen/vi_32/w8ibVjVnu6Fus9uPlbnjZujUuqO5fJNTnwJyEMrl2AOqteSvJ3V5tfQqYOian22ia93Ryc9vxsQzjYnr4VGVyFWvg/0',
+//     name: 'Ted阿恒泰迪',
+
+//     id: 4,
+
+//     avatar_thumbnail: 'https://wx.qlogo.cn/mmopen/vi_32/w8ibVjVnu6Fus9uPlbnjZujUuqO5fJNTnwJyEMrl2AOqteSvJ3V5tfQqYOian22ia93Ryc9vxsQzjYnr4VGVyFWvg/0',
+//     live: true,
+//     pagination: [0]
+//   }, {
+//     role: 1,
+//     avatar: 'https://wx.qlogo.cn/mmopen/vi_32/w8ibVjVnu6Fus9uPlbnjZujUuqO5fJNTnwJyEMrl2AOqteSvJ3V5tfQqYOian22ia93Ryc9vxsQzjYnr4VGVyFWvg/0',
+//     name: 'Ted阿恒泰迪',
+
+//     id: 4,
+
+//     avatar_thumbnail: 'https://wx.qlogo.cn/mmopen/vi_32/w8ibVjVnu6Fus9uPlbnjZujUuqO5fJNTnwJyEMrl2AOqteSvJ3V5tfQqYOian22ia93Ryc9vxsQzjYnr4VGVyFWvg/0',
+//     live: true,
+//     pagination: [0]
+//   },
+// ];
+
 Page({
 
   /**
@@ -17,19 +116,24 @@ Page({
    */
   data: {
       loading:true,
+      loadAll:false,
       userInfo:undefined,
       group_id:undefined,
+      live_album_id:undefined,
       live_mode:true,
       live_member_count:1,
       member_count:1,
       is_master:false,
       name:'',
+      scroll_height:undefined,
 
       co_edit:true,
       cover_pic:undefined,
       newPhotoNum: 0,
       showNewPhotoNum:false,
       photos:[],
+      photosLeft:[],
+      photosRight:[],
       theme:{
       },
       showAllMember:false,
@@ -40,11 +144,11 @@ Page({
       memberPagination:undefined,
       photoPagination: undefined,
       members:[
-        // {
-        //   avatarUrl:"https://wx.qlogo.cn/mmopen/vi_32/hROB0xxrKibCEsLkSUgxOFL0Fp4K1ib0szicSicqTH04fwsXFibfuuqVHWnb6o8rSYtzYKCg4pE8kic7VNhtlEW34kew/0",
-        //   name:'泰迪'
-        // },
-      ]
+      ],
+      isInTop:true,
+      lastAddPosition:'Right',
+      waitingAddNewPhotos:[],
+      scrollTop:0
   },
   sendSocketMessage: function(msg) {
     if(socketOpen) {
@@ -89,6 +193,8 @@ Page({
         });
       } else if (ret.action == 'send_photo'){
         // var photo = 
+        var photo = ret.data;
+        self.addNewPhoto(photo);
       } else if (ret.action == 'leave_group') {
         var members = self.data.members;
         // debugger;
@@ -126,6 +232,17 @@ Page({
     var self = this
     var group_id = options.id;
 
+    try {
+      var res = wx.getSystemInfoSync()
+      var scroll_height = Math.floor(750 * res.windowHeight / res.windowWidth);
+      this.setData({
+        scroll_height: scroll_height,
+      })
+    } catch (e) {
+      // Do something when catch error
+    }
+
+
     this.websocketHandle(group_id);
     if (group_id) {
       console.log('打开相册 id ' + group_id)
@@ -157,7 +274,7 @@ Page({
         userInfo: userInfo,
       });
       self.getGroupLiveData();
-      self.getMemberList();
+      self.getMemberList(true);
       self.getPhotos(true);
     })
     if(self.data.invite_code){
@@ -197,7 +314,8 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-  
+    wx.stopPullDownRefresh();
+    this.getPhotos(true);
   },
 
   /**
@@ -214,7 +332,7 @@ Page({
     var userInfo = this.data.userInfo;
     var inviteCode = userInfo ? userInfo.invite_code : '';
     var o = {
-      title: userInfo.nickName + '邀请你加入《' + this.data.name + "》相册",
+      title: userInfo.name + '邀请你加入《' + this.data.name + "》相册",
       path: '/pages/group/group_list?action=join_group&id=' + this.data.group_id + '&invite_code=' + inviteCode+'&live=1'
     }
     if (this.data.cover_pic){
@@ -246,6 +364,12 @@ Page({
           title: '刚发布的在前面',
         });
       }
+      this.getPhotos(true);
+      var self = this;
+      wx.pageScrollTo({
+        scrollTop: 0
+      })
+      
   },
   getGroupLiveData: function () {
     var group_id = this.data.group_id;
@@ -260,6 +384,7 @@ Page({
           // group_data: resp.data,
           name: resp.data.name,
           is_master: resp.data.master,
+          live_album_id: resp.data.live_album_id,
           member_count: resp.data.member_count,
           live_member_count: resp.data.live_member_count,
           group_id: resp.data.id,
@@ -277,13 +402,21 @@ Page({
       }
     })    
   },
+  loadMoreOnlineMember:function(){
+    this.getMemberList()
+  },
   getMemberList:function(init){
     var group_id = this.data.group_id;
     var self = this;
     
+    if (loadingMoreMembers){
+      return;
+    }
+    loadingMoreMembers = true;
     if(init){
       this.setData({
-        memberPagination: null
+        memberPagination: null,
+        members:[]
       });
     }
     var page = this.data.memberPageNum;
@@ -294,17 +427,26 @@ Page({
     if(page){
       param.pagination = page;
     }
+    // debugger;
+    // var themembers = self.data.members.concat(members).concat(members);
+    // self.setData({
+    //   members: themembers
+    // });
+    // loadingMoreMembers = false;
+
     requests.get({
       url: '/album/group/member/list',
       data: param,
       success: function (res) {
         // debugger;
+    loadingMoreMembers = false
         self.setData({
-          members:res.data,
+          members: self.data.members.concat(res.data) ,
           memberPageNum: res.data.length>0 ? res.data[res.data.length - 1].pagination : null
         });
       },
       fail: function (msg) {
+    loadingMoreMembers = false
         debugger;
       }
     });
@@ -358,7 +500,7 @@ Page({
           },
           success: function (resp) {
             console.log(resp);
-            debugger;
+            // debugger;
             wx.showToast({
               title: '上传图片成功',
             })
@@ -387,7 +529,7 @@ Page({
   },
   // 响应点击添加封面的事件
   onSetFrontPic: function (e) {
-    debugger;
+    // debugger;
     if (!this.data.is_master) {
       return
     }
@@ -434,9 +576,9 @@ Page({
             console.log(resp);
 
             wx.hideLoading();
-            debugger;
+            // debugger;
             self.setData({
-              cover_pic: data.url
+              cover_pic: resp.data.url
             })
           },
           fail: function (resp) {
@@ -502,16 +644,24 @@ Page({
         invite_code: invite_code
       },
       success: function (res) {
-        debugger;
+        // debugger;
         console.log(res);
       },
       fail: function (msg) {
-        debugger;
+        // debugger;
         console.log(msg);
       }
     });
   },
-  getPhotos:function(init){
+  getPhotos:function(init,cb){
+    // debugger;
+    console.log('getPhotos');
+    if (loadingMorePhoto) {
+      return;
+    }
+
+    loadingMorePhoto = true;
+
     var self = this;
     var param = {
       order: this.data.mode.value,
@@ -520,7 +670,9 @@ Page({
     if(init){
       this.setData({
         photoPagination:null,
-        photos:[]
+        photos:[],
+        photosLeft:[],
+        photosRight:[]
       });
     }
 
@@ -532,15 +684,239 @@ Page({
       url: '/album/group/photo/list',
       data: param,
       success: function (resp) {
-        console.log('GET MEMBER LIST SUCCESS');
         // debugger;
-        self.setData({
-          photoPagination: resp.data.length > 0 ? resp.data[resp.data.length - 1].pagination : null,
-          photos:resp.data
-        });
+        console.log('GET photo LIST SUCCESS');
+        if (resp.data.length <= 0) {
+          loadingMorePhoto = false;
+          self.setData({
+            loadAll: true
+          });
+          if (cb) {
+            cb();
+          }
+          return
+        }
+
+        if(init){
+          self.setData({
+            photoPagination: resp.data.length > 0 ? resp.data[resp.data.length - 1].pagination : null,
+            photos: resp.data
+          });
+          self.addToLeftOrRight(resp.data,function(){
+            loadingMorePhoto = false;
+            if (cb) {
+              cb();
+            }
+          });
+        }else{
+          var photos = self.data.photos;
+          
+          photos = photos.concat(resp.data);
+          self.setData({
+            photoPagination: resp.data.length > 0 ? resp.data[resp.data.length - 1].pagination : null,
+            photos: photos
+          });
+          self.addToLeftOrRight(resp.data, function () {
+            loadingMorePhoto = false;
+            if (cb) {
+              cb();
+            }
+          });
+        }
+        
+        
       },
       complete: function (e) {
       }
     }) 
+  },
+  addToLeftOrRight:function(photos, cb){
+    var self = this;
+    var photosLeft = self.data.photosLeft;
+    var photosRight = self.data.photosRight;
+    
+    var addOne = function(index){
+      if(index>=photos.length){
+        console.log("done");
+        self.setData({
+          photosLeft,
+          photosRight
+        });
+        if(cb){
+          cb();
+        }
+        return;
+      }
+
+      if(photosLeft.length==0){
+        console.log("left0");
+        var photo = self._renderTime(photos[index]);
+        photosLeft.push(photo);
+        self.setData({
+          photosLeft
+        },function(){
+            addOne(index + 1);
+        });
+      }else if(photosRight.length==0){
+        console.log("right0");
+        var photo = self._renderTime(photos[index]);
+        photosRight.push(photo);
+        self.setData({
+          photosRight
+        }, function () {
+            addOne(index + 1);
+        });
+      } else if (photosLeft.length == 1) {
+        console.log("left1");
+        var photo = self._renderTime(photos[index]);
+        photosLeft.push(photo);
+        self.setData({
+          photosLeft
+        }, function () {
+          addOne(index + 1);
+        });
+      } else if (photosRight.length == 1) {
+        console.log("right1");
+        var photo = self._renderTime(photos[index]);
+        photosRight.push(photo);
+        self.setData({
+          photosRight
+        }, function () {
+          addOne(index + 1);
+        });
+      }else {
+        wx.createSelectorQuery().selectAll('.flow-list').boundingClientRect(function(rects){
+          var leftHeight = rects[0].height;
+          var rightHeight = rects[1].height;
+          
+        if (leftHeight > rightHeight) {
+          var photo = self._renderTime(photos[index]);
+          photosRight.push(photo);
+          console.log(index + "right|leftHeight=" + leftHeight + ";rightHeight=" + rightHeight);
+          self.setData({
+            photosRight
+          }, function () {
+            setTimeout(function () {
+            addOne(index + 1);
+            }, 100)
+          })
+        } else {
+          console.log(index + "left|leftHeight=" + leftHeight + ";rightHeight=" + rightHeight);
+          var photo = self._renderTime(photos[index]);
+          photosLeft.push(photo);
+          self.setData({
+            photosLeft
+          }, function () {
+            setTimeout(function () {
+            addOne(index + 1);
+            }, 100)
+          })
+        }
+    }).exec()
+      }
+    }
+
+    addOne(0);
+    
+  },
+  loadMorePhotos:function(){
+    console.log("loadMorePhotos");
+    this.getPhotos(false);
+  },
+  scrolling:function(e){
+    var isInTop = this.data.isInTop;
+    
+    this.setData({
+      scrollTop: e.detail.scrollTop
+    });
+    
+    if (isInTop){
+      if (e.detail.scrollTop > 100) {
+        this.setData({
+          isInTop:false,
+          
+        })
+      }
+      
+      
+    }else{
+      if (e.detail.scrollTop < 100) {
+        this.setData({
+          isInTop: true
+        });
+      }
+    }
+  },
+  addNewPhoto:function(image){
+    if(this.data.isInTop){
+      var lastPositon = this.data.lastAddPosition == 'Right' ? 'Left' :'Right';
+      this.data['photos'+ lastPositon].unshift(image);
+      this.setData({
+        lastAddPosition: lastPositon,
+      });
+      if(lastPositon=='Right'){
+        this.setData({
+          photosRight: this.data['photos' + lastPositon],
+        });
+      }else{
+        this.setData({
+          photosLeft: this.data['photos' + lastPositon],
+        });
+      }
+    } else {
+      var waitingAddNewPhotos = this.data.waitingAddNewPhotos;
+      waitingAddNewPhotos.unshift(image);
+      this.setData({
+        waitingAddNewPhotos
+      });
+    }
+  },
+  addWaitingPhotos:function(){
+    var waitingAddNewPhotos = this.data.waitingAddNewPhotos;
+    if(waitingAddNewPhotos.length==0){
+      return
+    }
+    var left = this.data.photosLeft;
+    var right = this.data.photosRight;
+    waitingAddNewPhotos.map(function(v,k){
+      if(k%2==0){
+        left.unshift(v);
+      }else{
+        right.unshift(v);
+      }
+    });
+    this.setData({
+      waitingAddNewPhotos:[],
+      photosLeft:left,
+      photosRight:right
+    });
+  },
+  tapPhoto:function(e){
+    // var 
+    // debugger;
+    var id = e.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: '/pages/photo/photo_detail?live=1&album_id=' + this.data.live_album_id + '&init_photo=' + id + '&order='+ this.data.mode.value
+    });
+  },
+  _renderTime:function(photo){
+    var date = new Date(photo.createTime *1000);
+    var now = new Date();
+    if(now - date < 60*1000){
+      photo.time = '刚刚';
+    }else if(+now - (+date) < 60 * 60 * 1000){
+      var rest = +now - (+date)/60000
+      photo.time = rest +'分钟前'
+    } else if (+now - (+date) < 24 * 60 * 60 * 1000 ){
+      if(now.getDate()==date.getDate()){
+        photo.time = (date.getHours() > 10 ? date.getHours() : '0' + date.getHours()) + ":" + (date.getMinutes() > 10 ? date.getMinutes() : '0' + date.getMinutes())
+      }else{
+        photo.time = '昨天' + (date.getHours() > 10 ? date.getHours() : '0' + date.getHours()) + ":" + (date.getMinutes() > 10 ? date.getMinutes() : '0' + date.getMinutes())
+      }
+    } else {
+      photo.time = util.formatTime2(date);
+      // photo.time = (date.getMonth() > 10 ? date.getMonth() : '0' + date.getMonth()) + "-" + (date.getDate() > 10 ? date.getDate() : '0' + date.getDate())
+    }
+    return photo;
   }
 })

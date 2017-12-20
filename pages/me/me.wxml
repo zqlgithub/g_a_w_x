@@ -1,15 +1,16 @@
 <!--pages/me/me.wxml-->
 <view class="page">
-    <view class="me-header">
-      <image mode='aspectFill' src="{{userInfo.avatarUrl}}" class="bg"></image>
-      <image src="{{userInfo.avatarUrl}}" class='avatar'></image>
-      <view  class='nickname'>
-        <text>{{userInfo.nickName}}</text>
+    <view class="mask {{editing?'show':''}}" bindtap='editNickName'></view>
+    <view class="me-header"  >
+      <image mode='aspectFill' src="{{userInfo.avatar}}" class="bg"></image>
+      <image src="{{userInfo.avatar}}" bindtap='onSetAvatar' class='avatar'></image>
+      <view  class='nickname' bindtap='editNickName'>
+        <text>{{userInfo.name}}</text>
         <image src="/resource/editname.png" class="icon"></image>
       </view>
     </view>
-    <view class="me-op">
-      <navigator class="me-op-item" url="../recomment/recomment">
+    <view class="me-op" >
+      <navigator class="me-op-item" url="../recomment/recomment" style="display:none">
         <image src="/resource/finger.png" class="icon" ></image>
         <text>我的容量</text>
       </navigator>
@@ -18,5 +19,15 @@
         <image src="/resource/tucao.png" class="icon" ></image>
         <text>我要吐槽</text>
       </view>
+    </view>
+    <view class="dialog {{editing?'show':''}}">
+        <view class="dialog-header">修改昵称</view>
+        <view class="dialog-body">
+            <text style="position:relative;top:3rpx;">昵称：</text><input type='text' value="{{nickName}}" bindinput="bindInput" placeholder='输入昵称'></input>
+        </view>
+        <view class="dialog-footer">
+        <button type='warn' size="mini" bindtap='editNickName'>返回</button>
+          <button type='primary' size="mini" bindtap='confirmNickName'>确定</button>
+        </view>
     </view>
 </view>

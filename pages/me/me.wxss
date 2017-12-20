@@ -38,6 +38,7 @@ page{
   margin-top: -60rpx;
   top:120rpx;
   border-radius: 100%;
+  z-index: 2;
 }
 
 .me-op{
@@ -76,3 +77,64 @@ page{
   width: 40rpx;
   height: 40rpx;
 }
+
+
+
+/******** dialog ************/
+.dialog{
+  position: fixed;
+  top:0;
+  left:0%;
+  width: 100%;
+  z-index: 101;
+  font-size: 30rpx;
+  transform: translateY(-120%);
+  opacity: 0;
+  transition: 0.5s all ease-out;
+}
+.dialog.show{
+  transform: translateY(0);
+  opacity: 1;
+}
+.dialog-header{
+  background-color: #fff;
+  color:#00BCCC;
+  padding: 20rpx;
+  border-radius: 10rpx 10rpx 0 0 ;
+  text-align: center;
+  font-size: 34rpx;
+}
+.dialog-header image{
+  width:100rpx;
+    height: 100rpx;
+    border-radius: 50%;
+}
+.dialog-body{
+  padding-top: 0rpx;
+  background-color: white;
+  padding-bottom: 0rpx;
+  font-size: 34rpx;
+  padding: 30rpx;
+  display: flex;
+}
+.dialog-body .component-star{
+  padding:30rpx;
+}
+.dialog-body textarea{
+  padding: 5%;
+  width: 90%;
+}
+.dialog-footer{
+  border-top:1rpx solid #eee;
+  background-color: white;
+}
+.dialog-footer button[size="mini"]{
+  margin:20rpx;
+  font-size:30rpx;
+}
+.dialog-footer button[type="primary"] {
+  color:#FFFFFF;
+  background-color: #00BCCC;
+  float: right;
+}
+/******** dialog ************/

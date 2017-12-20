@@ -182,9 +182,9 @@ button.add-member-wrapper{
 
 .flow-item{
   box-sizing: border-box;
-  padding:7.5rpx 0; 
-  /* float: left; */
-  /* width: 50%; */
+  padding:15rpx; 
+   width: 100%; 
+   transition: all 0.5s;
 }
 .flow-item-inner{
   background-color: white;
@@ -195,26 +195,29 @@ button.add-member-wrapper{
   width: 100%;
   border-radius: 20rpx 20rpx 0 0;
 }
-.flow-left{
-  margin-left: 2%;
-  width: 96%;
-  column-gap:15rpx;
-  column-count:2;
-  /* float: left; */
+.flow-left, .flow-right{
+   width: 50%; 
+   float: left;
 }
 .icons{
-  position: absolute;
-  top:-55rpx;
-  text-align: right;
-  right: 20rpx;
+  /* position: absolute; */
+  /* bottom:17rpx; */
+  /* text-align: right; */
+  /* right: 17rpx; */
   display: flex;
   flex-direction: row;
-  color:white;
+  color:#999;
 }
 .like-icon,.comment-icon{
   width: 35rpx;
   height: 35rpx;
   
+}
+.icons text{
+  /* margin-left:4rpx; */
+  /* margin-right: 10rpx; */
+  position: relative;
+  /* top:2rpx; */
 }
 .like-icon{
   
@@ -230,16 +233,25 @@ button.add-member-wrapper{
    top:3rpx; 
 }
 .flow-item .flow-desc{
-  padding: 0 20rpx 20rpx;
+  padding: 0 10rpx 10rpx;
   font-size: 24rpx;
   position: relative;
   min-height: 64rpx;
 }
 .flow-item .flow-name{
+  padding-top: 5rpx;
+  line-height:38rpx;
+  height: 38rpx;
+
     color:#333;
 }
 .flow-item .flow-time{
     color:#999;
+    line-height:38rpx;
+  height: 38rpx;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 /************** bottom*******/

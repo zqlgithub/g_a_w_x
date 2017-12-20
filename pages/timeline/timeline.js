@@ -328,8 +328,8 @@ Page({
               thumbnail: resp.data.thumbnail,
               creator: {
                 id: self.data.userInfo.id,
-                name: self.data.userInfo.nickName,
-                avatar: self.data.userInfo.avatarUrl
+                name: self.data.userInfo.name,
+                avatar: self.data.userInfo.avatar
               },
               loading: false
             }
@@ -1386,7 +1386,7 @@ Page({
     var inviteCode = userInfo ? userInfo.invite_code : ''
     return {
       title: this.data.group_name,
-      desc: userInfo.nickName + '邀请你加入' + this.data.group_name,
+      desc: userInfo.name + '邀请你加入' + this.data.group_name,
       path: '/pages/group/group_list?action=join_group&id='+this.data.group_id+'&invite_code='+inviteCode
     }
   },

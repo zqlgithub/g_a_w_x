@@ -26,7 +26,14 @@ Page({
     show_panel: false,
     theme:{
       
-    }
+    },
+    pagination:undefined,
+    totalNum:0,
+    live:undefined,
+    album_id:undefined,
+    order:undefined,
+    first_photo:undefined,
+    last_photo:undefined
   },
 
   getCurrPhoto: function(){
@@ -333,13 +340,36 @@ Page({
   },
 
   onPhotoSwiperChange: function(e) {
-    var curr = e.detail.current
-    var photo = this.data.photos[curr]
+    var curr = e.detail.current;
+    // var photo = this.data.photos[curr]
+    var photos = this.data.photos;
+    var curr_photo_index = this.data.curr_photo_index;
+    var direction ;
+
+    //往左
+    if (curr == curr_photo_index- 1 || (curr == photos.length-1 && curr_photo_index==0) ) {
+      direction = 1;
+      if(!photos[curr-1].url){
+        this.getMorePhotos(direction, photos[curr].pagination)
+      }
+    //往右
+    } else if (curr == curr_photo_index + 1 || (curr_photo_index == photos.length - 1 && curr == 0)) {
+      direction = -1;
+      if (!photos[curr + 1].url) {
+        this.getMorePhotos(direction, photos[curr].pagination)
+      }
+    }
+
+    
     this.setData({
       curr_photo_index: curr,
-    })
+    });
+
+
+
+
     this.syncBottomBarData()
-    this.updatePhotoIndex(curr)
+    // this.updatePhotoIndex(curr)
 
     if(this.data.show_bullet){
       this.syncComments()
@@ -461,9 +491,15 @@ Page({
   },
 
   onLoad:function(options){
-    var album_id = options.album_id
-    var photo_id = options.init_photo
-
+    var album_id = options.album_id;
+    var photo_id = options.init_photo;
+    var order = options.order;
+    var live = options.live;
+    this.setData({
+      live: live,
+      album_id: album_id,
+      order
+    });
     try {
       var value = wx.getStorageSync('show_bullet')
       if (value) {
@@ -492,12 +528,22 @@ Page({
       windowWidth: width
     })
 
+    var param = {
+      id: album_id,
+      photo_id: photo_id,
+      size: 3
+    };
+    if(live){
+      param.live = live;
+    }
+    if (order) {
+      param.order = order;
+    }
     requests.get({
       url: '/album/photos',
-      data: {
-        id: album_id
-      },
+      data: param,
       success: function(resp) {
+        // debugger;
         var origin_photos = resp.data.photos
         var title = ''
         if(resp.data.name && resp.data.name.length > 0){
@@ -507,29 +553,65 @@ Page({
         }
         wx.setNavigationBarTitle({
           title: title
-        })
-        
-        var to_showing_photos = []
+        });
+
+        // var postfix_photos = []
+        // var to_showing_photos = []
+        debugger;
         var photos = [];
-        var postfix_photos = []
-        var tmp = postfix_photos
+
+        for (var i = 0; i < resp.data.photo_count;i++){
+          photos.push({});
+        }
+
+        var currentIndex = -1;
         for(var i in origin_photos){
           var curr = origin_photos[i]
           if(origin_photos[i].id == photo_id){
-            tmp = photos
-            self.setData({
-              curr_photo: curr,
-              offset: Number.parseInt(i)
-            })
+            currentIndex = i;
           }
-          tmp.push(curr)
-          to_showing_photos.push(curr.url)
         }
+
+        for (var i in origin_photos) {
+            if(i < currentIndex){
+              photos[photos.length  - (currentIndex - i)] = origin_photos[i]
+            }else{
+              photos[i - currentIndex] = origin_photos[i]
+            }
+        }
+
+        if (currentIndex==0){
+          photos[photos.length - 1] = resp.data.last_photo;
+        }
+        if (currentIndex == origin_photos.length-1) {
+          photos[1] = resp.data.first_photo;
+        }
+
         self.setData({
-          photos: photos.concat(postfix_photos),
-          to_showing_photos: to_showing_photos
-        })
-        self.updatePhotoIndex(0)
+          photos: photos,
+          last_photo: resp.data.last_photo,
+          first_photo: resp.data.first_photo
+        });
+        
+        // var tmp = postfix_photos
+        // for(var i in origin_photos){
+        //   var curr = origin_photos[i]
+        //   if(origin_photos[i].id == photo_id){
+        //     tmp = photos
+        //     self.setData({
+        //       curr_photo: curr,
+        //       offset: Number.parseInt(i)
+        //     })
+        //   }
+        //   tmp.push(curr)
+        //   to_showing_photos.push(curr.url)
+        // }
+        // self.setData({
+        //   photos: photos.concat(postfix_photos),
+        //   to_showing_photos: to_showing_photos
+        // });
+
+        // self.updatePhotoIndex(0)
         self.syncBottomBarData()
         
         if (self.data.show_bullet) {
@@ -562,7 +644,7 @@ Page({
           break
         }
       }
-      self.syncBottomBarData()
+      // self.syncBottomBarData()
     })
 
   },
@@ -585,6 +667,85 @@ Page({
             photo_msg: photo_new_msg
         })
         self.syncBottomBarData()
+      }
+    })
+  },
+  getMorePhotos: function (direction, pagination){
+    var self = this;
+    var param = {
+      id: this.data.album_id,
+      pagination: pagination,
+      direction: direction,
+      size: 3
+    };
+    if (this.data.live) {
+      param.live = this.data.live;
+    }
+    if (this.data.order) {
+      param.order = this.data.order;
+    }
+
+    requests.get({
+      url: '/album/photos',
+      data: param,
+      success: function (resp) {
+        // debugger;
+        if (direction==1){
+          var photos = self.data.photos;
+          var curr = self.data.curr_photo_index;
+          //翻到头了，就加载倒数第一张
+          if (resp.data.photos.length==0){
+            if (curr > 0) {
+              photos[curr - 1] = self.data.last_photo;
+            } else {
+              photos[photos.length - 1] = self.data.last_photo;
+            }
+          }else{
+            resp.data.photos.map(function (v, k) {
+              if (curr - resp.data.photos.length + k >= 0) {
+                photos[curr - resp.data.photos.length + k] = v;
+              } else {
+                photos[photos.length - curr - resp.data.photos.length + k] = v
+              }
+            });
+          }
+          
+        }else if(direction == -1){
+          var photos = self.data.photos;
+          var curr = self.data.curr_photo_index;
+          if (resp.data.photos.length==0 ) {
+            if (curr < photos.length - 1) {
+              photos[curr + 1] = self.data.first_photo;
+            } else {
+              photos[0] = self.data.first_photo;
+            }
+          }else{
+            resp.data.photos.map(function (v, k) {
+              if (curr + k + 1 < photos.length) {
+                photos[curr + k + 1] = v;
+              } else {
+                photos[curr + k + 1 - photos.length] = v
+              }
+            })
+          }
+          
+
+        }
+        self.setData({
+          photos: photos
+        });
+
+        // self.setData({
+        //   photos: photos.concat(postfix_photos),
+        //   to_showing_photos: to_showing_photos
+        // })
+        // self.updatePhotoIndex(0)
+        // self.syncBottomBarData()
+
+        // if (self.data.show_bullet) {
+        //   self.syncComments()
+        // }
+
       }
     })
   },

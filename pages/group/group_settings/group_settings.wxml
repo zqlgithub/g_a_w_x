@@ -1,5 +1,5 @@
 <!--pages/group/group_settings/group_settings.wxml-->
-<view class="container">
+<view class="thecontainer">
     <view class="group-name" bindtap="onTapGroupName">
         <text class="group-name-title">相册名</text>
         <text class="group-name-txt">{{group_name}}</text>
@@ -16,7 +16,7 @@
     </view>
 
 
-    <scroll-view class="member-scroll" scroll-y="true" style="max-height:{{scroll_height}}rpx;" bindtap="onTapBg">
+    <scroll-view class="member-scroll" scroll-y="true" style="max-height:{{scroll_height}}rpx;" bindtap="onTapBg" bindscrolltolower="loadMoreMembers">
         <view class="member-item" wx:for="{{member_data}}" wx:for-item="member" wx:for-index="idx">
             <view class="member-item-inner" bindtap="onRemoveMember" data-member="{{member.id}}">
               <view class="member-icon-wrapper">

@@ -9,7 +9,8 @@
         </block>
     </swiper>
     <image class="bg-blur" mode="aspectFill" src="{{photos[curr_photo_index].url}}"></image>
-    <text class="index-txt">{{curr_index_txt}}</text>
+
+    <!-- <text class="index-txt">{{curr_index_txt}}</text> -->
      <image class="bullet-fixed-0" src="{{user_avatar}}"></image> 
   <view bindtap="onLike" class="bullet-fixed-2">
           <image class="bullet-fixed-btn  {{like?'show':'hide'}}"  src="/resource/{{like? 'like2_on':'like2'}}.png"></image>

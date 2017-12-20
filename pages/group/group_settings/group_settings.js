@@ -1,6 +1,8 @@
 var requests = require('../../../utils/requests.js')
 var events = require('../../../utils/events.js')
 
+
+var loading = false;
 var app = getApp()
 Page({
   data:{
@@ -18,6 +20,7 @@ Page({
     finger_animation: {},
     show_finger: false,
     is_master:false,
+   
   },
   onInputGroupName:function(e) {
     this.setData({
@@ -279,13 +282,22 @@ Page({
 
     })
   },
+  loadMoreMembers:function(){
+    debugger;
+    this.getGroupMember();
+  },
   getGroupMember:function(init){
     var group_id = this.data.group_id;
     var self = this;
+    if (loading){
+      return;
+    }
 
+    loading = true;
     if (init) {
       this.setData({
-        memberPagination: null
+        memberPagination: null,
+        member_data:[]
       });
     }
     var page = this.data.memberPageNum;
@@ -296,17 +308,25 @@ Page({
     if (page) {
       param.pagination = page;
     }
+
+    // var member_data = this.data.member_data.concat(members).concat(members);
+    // self.setData({
+    //   member_data
+    // });
+    
     requests.get({
       url: '/album/group/member/list',
       data: param,
       success: function (res) {
-        debugger;
+        // debugger;
+        loading = false;
         self.setData({
-          member_data: res.data,
+          member_data: self.data.member_data.concat(res.data),
           memberPageNum: res.data.length > 0 ? res.data[res.data.length - 1].pagination : null
         });
       },
       fail: function (msg) {
+        loading = false;
         debugger;
       }
     });
@@ -342,7 +362,7 @@ Page({
     var userInfo = this.data.userInfo
     var inviteCode = userInfo ? userInfo.invite_code : ''
     return {
-      title: userInfo.nickName + '邀请你加入《' + this.data.group_name+"》相册",
+      title: userInfo.name + '邀请你加入《' + this.data.group_name+"》相册",
       imageUrl: this.data.front_cover,
       path: '/pages/group/group_list?action=join_group&id='+this.data.group_id+'&invite_code='+inviteCode
     }

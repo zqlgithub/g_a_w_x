@@ -70,6 +70,7 @@ App({
     var that = this;
     wx.login({
       success: function(res){
+        // debugger;
         if(that.globalData.userInfo){
           typeof cb == "function" && cb(that.globalData.userInfo)
         }else{
@@ -80,12 +81,13 @@ App({
               console.log('get user info: ', userinfo)
               that.login(code, userinfo, function(data){
                 // 如果用户信息有变动，就更新用户信息
-                if(userinfo.nickName != data.name || userinfo.avatarUrl != data.avatar){
+                // debugger;
+                if (userinfo.nickName != data.wx_name || userinfo.avatarUrl != data.wx_avatar){
                   requests.post({
                     url: '/user/update',
                     data: {
-                      name: userinfo.nickName,
-                      avatar: userinfo.avatarUrl,
+                      wx_name: userinfo.nickName,
+                      wx_avatar: userinfo.avatarUrl,
                       gender: userinfo.gender,
                       province: userinfo.province,
                       city: userinfo.city,
@@ -96,12 +98,13 @@ App({
                     }
                   })
                 }
+                var userInfo = data;
 
-                userinfo.id = data.id
-                userinfo.invite_code = data.invite_code
-                userinfo.msg_list = data.user_msg
-                that.globalData.userInfo = userinfo
-                typeof cb == "function" && cb(userinfo)
+                // userinfo.id = data.id
+                // userinfo.invite_code = data.invite_code
+                // userinfo.msg_list = data.user_msg
+                that.globalData.userInfo = userInfo
+                typeof cb == "function" && cb(userInfo)
               })
             },
             fail: function() {
