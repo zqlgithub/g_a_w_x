@@ -1,18 +1,21 @@
+<wxs src="../../render/global.wxs" module="render" />
+
 <view class="page {{loading?'':'show'}}">
 
   <view class="mask {{showAllMember?'show':'hide'}}" bindtap='tapMask'></view>
   <view class="members">
-    <view class="member-text" bindtap='showMembers'>
-       <text class="live-member">{{live_member_count}}</text> <image class="member-split" src="/resource/live/member.png"></image> <text class="total-member">{{member_count}}</text>
-      </view>
-    <image src="{{member.avatar}}" class="avatar" wx:for-item="member" wx:for="{{members}}" bindtap='showMembers' wx:if="{{idx<12}}" wx:for-index="idx"></image>
-    <button class="share-btn add-member-avatar-wrapper" open-type='share' wx:if="{{members.length>6}}" > 
-      <image class="avatar" src="/resource/live/addmember.png"></image>
-    </button>
-    <button class="share-btn add-member-wrapper" open-type='share' wx:else >
-    <image class="add-member" src="/resource/live/addmember_big.png"></image>
-    </button>
-    
+    <view class="members-top">
+      <view class="member-text" bindtap='showMembers'>
+        <text class="live-member">{{live_member_count}}</text> <image class="member-split" src="/resource/live/member.png"></image> <text class="total-member">{{member_count}}</text>
+        </view>
+      <image src="{{member.avatar}}" class="avatar" wx:for-item="member" wx:for="{{members}}" bindtap='showMembers' wx:if="{{idx<12}}" wx:for-index="idx"></image>
+      <button class="share-btn add-member-avatar-wrapper" open-type='share' wx:if="{{members.length>6}}" > 
+        <image class="avatar" src="/resource/live/addmember.png"></image>
+      </button>
+      <button class="share-btn add-member-wrapper" open-type='share' wx:else >
+      <image class="add-member" src="/resource/live/addmember_big.png"></image>
+      </button>
+    </view>
     <view style="clear:both"></view>
      <scroll-view class="member-scroll online-members {{showAllMember?'show':'hide'}}" scroll-y="true" enable-back-to-top="true" scroll-with-animation="true" bindtap="onTapBg" bindscrolltolower="loadMoreOnlineMember">
   <view class="member-item" wx:for="{{members}}" wx:for-item="member" wx:for-index="idx" >
@@ -41,7 +44,7 @@
   
 
     <view class="header" bindtap='onSetFrontPic'>
-    <image class="header-image" mode="widthFix" src="{{cover_pic?cover_pic:'http://ac-dxntna3i.clouddn.com/1f72cef7e94a22103b6a.jpg'}}"></image>
+    <image class="header-image" mode="aspectFill" src="{{cover_pic?cover_pic:'http://ac-dxntna3i.clouddn.com/1f72cef7e94a22103b6a.jpg'}}"></image>
     <view class="setting">
       <image src="/resource/live/live.svg"></image>
     </view>
@@ -55,9 +58,9 @@
     </view>
 
     <view class="flow-list flow-left">
-      <view class="flow-item" wx:for="{{photosLeft}}" wx:for-item="photo" wx:for-index="idx" data-id="{{photo.id}}" bindtap="tapPhoto">
+      <view class="flow-item" wx:for="{{photosLeft}}" wx:for-item="photo" wx:for-index="idx">
         <view class="flow-item-inner">
-          <image mode="widthFix" class="flow-image" src="{{photo.thumbnail}}"></image>
+          <image mode="widthFix"  data-id="{{photo.id}}"  bindtap="tapPhoto" class="flow-image" src="{{photo.thumbnail}}"></image>
           <view class="flow-desc">
             
             <image class="flow-avatar" src="{{photo.user.avatar}}"></image>
@@ -65,10 +68,10 @@
             <view class="flow-time">
               <text>{{photo.time}}</text>
               <view class="icons">
-              <image class="like-icon"  src="/resource/like2_on.png"></image>
-              <text>{{photo.like_count}}</text>
-              <image class="comment-icon"  src="/resource/comment3.png"></image>
-              <text>{{photo.comment_count}}</text>
+              <image class="like-icon"  data-index="{{idx}}" data-list="photosLeft" data-photo="{{photo}}" bindtap='onLike'    src="/resource/like2_on.png"></image>
+              <text data-index="{{idx}}" data-list="photosLeft" data-photo="{{photo}}" bindtap='onLike'  style="margin-right:10rpx">{{photo.like_count}}</text>
+              <image data-id="{{photo.id}}" bindtap="tapPhoto"  class="comment-icon"  src="/resource/comment3.png"></image>
+              <text data-id="{{photo.id}}" bindtap="tapPhoto" >{{photo.comment_count}}</text>
             </view>
             </view>
           </view>
@@ -77,9 +80,9 @@
     </view>
 
     <view class="flow-list flow-right">
-      <view class="flow-item" wx:for="{{photosRight}}" wx:for-item="photo" wx:for-index="idx" data-id="{{photo.id}}" bindtap="tapPhoto">
+      <view class="flow-item" wx:for="{{photosRight}}" wx:for-item="photo" wx:for-index="idx" >
         <view class="flow-item-inner">
-          <image mode="widthFix" class="flow-image" src="{{photo.thumbnail}}"></image>
+          <image mode="widthFix" data-id="{{photo.id}}" bindtap="tapPhoto" class="flow-image" src="{{photo.thumbnail}}"></image>
           <view class="flow-desc">
             
             <image class="flow-avatar" src="{{photo.user.avatar}}"></image>
@@ -87,9 +90,9 @@
             <view class="flow-time">
               <text class="time">{{photo.time}}</text> 
              <view class="icons">
-              <image class="like-icon"  src="/resource/like2_on.png"></image>
-              <text>{{photo.like_count}}</text>
-              <image class="comment-icon"  src="/resource/comment3.png"></image>
+              <image class="like-icon" data-index="{{idx}}" data-list="photosRight" data-photo="{{photo}}" bindtap='onLike'   src="/resource/like2_on.png"></image>
+              <text data-index="{{idx}}" data-list="photosRight" data-photo="{{photo}}" bindtap='onLike'  style="margin-right:10rpx">{{photo.like_count}}</text>
+              <image data-id="{{photo.id}}" bindtap="tapPhoto"  class="comment-icon"  src="/resource/comment3.png"></image>
               <text>{{photo.comment_count}}</text>
             </view>
             </view>
@@ -107,6 +110,11 @@
   </scroll-view>
 
 
+  <view class="album-like {{tapLike?'tap':''}}" bindtap="tapLikeAlbum">
+      <image class="album-like-image" src="/resource/like3.png" ></image>
+      <view class="album-like-num">{{render.renderLikeNum(likeNum)}}</view>
+      <image class="flower {{item==1 ? ('flower' + (idx%10)):''}}" wx:for-item="item" wx:for-index="idx" wx:for="{{tapLikeArray}}"  src="/resource/like3.png"></image>
+  </view>
 
   <view class="bottom-navigator">
         <view class="bottom-btn" bindtap="setMode">

@@ -18,6 +18,7 @@ page{
   position: relative;
 }
 .header-image{
+  max-height: 300rpx;
   width: 100%;
 }
 
@@ -61,7 +62,12 @@ page{
   width:100%;
    height: 78rpx; 
   z-index: 6;
-  /* box-shadow: 0 2rpx 8rpx #ccc; */
+  
+   box-shadow: 0 2rpx 8rpx #ccc; 
+}
+.members-top{
+  display: flex;
+  flex-direction: row;
 }
 .members-footer{
   width: 100%;
@@ -83,16 +89,14 @@ button.share-btn{
   height: 60rpx;
   margin-left:-30rpx;
   position: relative;
-  top:-5rpx;
   border:8rpx solid white;
   
 }
 button.add-member-avatar-wrapper{
-    position: relative;
-     display: inline-block;
-      margin:3rpx;
-      top:6rpx;
-      left:-30rpx;
+  position: relative;
+  display: inline-block;
+  margin:0;
+  left:-30rpx;
 }
 button.add-member-wrapper{
    /* float: left;  */
@@ -103,7 +107,6 @@ button.add-member-wrapper{
     margin-left:0;
 }
 .member-text{
-  float: left;
   color:#333;
   font-size:30rpx;
   position: relative;
@@ -111,7 +114,7 @@ button.add-member-wrapper{
   display: flex;
   flex-direction: row;
   
-  margin-right: 20rpx;
+  margin-right: 40rpx;
   top:-5rpx;
 }
 .member-text .live-member{
@@ -132,8 +135,9 @@ button.add-member-wrapper{
   color:#00BED0;
   line-height: 90rpx;
   position: relative;
-  left:-20rpx;
+  left:-5rpx;
   top:15rpx;
+  font-size: 32rpx;
 }
 .tips{
   background-color: #FDFCF5;
@@ -209,9 +213,10 @@ button.add-member-wrapper{
   color:#999;
 }
 .like-icon,.comment-icon{
-  width: 35rpx;
-  height: 35rpx;
-  
+  width: 50rpx;
+  height: 50rpx;
+  position: relative;
+  top:-5rpx;
 }
 .icons text{
   /* margin-left:4rpx; */
@@ -318,7 +323,7 @@ button.add-member-wrapper{
   transition: all 0.5s;
   max-height: 0;
   position: relative;
-  top:-12rpx;  
+  top:-2rpx;  
   opacity: 0;
   border-top:1rpx solid #f3f3f3;
 
@@ -381,4 +386,206 @@ button.member-item::after{
   overflow: hidden;  
   text-overflow: ellipsis;  
   flex-grow: 1;
+}
+
+.album-like{
+  position: fixed;
+  right:30rpx;
+bottom:100rpx;
+  width: 140rpx;
+  height: 140rpx;
+  
+}
+.album-like image{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+.album-like image.flower{
+  width: 100rpx;
+  height: 100rpx;
+}
+.flower{
+  display: none;
+}
+.flower.flower0{
+  display: block;
+  animation: flower0 forwards 5s  ease;
+}
+
+.flower.flower1{
+  display: block;
+  animation: flower1 forwards 5s  ease;
+}
+
+.flower.flower2{
+  display: block;
+  animation: flower2 forwards 5s  ease;
+}
+
+.flower.flower3{
+  display: block;
+  animation: flower3 forwards 5s  ease;
+}
+.flower.flower4{
+  display: block;
+  animation: flower4 forwards 5s  ease;
+}
+.flower.flower5{
+  display: block;
+  animation: flower5 forwards 5s  ease;
+}
+.flower.flower6{
+  display: block;
+  animation: flower6 forwards 5s  ease;
+}
+.flower.flower7{
+  display: block;
+  animation: flower7 forwards 5s  ease;
+}
+.flower.flower8{
+  display: block;
+  animation: flower8 forwards 5s  ease;
+}
+.flower.flower9{
+  display: block;
+  animation: flower9 forwards 5s  ease;
+}
+
+@keyframes flower0{
+    from {
+      transform: translateY(0) translateX(30rpx) rotate(0deg) scale(1);
+      opacity: 1;
+    }
+    100%{
+      transform: translateY(-650rpx) translateX(-300rpx)  rotate(100deg) scale(1);
+      opacity: 0;
+    }
+}
+
+@keyframes flower1{
+    from {
+      transform: translateY(0) translateX(0) rotate(45deg) scale(1.5);
+      opacity: 1;
+    }
+    100%{
+      transform: translateY(-400rpx) translateX(-200rpx)  rotate(145deg) scale(0.6);
+      opacity: 0;
+    }
+}
+
+@keyframes flower2{
+    from {
+      transform: translateY(0) translateX(0) rotate(145deg) scale(1.5);
+      opacity: 0.8;
+    }
+    100%{
+      transform: translateY(-500rpx) translateX(-150rpx)  rotate(245deg) scale(1.5);
+      opacity: 0;
+    }
+}
+
+@keyframes flower3{
+    from {
+      transform: translateY(0) translateX(0) rotate(5deg) scale(1);
+      opacity: 0.8;
+    }
+    100%{
+      transform: translateY(-800rpx) translateX(50rpx)  rotate(745deg) scale(0.6);
+      opacity: 0;
+    }
+}
+
+@keyframes flower4{
+    from {
+      transform: translateY(0) translateX(0) rotate(0deg) scale(0.8);
+      opacity: 0.8;
+    }
+    100%{
+      transform: translateY(-750rpx) translateX(-80rpx)  rotate(345deg) scale(0.8);
+      opacity: 0;
+    }
+}
+
+@keyframes flower5{
+    from {
+      transform: translateY(0) translateX(0) rotate(145deg) scale(1.2);
+      opacity: 0.5;
+    }
+    100%{
+      transform: translateY(-580rpx) translateX(0rpx)  rotate(5deg) scale(1.5);
+      opacity: 0.1;
+    }
+}
+
+@keyframes flower6{
+    from {
+      transform: translateY(0) translateX(0) rotate(145deg) scale(1.5);
+      opacity: 0.6;
+    }
+    100%{
+      transform: translateY(-520rpx) translateX(-50rpx)  rotate(245deg) scale(1);
+      opacity: 0;
+    }
+}
+
+@keyframes flower7{
+    from {
+      transform: translateY(0) translateX(0) rotate(5deg) scale(1.5);
+      opacity: 1;
+    }
+    100%{
+      transform: translateY(-600rpx) translateX(-50rpx)  rotate(245deg) scale(1.5);
+      opacity: 0;
+    }
+}
+
+@keyframes flower8{
+    from {
+      transform: translateY(0) translateX(0) rotate(145deg) scale(1.5);
+      opacity: 0.8;
+    }
+    100%{
+      transform: translateY(-500rpx) translateX(-50rpx)  rotate(245deg) scale(1.5);
+      opacity: 0;
+    }
+}
+
+@keyframes flower9{
+    from {
+      transform: translateY(0) translateX(0) rotate(45deg) scale(1.5);
+      opacity: 0.8;
+    }
+    100%{
+      transform: translateY(-700rpx) translateX(-150rpx)  rotate(345deg) scale(1.2);
+      opacity: 0;
+    }
+}
+
+
+
+@keyframes pulse {
+  from {
+    transform: scale3d(1, 1, 1);
+  }
+
+  30% {
+    transform: scale3d(1.2, 1.2, 1.2);
+  }
+
+  to {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+.album-like.tap .album-like-image{
+  animation: pulse 0.5s;
+}
+.album-like-num{
+  position: relative;
+  top:50rpx;
+  color:#fff;
+  width: 100%;
+  text-align: center;
+  font-size: 26rpx;
 }

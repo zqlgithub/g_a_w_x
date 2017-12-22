@@ -15,7 +15,10 @@
         <switch bindchange="setLiveMode" checked='{{live_mode}}'/>
     </view>
 
-
+    <view class="member-title">
+      <text>成员列表</text>
+      <view class="member-title-setting {{deleting?'deleting':''}}" bindtap='setDeleting' wx:if="{{is_master}}"><image src="/resource/settings_blue.png"></image><text>{{!deleting?'管理':'取消'}}</text></view>
+    </view>
     <scroll-view class="member-scroll" scroll-y="true" style="max-height:{{scroll_height}}rpx;" bindtap="onTapBg" bindscrolltolower="loadMoreMembers">
         <view class="member-item" wx:for="{{member_data}}" wx:for-item="member" wx:for-index="idx">
             <view class="member-item-inner" bindtap="onRemoveMember" data-member="{{member.id}}">
@@ -30,7 +33,7 @@
                  
             </view>
         </view>
-        <button class="member-item" open-type="share">
+        <!-- <button class="member-item" open-type="share">
               <view class="member-item-inner">
                 <view class="member-icon-wrapper">
                 <image class="member-icon" src="/resource/member_add.png"></image>
@@ -38,15 +41,15 @@
                 <text class="member-name">邀请好友</text>
               </view>
           
-        </button>
-        <view class="member-item" bindtap='setDeleting' wx:if="{{is_master}}">
+        </button> -->
+        <!-- <view class="member-item" bindtap='setDeleting' wx:if="{{is_master}}">
         <view class="member-item-inner">
-        <view class="member-icon-wrapper">
-          <image class="member-icon" src="/resource/member_remove.png"></image>
-          </view>
-          <text class="member-name">{{!deleting?'移除好友':'取消'}}</text>
-          </view>
-        </view>
+          <view class="member-icon-wrapper">
+            <image class="member-icon" src="/resource/member_remove.png"></image>
+            </view>
+            <text class="member-name">{{!deleting?'移除好友':'取消'}}</text>
+            </view>
+          </view> -->
         <view style="clear:both"></view>
     </scroll-view>
 

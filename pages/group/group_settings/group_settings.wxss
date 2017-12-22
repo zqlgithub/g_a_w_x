@@ -55,7 +55,7 @@ page {
 .member-scroll {
   width: 100%;
   background-color: white;
-  margin-top: 20rpx;
+  
 }
 
 .gray { 
@@ -221,4 +221,34 @@ button.member-item::after{
   position:fixed;
   top:10rpx;
   right:10rpx;
+}
+
+.member-title{
+  margin-top: 20rpx;
+  display: flex;
+  font-size:12pt;
+
+  flex-direction: row;
+  justify-content: space-between;
+  padding:0 20rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  background-color: white;
+  border-bottom: 1rpx solid #f3f3f3;
+}
+.member-title image{
+  width: 40rpx;
+  height: 40rpx;
+  position: relative;
+  top:8rpx;
+  right: 8rpx;
+}
+.member-title-setting{
+  color:#4BBCCC;
+}
+.member-title-setting.deleting{
+  color:#666;
+}
+.member-title-setting.deleting image{
+  opacity: 0;
 }

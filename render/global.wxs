@@ -1,0 +1,13 @@
+
+var renderLikeNum = function (d) {
+  if(d< 1000){
+    return d 
+  }else{
+    var a = Math.floor(d/100);
+    a = (a/10).toFixed(1);
+    return a +'k';
+  }
+}
+module.exports = {
+  renderLikeNum: renderLikeNum
+};

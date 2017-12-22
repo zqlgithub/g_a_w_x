@@ -6,6 +6,7 @@ var events = require('../../utils/events.js')
 var app = getApp()
 Page({
   data:{
+    group_id:undefined,
     userInfo: null,
     loading: true,
     scroll_height: 1100,
@@ -1319,6 +1320,12 @@ Page({
     // 页面渲染完成
   },
   onShow:function(){
+    if (app.globalData.live_mode === true) {
+      app.globalData.live_mode = undefined;
+      wx.redirectTo({
+        url: '../live/live?id=' + this.data.group_id,
+      });
+    }
     // 有可能跳到其他界面修改了群名，所以这里需要更新下
     if(this.data.group_name) {
       wx.setNavigationBarTitle({

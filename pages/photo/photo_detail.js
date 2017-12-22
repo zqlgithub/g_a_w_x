@@ -495,12 +495,14 @@ Page({
 
   onLoad:function(options){
     var album_id = options.album_id;
+    var group_id = options.group_id;
     var photo_id = options.init_photo;
     var order = options.order;
     var live = options.live;
     this.setData({
       live: live,
       album_id: album_id,
+      group_id: group_id,
       order
     });
     try {
@@ -532,12 +534,14 @@ Page({
     })
 
     var param = {
-      id: album_id,
       photo_id: photo_id,
       size: 3
     };
     if(live){
       param.live = live;
+      param.group_id = group_id;
+    }else{
+      param.album_id = album_id;
     }
     if (order) {
       param.order = order;
@@ -676,13 +680,15 @@ Page({
   getMorePhotos: function (direction, pagination){
     var self = this;
     var param = {
-      id: this.data.album_id,
       pagination: pagination,
       direction: direction,
       size: 3
     };
     if (this.data.live) {
       param.live = this.data.live;
+      param.group_id = this.data.group_id;
+    }else{
+      param.album_id = this.data.album_id;
     }
     if (this.data.order) {
       param.order = this.data.order;

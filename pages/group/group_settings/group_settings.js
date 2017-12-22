@@ -5,29 +5,29 @@ var events = require('../../../utils/events.js')
 var loading = false;
 var app = getApp()
 Page({
-  data:{
+  data: {
     co_edit: true,
-    live_mode:false,
-    front_cover:undefined,
-    deleting:false,
+    live_mode: false,
+    front_cover: undefined,
+    deleting: false,
     group_data: {},
     member_data: [],
-    memberPageNum:undefined,
+    memberPageNum: undefined,
     panel_animation: {},
     show_panel: false,
     group_name_input_default: "",
     to_create_group_name: "",
     finger_animation: {},
     show_finger: false,
-    is_master:false,
-   
+    is_master: false,
+
   },
-  onInputGroupName:function(e) {
+  onInputGroupName: function (e) {
     this.setData({
       to_create_group_name: e.detail.value
     })
   },
-  onEditGroupName:function(e) {
+  onEditGroupName: function (e) {
     var self = this
     var new_group_name = self.data.to_create_group_name
     requests.post({
@@ -36,7 +36,7 @@ Page({
         id: this.data.group_id,
         name: new_group_name
       },
-      success: function(resp) {
+      success: function (resp) {
         self.onTapBg()
         self.setData({
           group_name: new_group_name
@@ -51,22 +51,22 @@ Page({
       }
     })
   },
-  
-  onSetEdit: function(e) {
+
+  onSetEdit: function (e) {
     var self = this
     var co_edit = e.detail.value
     requests.post({
       url: "/album/group/update",
       data: {
         id: this.data.group_id,
-        co_edit: co_edit ? 1: 0
+        co_edit: co_edit ? 1 : 0
       },
       success: function (resp) {
         self.onTapBg()
-        var to_set_data = { 'group_data.co_edit': co_edit}
+        var to_set_data = { 'group_data.co_edit': co_edit }
         self.setData(to_set_data)
       },
-      fail: function(resp) {
+      fail: function (resp) {
         self.setData({
           co_edit: self.data.group_data.co_edit
         })
@@ -78,19 +78,20 @@ Page({
       }
     })
   },
-  onRemoveMember: function(e){
+
+  onRemoveMember: function (e) {
     var self = this
     var member_id = e.currentTarget.dataset.member
-    if(!this.data.deleting){
+    if (!this.data.deleting) {
       return false;
     }
-    if(!this.data.is_master){
+    if (!this.data.is_master) {
       wx.showToast({
         title: '只有群主才能删除成员'
       })
       return
     }
-    if(this.data.userInfo.id == member_id){
+    if (this.data.userInfo.id == member_id) {
       return
     }
 
@@ -98,19 +99,19 @@ Page({
       title: "提示",
       content: "您确定要删除这个成员吗？",
       showCancel: true,
-      success: function(res) {
-        if(res.confirm){
+      success: function (res) {
+        if (res.confirm) {
           requests.post({
             url: '/album/group/member/remove',
             data: {
               group_id: self.data.group_id,
               user_id: member_id
             },
-            success: function(resp) {
+            success: function (resp) {
               console.log('REMOVE GROUP SUCCESS')
               var members = self.data.member_data
-              for(var i = 0; i < members.length; i++){
-                if(members[i].id == member_id){
+              for (var i = 0; i < members.length; i++) {
+                if (members[i].id == member_id) {
                   members.splice(i, 1)
                   break
                 }
@@ -121,7 +122,7 @@ Page({
 
               events.center.dispatch('remove_member')
             },
-            fail: function(resp) { 
+            fail: function (resp) {
               console.log('GET MEMBER LIST FAIL!')
               console.log(resp)
             }
@@ -130,13 +131,13 @@ Page({
       }
     })
   },
-  onTapInviteBtn: function(e) {
+  onTapInviteBtn: function (e) {
     var self = this
     wx.showModal({
       title: "提示",
       content: "点击“本页面”或“相册页面”右上角的按钮，分享给微信好友或群聊",
       showCancel: false,
-      success: function(res) {
+      success: function (res) {
         self.setData({
           show_finger: true
         })
@@ -152,7 +153,7 @@ Page({
         //   finger_animation: animation.export()
         // })
 
-        setTimeout(function(){
+        setTimeout(function () {
           self.setData({
             show_finger: false
           })
@@ -160,26 +161,26 @@ Page({
       }
     })
   },
-  onRemoveGroup: function(e) {
+  onRemoveGroup: function (e) {
     var self = this
     wx.showModal({
       title: "提示",
       content: "您确定要删除这个群吗？",
       showCancel: true,
-      success: function(res) {
-        if(res.confirm){
+      success: function (res) {
+        if (res.confirm) {
           requests.post({
             url: '/album/group/remove',
             data: {
               id: self.data.group_id
             },
-            success: function(resp) {
+            success: function (resp) {
               console.log('REMOVE GROUP SUCCESS')
               // wx.redirectTo({
               //   url: '../group_list'
               // })
               wx.navigateBack({
-                delta: 2, 
+                delta: 2,
               })
             }
           })
@@ -188,8 +189,8 @@ Page({
     })
   },
 
-  switchPanel: function(is_open){
-    if(!this.panel_animation){
+  switchPanel: function (is_open) {
+    if (!this.panel_animation) {
       var panel_animation = wx.createAnimation({
         duration: 300,
         timingFunction: 'ease', // "linear","ease","ease-in","ease-in-out","ease-out","step-start","step-end"
@@ -198,7 +199,7 @@ Page({
       })
       this.panel_animation = panel_animation
     }
-    
+
     var ty = is_open ? "0rpx" : "-455rpx";
     this.panel_animation.bottom(ty).step()
 
@@ -206,22 +207,22 @@ Page({
       panel_animation: this.panel_animation.export()
     })
   },
-  onTapGroupName: function(e) {
-    if(this.data.is_master && !this.data.show_panel){
-        clearTimeout(this.data.panel_timer)
-        this.setData({
-          show_panel: true,
-          group_name_input_default: this.data.group_name
-        })
-        this.switchPanel(true)
-      }
+  onTapGroupName: function (e) {
+    if (this.data.is_master && !this.data.show_panel) {
+      clearTimeout(this.data.panel_timer)
+      this.setData({
+        show_panel: true,
+        group_name_input_default: this.data.group_name
+      })
+      this.switchPanel(true)
+    }
   },
-  onCancelPanel: function(e){
+  onCancelPanel: function (e) {
     this.onTapBg()
   },
-  onTapBg: function(e) {
+  onTapBg: function (e) {
     var self = this
-    var onTimeout = function(){
+    var onTimeout = function () {
       self.setData({
         show_panel: false
       })
@@ -232,13 +233,13 @@ Page({
     this.switchPanel(false)
   },
 
-  onLoad:function(options){
+  onLoad: function (options) {
     var self = this
     var group_id = options.id
 
     try {
       var res = wx.getSystemInfoSync()
-      var scroll_height = Math.floor(750 * res.windowHeight / res.windowWidth) - 400
+      var scroll_height = Math.floor(750 * res.windowHeight / res.windowWidth) - 630
       this.setData({
         scroll_height: scroll_height,
       })
@@ -246,7 +247,7 @@ Page({
       // Do something when catch error
     }
 
-    getApp().getUserInfo(function(userInfo){
+    getApp().getUserInfo(function (userInfo) {
       console.log('userinfo: ', userInfo)
       self.setData({
         group_id: group_id,
@@ -255,9 +256,10 @@ Page({
       })
 
       requests.get({
-        url: '/album/group/detail?group_id='+group_id,
-        success: function(resp) {
+        url: '/album/group/detail?group_id=' + group_id,
+        success: function (resp) {
           console.log('GET MEMBER LIST SUCCESS');
+          // debugger;
           self.setData({
             group_data: resp.data,
             group_name: resp.data.name,
@@ -271,25 +273,25 @@ Page({
           //   member_count: resp.data.members.length
           // })
         },
-        complete: function(e) {
+        complete: function (e) {
         }
       });
-      
+
       self.getGroupMember();
 
 
-      
+
 
     })
   },
-  loadMoreMembers:function(){
-    debugger;
+  loadMoreMembers: function () {
+    // debugger;
     this.getGroupMember();
   },
-  getGroupMember:function(init){
+  getGroupMember: function (init) {
     var group_id = this.data.group_id;
     var self = this;
-    if (loading){
+    if (loading) {
       return;
     }
 
@@ -297,7 +299,7 @@ Page({
     if (init) {
       this.setData({
         memberPagination: null,
-        member_data:[]
+        member_data: []
       });
     }
     var page = this.data.memberPageNum;
@@ -313,7 +315,7 @@ Page({
     // self.setData({
     //   member_data
     // });
-    
+
     requests.get({
       url: '/album/group/member/list',
       data: param,
@@ -331,16 +333,16 @@ Page({
       }
     });
   },
-  onReady:function(){
+  onReady: function () {
     // 页面渲染完成
   },
-  onShow:function(){
+  onShow: function () {
     // 页面显示
   },
-  onHide:function(){
+  onHide: function () {
     // 页面隐藏
   },
-  onUnload:function(){
+  onUnload: function () {
     // 页面关闭
   },
   onPullDownRefresh: function () {
@@ -362,49 +364,79 @@ Page({
     var userInfo = this.data.userInfo
     var inviteCode = userInfo ? userInfo.invite_code : ''
     return {
-      title: userInfo.name + '邀请你加入《' + this.data.group_name+"》相册",
+      title: userInfo.name + '邀请你加入《' + this.data.group_name + "》相册",
       imageUrl: this.data.front_cover,
-      path: '/pages/group/group_list?action=join_group&id='+this.data.group_id+'&invite_code='+inviteCode
+      path: '/pages/group/group_list?action=join_group&id=' + this.data.group_id + '&invite_code=' + inviteCode
     }
   },
-  setDeleting:function(){
+  setDeleting: function () {
     this.setData({
       deleting: !this.data.deleting
     });
   },
-  setLiveMode:function(){
+  setLiveMode: function () {
     var self = this;
-    if(this.data.liveMode=='live'){
-
-    }else{
+    var updateLiveMode = function () {
+      requests.post({
+        url: "/album/group/update",
+        data: {
+          id: self.data.group_id,
+          live_mode: self.data.live_mode ? 1 : 0
+        },
+        success: function (resp) {
+          wx.showToast({
+            title: "切换成功",
+            icon: 'success',
+            duration: 2000
+          });
+          app.globalData.live_mode = self.data.live_mode;
+        },
+        fail: function (resp) {
+          wx.showToast({
+            title: resp.msg,
+            icon: 'success',
+            duration: 2000
+          })
+        }
+      })
+    }
+    if (this.data.live_mode) {
       wx.showModal({
-        title: '您确定要将相册切换成live模式吗',
-        content: '设置后，相册可以实时共享照片，24小时后恢复成普通相册',
-        showCancel: true,
-        cancelText: '返回',
-        cancelColor: '',
-        confirmText: '确定',
-        confirmColor: '',
-        success: function(res) {
+        title: '提示',
+        content: '您确定要将相册切换成普通相册吗',
+        success: function (res) {
           //todo
           // debugger;
-          if (res.cancel){
-            self.setData({
-              live_mode: false
-            })
-          }else{
+          if (res.cancel) {
             self.setData({
               live_mode: true
             })
+          } else {
+            self.setData({
+              live_mode: false
+            });
+            updateLiveMode();
           }
-          
-        },
-        fail: function(res) {
-          self.setData({
-            live_mode:false
-          })
-        },
-        complete: function(res) {},
+        }
+      })
+    } else {
+      wx.showModal({
+        title: '您确定要将相册切换成live模式吗',
+        content: '设置后，相册可以实时共享照片，1天后恢复成普通相册',
+        success: function (res) {
+          //todo
+          // debugger;
+          if (res.cancel) {
+            self.setData({
+              live_mode: false
+            })
+          } else {
+            self.setData({
+              live_mode: true
+            });
+            updateLiveMode();
+          }
+        }
       })
     }
   }
