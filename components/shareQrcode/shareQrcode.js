@@ -113,7 +113,7 @@ const shareMoment = function (_this, param) {
     context.setFillStyle('#333333');
     context.setFontSize(16);
     context.setTextAlign('center')
-    context.fillText('扫一扫二维码加入相册', 150, 320);
+    context.fillText('扫一扫小程序码加入相册', 150, 320);
     context.setFillStyle('#4BBCCC');
     context.setFontSize(26);
     context.setTextAlign('center')

@@ -11,7 +11,6 @@ var socketOpen = false;
 var socketMsgQueue = [];
 
 var loadingMorePhoto = false;
-
 var loadingMoreMembers = false;
 
 var uploadTotalCount = 0;
@@ -150,7 +149,6 @@ Page({
         
         
       } else if (ret.action == "group_unlive") {
-        self.addFeed(ret.data.name, ret.action);
         if (!self.data.is_master){
           wx.showModal({
             title: '提示',
@@ -445,7 +443,7 @@ Page({
       },
       fail: function (msg) {
     loadingMoreMembers = false
-        debugger;
+        // debugger;
       }
     });
   },
@@ -675,6 +673,7 @@ Page({
       order: this.data.mode.value,
       group_id: this.data.group_id
     }
+
     if(init){
       this.setData({
         photoPagination:null,
@@ -827,17 +826,21 @@ Page({
   loadMorePhotos:function(){
     console.log("loadMorePhotos");
     var self = this;
+
+    if (this.data.loadAll){
+      console.log('load All,return !!!');
+      return;
+    }
     if (loadingMorePhoto) {
-      console.log('loadingMorePhoto!!!');
+      console.log('loadingMorePhoto,return !!!');
       return;
     }
 
     loadingMorePhoto = true;
 
     this.getPhotos(false,function(){
-      self.setData({
-        loadingMorePhoto:false
-      });
+      // debugger;
+      loadingMorePhoto = false;
     });
   },
   scrolling:function(e){

@@ -11,7 +11,7 @@
     </view>
     <view class="group-name" bindtap="getQrcode">
         <text class="group-name-title">相册二维码</text>
-        <text class="group-name-txt">点击查看并保存</text>
+        <text class="group-name-txt">查看</text>
         <image class="group-name-edit" src="/resource/edit.png"></image>
     </view>
 
