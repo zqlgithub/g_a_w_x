@@ -224,6 +224,24 @@ Page({
         }
       });
     }
+
+    events.center.listen('update_group', this, function (data) {
+      console.log('get event ', data)
+      if (data.id == self.data.group_id) {
+        var to_update = {}
+        if ('name' in data) {
+          to_update['name'] = data.name
+        }
+        if ('member_count' in data) {
+          to_update['member_count'] = data.member_count
+        }
+        if ('live_mode' in data) {
+          to_update['live_mode'] = data.live_mode
+        }
+        self.setData(to_update)
+
+      }
+    })
   },
   init:function(){
     var self = this;
@@ -254,11 +272,11 @@ Page({
    */
   onShow: function () {
     // debugger;
-    if (app.globalData.live_mode === false){
-      app.globalData.live_mode = undefined;
+    if (this.data.live_mode === false){
       wx.redirectTo({
         url: '../timeline/timeline?id=' + this.data.group_id,
       });
+      return;
     }
     if (this.data.keepConnecting == -1){
       this.init();
@@ -363,6 +381,13 @@ Page({
       url: '/album/group/detail?group_id=' + group_id,
       success: function (resp) {
         console.log('GET MEMBER LIST SUCCESS');
+        if(resp.data.live_mode === false){
+          wx.redirectTo({
+            url: '../timeline/timeline?id=' + this.data.group_id,
+          });
+          return;
+        }
+
         // debugger;
         self.setData({
           // group_data: resp.data,

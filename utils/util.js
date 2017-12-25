@@ -49,6 +49,16 @@ function dictToQuery(targetDict) {
   return strList.join('&')
 }
 
+function queryToDict(s){
+  var result = {}
+  var parts = s.split('&')
+  for(var key in parts){
+    var params = parts[key].split('=')
+    result[params[0]] = params[1]
+  }
+  return result
+}
+
  function strByteLen(val) {
     var len = 0;
     for (var i = 0; i < val.length; i++) {
@@ -67,5 +77,6 @@ module.exports = {
   formatTime2:formatTime2,
   strToDate: strToDate,
   dictToQuery: dictToQuery,
+  queryToDict: queryToDict,
   strByteLen: strByteLen
 }

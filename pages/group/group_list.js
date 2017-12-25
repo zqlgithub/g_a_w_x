@@ -266,8 +266,21 @@ Page({
           })
         }
         
+      }else{
+        var scene = decodeURIComponent(options.scene)
+        if(scene){
+          console.log('get scene:', scene)
+          var scene_data = util.queryToDict(scene)
+          wx.navigateTo({
+            url: '../timeline/timeline?action=join_group&id=' + scene_data.id + '&invite_code=' + scene_data.u
+          })
+        }
+        
       }
+
     })
+
+
     
   },
   joinGroup: function (invite_code, group_id, cb) {

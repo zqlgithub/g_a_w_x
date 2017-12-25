@@ -391,7 +391,10 @@ Page({
             icon: 'success',
             duration: 2000
           });
-          app.globalData.live_mode = self.data.live_mode;
+          events.center.dispatch('update_group', {
+            id: self.data.group_id,
+            live_mode: self.data.live_mode
+          })
         },
         fail: function (resp) {
           wx.showToast({

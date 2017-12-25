@@ -1236,7 +1236,28 @@ Page({
           self.setData({
             userInfo: userInfo,
           })
-          self.syncTimeline()
+
+          requests.get({
+            url: '/album/group/detail?group_id=' + group_id,
+            success: function (resp) {
+              self.setData({
+                group_name: resp.data.name,
+                is_master: resp.data.master,
+                live_mode: resp.data.live_mode,
+                cover_pic: resp.data.front_cover,
+                co_edit: resp.data.co_edit,
+                co_invite: resp.data.co_invite,
+                member_count: resp.data.member_count
+              })
+              if (resp.data.live_mode){
+                wx.redirectTo({
+                  url: '../live/live?id=' + self.data.group_id,
+                });
+              }else{
+                self.syncTimeline()
+              }
+            },
+          })
         })
 
       }else {
@@ -1297,15 +1318,20 @@ Page({
     })
 
     events.center.listen('update_group', this, function(data){
+      console.log('get event ', data)
       if(data.id == self.data.group_id){
         var to_update = {}
-        if('name' in data){
+        if ('name' in data) {
           to_update['group_name'] = data.name
         }
-        if('member_count' in data){
+        if ('member_count' in data) {
           to_update['member_count'] = data.member_count
         }
+        if ('live_mode' in data) {
+          to_update['live_mode'] = data.live_mode
+        }
         self.setData(to_update)
+        
       }
     })
 
@@ -1320,11 +1346,11 @@ Page({
     // 页面渲染完成
   },
   onShow:function(){
-    if (app.globalData.live_mode === true) {
-      app.globalData.live_mode = undefined;
+    if (this.data.live_mode === true) {
       wx.redirectTo({
         url: '../live/live?id=' + this.data.group_id,
       });
+      return;
     }
     // 有可能跳到其他界面修改了群名，所以这里需要更新下
     if(this.data.group_name) {
