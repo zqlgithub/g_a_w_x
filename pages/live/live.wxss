@@ -1,4 +1,5 @@
 /* pages/live/live.wxss */
+
 page{
   background-color: #f3f3f3;
 }
@@ -30,8 +31,8 @@ page{
 }
 .setting image{
   padding: 20rpx;
-  width: 80rpx;
-  height: 60rpx;
+  width: 76rpx;
+  height: 39rpx;
 }
 .add-member-btn{
   position: absolute;

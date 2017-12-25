@@ -46,7 +46,7 @@
     <view class="header" bindtap='onSetFrontPic'>
     <image class="header-image" mode="aspectFill" src="{{cover_pic?cover_pic:'http://ac-dxntna3i.clouddn.com/1f72cef7e94a22103b6a.jpg'}}"></image>
     <view class="setting">
-      <image src="/resource/live/live.svg"></image>
+      <image src="/resource/live/live.png"></image>
     </view>
   </view>
   
