@@ -242,7 +242,7 @@ button.add-member-wrapper{
 }
 .flow-item .flow-desc{
   padding: 0 10rpx 10rpx;
-  font-size: 24rpx;
+  font-size: 22rpx;
   position: relative;
   min-height: 64rpx;
 }
