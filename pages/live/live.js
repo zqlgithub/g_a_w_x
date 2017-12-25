@@ -181,6 +181,10 @@ Page({
       socketMsgQueue = []
     });
 
+    wx.onSocketError(function (res) {
+      console.log(res)
+    })
+
     
   },
 
