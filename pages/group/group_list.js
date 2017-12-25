@@ -267,7 +267,7 @@ Page({
         }
         
       }else{
-        var scene = decodeURIComponent(options.scene)
+        var scene = options.scene ? decodeURIComponent(options.scene) : undefined;
         if(scene){
           console.log('get scene:', scene)
           var scene_data = util.queryToDict(scene)
