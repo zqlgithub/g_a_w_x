@@ -1,9 +1,18 @@
 <!--pages/group/group_settings/group_settings.wxml-->
+<import src="../../../components/shareQrcode/shareQrcode.wxml"/>
+
+<template is="share" data="{{showShareDialog,shareData}}"/>
+
 <view class="thecontainer">
     <view class="group-name" bindtap="onTapGroupName">
         <text class="group-name-title">相册名</text>
         <text class="group-name-txt">{{group_name}}</text>
         <image style="{{!is_master?'opacity:0;':''}}" class="group-name-edit" src="/resource/edit.png"></image>
+    </view>
+    <view class="group-name" bindtap="getQrcode">
+        <text class="group-name-title">相册二维码</text>
+        <text class="group-name-txt">点击查看并保存</text>
+        <image class="group-name-edit" src="/resource/edit.png"></image>
     </view>
 
     <view class="group-setting" wx:if="{{is_master}}">

@@ -1,0 +1,14 @@
+
+<template name="share">
+  <view class="share-dialog {{shareData.show?'on':'off'}}" style="transform: translateY(100%)">
+    <view class="mask {{shareData.show?'show':''}}"  bindtap='tapShareMask'></view>
+    
+    <view style="width:{{shareData.width}}px;height:{{shareData.height}}px;margin-left:-{{shareData.width/2}}px" class="share-canvas-view {{shareData.show?'show':''}}">
+      <canvas class="share-canvas" canvas-id="shareCanvas"></canvas>
+    </view>
+    <view class='op'>
+        <button type="primary" bindtap="saveSharePhoto">保存</button>
+        <button type="default" bindtap='tapShareMask'>返回</button>
+    </view>
+  </view>
+</template>

@@ -1,0 +1,150 @@
+.share-dialog{
+  position: fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index: 102;
+  bottom: 0;
+}
+
+.share-dialog.off{
+  transform: translateY(0);
+  animation: hide3 1ms 0.5s forwards;
+}
+
+@keyframes show3 {
+  0% {
+    transform: translateY(100%);
+  }
+
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+@keyframes hide3 {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+
+.share-dialog.on{
+  animation: show3 1ms forwards;
+}
+.share-btn-wrapper{
+  position: fixed;
+  bottom: 0;
+  left:0;
+  z-index: 102;
+  width: 100%;
+}
+.share-btn-wrapper.hide{
+  display: none;
+}
+.share-dialog.on .share-btn-wrapper{
+  animation: show2 0.5s;
+}
+.share-dialog .share-btn-wrapper{
+  animation: hide2 0.5s;
+}
+.share-btn-content{
+    display: flex;
+  flex-direction: row;
+  background-color: white;
+  
+  padding-top: 20rpx;
+  padding-bottom: 0;
+}
+.share-btn-content button{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+.share-btn-content image{
+  width: 80rpx;
+  height: 80rpx;
+  margin:0 auto;
+}
+.share-btn-content button{
+  flex: 1;
+}
+.share-btn-content text{
+  color:#999;
+  font-size: 30rpx;
+  line-height: 50rpx;
+  height: 50rpx;
+}
+
+.share-btn-wrapper .cancel{
+  background-color: white;
+  color: #666;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-top:1rpx solid #f3f3f3;
+  text-align: center;
+  font-size: 30rpx;
+  position: relative;
+}
+
+
+@keyframes show2 {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+
+@keyframes hide2 {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+.share-canvas-view{
+  position: fixed;
+  top:20rpx;
+  background-color: white;
+  z-index:105;
+  opacity:0;
+  left:50%;
+  transform: translateY(500%);
+}
+.share-canvas-view.show{
+  opacity: 1;
+  transform: translateY(0);
+}
+.share-canvas{
+  width: 100%;
+  height: 100%;
+}
+
+.op{
+  position: fixed;
+  bottom: 50rpx;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  z-index: 200;
+}
+
+.op button{
+  width: 40%;
+}
+.op button[type="primary"]{
+  background-color: #00BED0;
+}

@@ -1,3 +1,5 @@
+@import '../../../components/shareQrcode/shareQrcode.wxss';
+
 page {
   height: 100%;
   background-color: #f4f5f9;

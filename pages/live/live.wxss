@@ -22,6 +22,7 @@ page{
   width: 100%;
 }
 
+
 .setting{
   position: absolute;
    right: 0;
@@ -126,6 +127,7 @@ button.add-member-wrapper{
   line-height: 95rpx;
   position: relative;
   background-color: #00BED0;
+  
 }
 .member-text .member-split{
   height: 85rpx;
@@ -289,7 +291,43 @@ button.add-member-wrapper{
     height: 50rpx;
     margin:0 15rpx;
 }
-
+.uploading{
+  width: 114rpx;
+  height: 114rpx;
+  position:absolute;
+  top:-55rpx;
+  border-radius: 100%;
+  /* background-color: white; */
+  font-size: 26rpx;
+  text-align: center;
+  z-index: 10;
+  border:3rpx solid white;
+  background-color: #97D7D8;
+  color:white;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.upload-done-image{
+  width: 110rpx;
+  height: 110rpx;
+  position: absolute;
+  left:2rpx;
+  top:2rpx;
+  z-index: 120;
+}
+.uploading .cover{
+    background-color:#00C1D5;
+    width: 110rpx;
+  height: 110rpx;
+  position: absolute;
+  transition: all 0.5s ease;
+}
+.uploading text{
+  margin-top: 35rpx;
+  position: relative;
+  z-index: 100;
+  display: inline-block;
+}
 .bottom_create_btn {
     width: 110rpx;
     height: 110rpx;
@@ -589,3 +627,48 @@ bottom:100rpx;
   text-align: center;
   font-size: 26rpx;
 }
+
+.feeds{
+  position: fixed;
+  bottom: 120rpx;
+  width: 400rpx;
+  left:40rpx;
+  
+  color:white;
+  
+}
+.feed{
+  font-size: 28rpx;
+  white-space: nowrap;
+  display: inline-block;
+  max-width: 500rpx;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-wrap: break-word;
+  background-image: url(http://ac-dxntna3i.clouddn.com/2fa76e8a8f3221f1bcc6.png);
+  background-repeat: repeat;
+  padding: 5rpx 20rpx;
+  margin: 8rpx 0 ;
+  border-radius: 10rpx;
+  text-shadow: 3rpx 3rpx 3rpx #000;
+}
+
+.feed:nth-last-child(6){
+  opacity: 0.4;
+}
+.feed:nth-last-child(5){
+  opacity: 0.5;
+}
+.feed:nth-last-child(4){
+  opacity: 0.6;
+}
+.feed:nth-last-child(3){
+  opacity: 0.8;
+}
+.feed:nth-last-child(2){
+  opacity: 0.9;
+}
+.feed:nth-last-child(1){
+  opacity: 1;
+}
+

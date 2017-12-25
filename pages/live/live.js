@@ -14,6 +14,9 @@ var loadingMorePhoto = false;
 
 var loadingMoreMembers = false;
 
+var uploadTotalCount = 0;
+var uploadTotalCurrentCount = 0;
+
 Page({
 
   /**
@@ -58,8 +61,16 @@ Page({
       tapLikeArray:[
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
       ],
+      feedArray:[
+      ],
+      onceLikeCount:0,
+      onceLikeCountTimeout:null,
       likeNum:0,
       tapLike:false,
+      refreshInterval:null,
+      uploadTips:'',
+      uploadPercent:0,
+
   },
   sendSocketMessage: function(msg) {
     if(socketOpen) {
@@ -84,12 +95,14 @@ Page({
     websocket.connect(group_id);
     // debugger;
     wx.onSocketMessage(function (res) {
-      debugger;
+      // debugger;
       console.log('收到服务器内容：' + res.data);
       var ret = JSON.parse(res.data);
+      
       if (ret.action=='enter_group'){
         //todo
         // debugger;
+        self.addFeed(ret.data.name, ret.action);
         var members = self.data.members;
         var member = {
           id: ret.data.id,
@@ -107,12 +120,12 @@ Page({
         // }        
         
       } else if (ret.action == 'send_photo'){
-        // var photo = 
-        // debugger;
+        self.addFeed(ret.data.user.name, ret.action);
         var photo = ret.data;
         var photo = self._renderTime(photo);
         self.addNewPhoto(photo);
       } else if (ret.action == 'leave_group') {
+        self.addFeed(ret.data.name, ret.action);
         var members = self.data.members;
         // debugger;
         members = members.filter(function(v){
@@ -125,51 +138,19 @@ Page({
         });
 
       } else if (ret.action == "like_group"){
-        
-        var tapLikeArray = self.data.tapLikeArray;
-        var flag = false;
-        var index = -1;
-        tapLikeArray.map((v, k) => {
-          if (v == 1) {
-            index = k;
+        // debugger;
+        self.addFeed({ name: ret.data.user.name, user_like_count: ret.data.user_like_count}, ret.action);
+        // debugger;
+        if (ret.data.user.id != self.data.userInfo.id){
+          for (var i = 0; i < ret.data.user_like_count;i++){
+            self.showLikeAnimation(ret.data.like_count - ret.data.user_like_count + i);
           }
-        });
-        if (index >= 0 && index <= tapLikeArray.length - 1) {
-          index = index + 1;
-          tapLikeArray[index] = 1;
-          flag = true;
-        } else if (index == -1) {
-          index = 0;
-          tapLikeArray[index] = 1;
-          flag = true;
+          
         }
-
-        self.setData({
-          likeNum: ret.data.like_count,
-          tapLikeArray: tapLikeArray
-        });
-
-        if (flag) {
-          setTimeout(function () {
-            // debugger;
-            var tapLikeArray = self.data.tapLikeArray;
-
-            var index = -1;
-            tapLikeArray.map((v, k) => {
-              if (v == 1 && index == -1) {
-                index = k;
-              }
-            });
-            if (index >= 0) {
-              tapLikeArray[index] = 0
-            }
-
-            self.setData({
-              tapLikeArray: tapLikeArray
-            });
-          }, 5000);
-        }
+        
+        
       } else if (ret.action == "group_unlive") {
+        self.addFeed(ret.data.name, ret.action);
         if (!self.data.is_master){
           wx.showModal({
             title: '提示',
@@ -220,8 +201,8 @@ Page({
       // Do something when catch error
     }
 
+   
 
-    
     if (group_id) {
       console.log('打开相册 id ' + group_id)
       this.setData({
@@ -253,6 +234,7 @@ Page({
       });
       
       self.getPhotos(true);
+      self.refreshFeeds();
     })
     
   },
@@ -392,6 +374,9 @@ Page({
           co_edit: resp.data.co_edit,
         });
         
+        wx.setNavigationBarTitle({
+          title: resp.data.name,
+        })
         setTimeout(function(){
           self.setData({
             loading:false
@@ -484,6 +469,13 @@ Page({
         // success
         console.log('SELECT PHOTO SUCCESS')
         console.log(res)
+        uploadTotalCount = res.tempFilePaths.length;
+        uploadTotalCurrentCount = 0;
+        self.setData({
+          uploadTips: '上传中',
+          uploadPercent: 0
+        });
+        
         for (var i = 0; i < res.tempFilePaths.length; i++) {
           self.uploadPhoto(group_id, res.tempFilePaths[i])
         }
@@ -513,10 +505,27 @@ Page({
           },
           success: function (resp) {
             console.log(resp);
-            // debugger;
-            wx.showToast({
-              title: '上传图片成功',
-            })
+            uploadTotalCurrentCount++;
+            if (uploadTotalCurrentCount == uploadTotalCount){
+              self.setData({
+                uploadTips: 'ok',
+                uploadPercent: 100
+              });
+              setTimeout(function(){
+                uploadTotalCount = 0;
+                uploadTotalCurrentCount = 0;
+                self.setData({
+                  uploadTips: '',
+                  uploadPercent: 0
+                });
+              },2000)
+            }else{
+              self.setData({
+                uploadTips: uploadTotalCurrentCount + '/' + uploadTotalCount,
+                uploadPercent: uploadTotalCurrentCount / uploadTotalCount * 100
+              });
+            }
+            
           },
           fail: function (resp) {
             console.log('UPLOAD FAILLLLL!')
@@ -652,36 +661,10 @@ Page({
       });
     }
   },
-  // joinGroup: function (invite_code){
-  //   var self = this;
-  //   console.log("joinGroup");
-  //   console.log(self.data.group_id);
-  //   console.log(invite_code);
-
-  //   requests.post({
-  //     url: '/album//group/join',
-  //     data: {
-  //       group_id: self.data.group_id ,
-  //       invite_code: invite_code
-  //     },
-  //     success: function (res) {
-  //       // debugger;
-  //       console.log(res);
-  //     },
-  //     fail: function (msg) {
-  //       // debugger;
-  //       console.log(msg);
-  //     }
-  //   });
-  // },
   getPhotos:function(init,cb){
     // debugger;
     console.log('getPhotos');
-    if (loadingMorePhoto) {
-      return;
-    }
 
-    loadingMorePhoto = true;
 
     var self = this;
     var param = {
@@ -708,7 +691,6 @@ Page({
         // debugger;
         console.log('GET photo LIST SUCCESS');
         if (resp.data.length <= 0) {
-          loadingMorePhoto = false;
           self.setData({
             loadAll: true
           });
@@ -724,7 +706,6 @@ Page({
             photos: resp.data
           });
           self.addToLeftOrRight(resp.data,function(){
-            loadingMorePhoto = false;
             if (cb) {
               cb();
             }
@@ -738,7 +719,6 @@ Page({
             photos: photos
           });
           self.addToLeftOrRight(resp.data, function () {
-            loadingMorePhoto = false;
             if (cb) {
               cb();
             }
@@ -842,7 +822,19 @@ Page({
   },
   loadMorePhotos:function(){
     console.log("loadMorePhotos");
-    this.getPhotos(false);
+    var self = this;
+    if (loadingMorePhoto) {
+      console.log('loadingMorePhoto!!!');
+      return;
+    }
+
+    loadingMorePhoto = true;
+
+    this.getPhotos(false,function(){
+      self.setData({
+        loadingMorePhoto:false
+      });
+    });
   },
   scrolling:function(e){
     var isInTop = this.data.isInTop;
@@ -865,6 +857,7 @@ Page({
         this.setData({
           isInTop: true
         });
+        this.addWaitingPhotos();
       }
     }
   },
@@ -952,42 +945,43 @@ Page({
   },
   tapLikeAlbum:function(){
     var self = this;
-    // var tapLikeArray = this.data.tapLikeArray;
-    // var flag = false;
-    // var index = -1; 
-    // tapLikeArray.map((v,k)=>{
-    //   if (v == 1){
-    //     index = k;
-    //   }
-    // });
-    // if (index >= 0 && index <= tapLikeArray.length-1){
-    //   index = index+1;
-    //   tapLikeArray[index] = 1;
-    //   flag = true;
-    // }else if(index == -1){
-    //   index=0;
-    //   tapLikeArray[index] = 1;
-    //   flag = true;
-    // }
-
-
-    
-
     
 
     this.setData({
-      tapLike:true,
-      // tapLikeArray: tapLikeArray
+      tapLike:true
+    });
+    this.showLikeAnimation(this.data.likeNum+1);
+
+    if (this.data.OncelikeCountTimeout){
+      clearTimeout(this.data.OncelikeCountTimeout);
+    }
+    // debugger;
+    var count = this.data.onceLikeCount;
+
+    count += 1;
+    this.setData({
+      onceLikeCount:count
     });
 
-    requests.post({
-      url: '/album/group/like',
-      data: {
-        id: this.data.group_id
-      },
-      success: function (resp) {
-        console.log('album/group/like SUCCESS');
-      }
+    var c = setTimeout(function(){
+      requests.post({
+        url: '/album/group/like',
+        data: {
+          id: self.data.group_id,
+          count: self.data.onceLikeCount
+        },
+        success: function (resp) {
+
+          console.log('album/group/like SUCCESS');
+        }
+      });
+      self.setData({
+        onceLikeCount:0
+      })
+    },1000);
+
+    self.setData({
+      OncelikeCountTimeout: c
     });
 
      
@@ -1006,6 +1000,8 @@ Page({
 
     var self = this
     var curr_photo = photo
+
+
 
       requests.post({
         url: '/album/photo/like',
@@ -1030,4 +1026,110 @@ Page({
       })
     // }
   },
+  refreshFeeds:function(){
+    
+    var self = this;
+    if (this.data.refreshInterval){
+      clearInterval(this.data.refreshInterval);
+      this.setData({
+        refreshInterval:null
+      });
+    }
+    var c = setInterval(function(){
+      var feeds = self.data.feedArray;
+      if (feeds.length>0){
+        feeds.shift();
+        self.setData({
+          feedArray:feeds
+        });
+      }
+    },10000);
+    this.setData({
+      refreshInterval: c
+    });
+  },
+  showLikeAnimation:function(likeNum){
+    var self = this;
+    var tapLikeArray = self.data.tapLikeArray;
+    var flag = false;
+    var index = -1;
+    tapLikeArray.map((v, k) => {
+      if (v == 1) {
+        index = k;
+      }
+    });
+    if (index >= 0 && index <= tapLikeArray.length - 1) {
+      index = index + 1;
+      tapLikeArray[index] = 1;
+      flag = true;
+    } else if (index == -1) {
+      index = 0;
+      tapLikeArray[index] = 1;
+      flag = true;
+    }
+
+    self.setData({
+      likeNum: likeNum,
+      tapLikeArray: tapLikeArray
+    });
+
+    if (flag) {
+      setTimeout(function () {
+        // debugger;
+        var tapLikeArray = self.data.tapLikeArray;
+
+        var index = -1;
+        tapLikeArray.map((v, k) => {
+          if (v == 1 && index == -1) {
+            index = k;
+          }
+        });
+        if (index >= 0) {
+          tapLikeArray[index] = 0
+        }
+
+        self.setData({
+          tapLikeArray: tapLikeArray
+        });
+      }, 5000);
+    }
+  },
+  addFeed:function(nickname, _type){
+    var feeds = this.data.feedArray;
+    var feed;
+    if (_type =='like_group'){
+      var param = nickname;
+      var name = param.name;
+      var count = param.user_like_count;
+      feed = {
+        text: name + " 为相册点了" + count+"个赞",
+        color:'#FF3680'
+      };
+    }else if(_type=='enter_group'){
+      feed = {
+        text: nickname + " 进入了相册",
+        color: '#FFFFFF'
+      };
+    } else if (_type == 'leave_group') {
+      feed = {
+        text: nickname + " 离开了相册",
+        color: '#CCCCCC'
+      };
+    } else if (_type == 'send_photo') {
+      feed = {
+        text: nickname + " 上传了新照片",
+        color: '#97D7D8'
+      };
+    }
+
+    if (feeds.length == 6) {
+      feeds.shift();
+    }
+    // console.log(feed);
+    feeds.push(feed);
+    this.refreshFeeds();
+    this.setData({
+      feedArray:feeds
+    })
+  }
 })

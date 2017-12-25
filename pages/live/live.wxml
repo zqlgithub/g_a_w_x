@@ -116,6 +116,9 @@
       <image class="flower {{item==1 ? ('flower' + (idx%10)):''}}" wx:for-item="item" wx:for-index="idx" wx:for="{{tapLikeArray}}"  src="/resource/like3.png"></image>
   </view>
 
+  <view class="feeds">
+        <view style="color:{{item.color}}" class="feed" wx:for-item="item" wx:for-index="idx" wx:for="{{feedArray}}"  >{{item.text}}</view>
+  </view>
   <view class="bottom-navigator">
         <view class="bottom-btn" bindtap="setMode">
             <image class="bottom-btn-img" src="/resource/live/sort_{{mode.value}}.png"></image>
@@ -123,6 +126,11 @@
         </view>
         <view>
             <image class="bottom_create_btn" bindtap="onAddPhoto" src="/resource/live/addphoto.png"></image>
+            <view class="uploading" wx:if="{{uploadTips}}">
+                <view class="cover" style="transform:translateY({{100-uploadPercent}}%)"></view>
+                <image class="upload-done-image" hidden='{{uploadPercent!=100}}' src="../../resource/selected.png"></image>
+                <text hidden='{{uploadPercent==100}}'>{{uploadTips}}</text>
+            </view>
         </view>
         <view class="bottom-btn" bindtap="onTapSettings">
             <block wx:if="{{is_master}}">

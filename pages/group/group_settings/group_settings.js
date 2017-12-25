@@ -1,5 +1,6 @@
 var requests = require('../../../utils/requests.js')
 var events = require('../../../utils/events.js')
+const Share = require('../../../components/shareQrcode/shareQrcode');
 
 
 var loading = false;
@@ -20,7 +21,8 @@ Page({
     finger_animation: {},
     show_finger: false,
     is_master: false,
-
+    showShareDialog:false,
+    shareData: false
   },
   onInputGroupName: function (e) {
     this.setData({
@@ -439,5 +441,17 @@ Page({
         }
       })
     }
+  },
+  getQrcode:function(){
+    Share.show(this, {
+      group_name: this.data.group_name,
+      group_id: this.data.group_id
+    });
+  },
+  saveSharePhoto:function(){
+    Share.save();
+  },
+  tapShareMask:function(){
+    Share.close(this);
   }
 })
