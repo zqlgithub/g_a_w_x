@@ -1134,7 +1134,7 @@ Page({
       var name = param.name;
       var count = param.user_like_count;
       feed = {
-        text: name + " 为相册点了" + count+"个赞",
+        text: name + " 给相册点了" + count+"个赞",
         color:'#FF3680'
       };
     }else if(_type=='enter_group'){

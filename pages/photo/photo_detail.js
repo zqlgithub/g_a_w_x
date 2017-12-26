@@ -342,7 +342,6 @@ Page({
   },
 
   onPhotoSwiperChange: function(e) {
-    
     var curr = e.detail.current;
     console.log('curr:' + curr)
     // var photo = this.data.photos[curr]
@@ -368,15 +367,21 @@ Page({
       curr_photo_index: curr,
     });
 
-
-
-
     this.syncBottomBarData()
     // this.updatePhotoIndex(curr)
 
     if(this.data.show_bullet){
       this.syncComments()
-      
+    }
+
+    if(photos[curr].id == this.data.first_photo.id){
+      wx.showToast({
+        title: '第一张',
+      })
+    } else if (photos[curr].id == this.data.last_photo.id){
+      wx.showToast({
+        title: '最后一张',
+      })
     }
   },
 
@@ -440,25 +445,32 @@ Page({
       success: function(resp) {
         var curr_index = self.data.curr_photo_index
         var photo_comments_map = self.data.photo_comments_map
-        var comments = self.data.comments
-        var new_comment = {
-          content: content,
-          createTime: Number.parseInt(Date.now() / 1000),
-          user: {
-            name: self.data.userInfo.name,
-            avatar: self.data.userInfo.avatar
+        if(self.data.comments.length == 0){
+          self.syncComments()
+        }else{
+          var comments = self.data.comments
+          var new_comment = {
+            content: content,
+            createTime: Number.parseInt(Date.now() / 1000),
+            user: {
+              name: self.data.userInfo.name,
+              avatar: self.data.userInfo.avatar
+            }
           }
+          if (!photo_comments_map[curr_photo.id]) {
+            photo_comments_map[curr_photo.id] = []
+          }
+          photo_comments_map[curr_photo.id].push(new_comment)
+          comments.push(new_comment)
+          self.setData({
+            comments: comments,
+            photo_comments_map: photo_comments_map
+          })
         }
-        if(!photo_comments_map[curr_photo.id]){
-          photo_comments_map[curr_photo.id] = []
-        }
-        photo_comments_map[curr_photo.id].push(new_comment)
-        comments.push(new_comment)
+
         curr_photo.comment_count += 1
         var to_set_data = {
           to_comment_content: '',
-          comments: comments,
-          photo_comments_map: photo_comments_map
         }
         to_set_data['photos['+curr_index+']'] = curr_photo
         self.setData(to_set_data)

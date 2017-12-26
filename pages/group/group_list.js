@@ -319,22 +319,22 @@ Page({
       this.syncGroupData()
     }
 
-    var self = this
-    requests.get({
-      url: '/user/msg/list',
-      success: function(resp) {
-        var group_new_msg = {}
-        for(var i in resp.data){
-          var msg = resp.data[i]
-          if(!msg.read && 'group_id' in msg){
-            group_new_msg[msg.group_id] = true
-          }
-        }
-        self.setData({
-            group_msg: group_new_msg
-        })
-      }
-    })
+    // var self = this
+    // requests.get({
+    //   url: '/user/msg/list',
+    //   success: function(resp) {
+    //     var group_new_msg = {}
+    //     for(var i in resp.data){
+    //       var msg = resp.data[i]
+    //       if(!msg.read && 'group_id' in msg){
+    //         group_new_msg[msg.group_id] = true
+    //       }
+    //     }
+    //     self.setData({
+    //         group_msg: group_new_msg
+    //     })
+    //   }
+    // })
   },
   onHide:function(){
     // 页面隐藏
