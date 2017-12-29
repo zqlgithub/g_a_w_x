@@ -250,30 +250,31 @@ Page({
       })
 
       self.syncGroupData()
-      
       if(options.action == 'join_group'){
-        if(options.live){
-          console.log(options);
-          self.joinGroup(options.invite_code, options.id, function(){
+        self.joinGroup(options.invite_code, options.id, function () {
+          if (options.live) {
+            console.log(options);
             wx.navigateTo({
               url: '../live/live?action=' + options.action + '&id=' + options.id
             })
-          });
-          
-        }else{
-          wx.navigateTo({
-            url: '../timeline/timeline?action=' + options.action + '&id=' + options.id + '&invite_code=' + options.invite_code
-          })
-        }
+
+          } else {
+            wx.navigateTo({
+              url: '../timeline/timeline?action=' + options.action + '&id=' + options.id + '&invite_code=' + options.invite_code
+            })
+          }
+        });
         
       }else{
         var scene = options.scene ? decodeURIComponent(options.scene) : undefined;
         if(scene){
           console.log('get scene:', scene)
           var scene_data = util.queryToDict(scene)
-          wx.navigateTo({
-            url: '../timeline/timeline?action=join_group&id=' + scene_data.id + '&invite_code=' + scene_data.u
-          })
+          self.joinGroup(scene_data.v, scene_data.id, function () {
+            wx.navigateTo({
+              url: '../live/live?action=join_group&id=' + scene_data.id
+            })
+          }, scene_data.u);
         }
         
       }
@@ -283,17 +284,20 @@ Page({
 
     
   },
-  joinGroup: function (invite_code, group_id, cb) {
+  joinGroup: function (invite_code, group_id, cb, invitor) {
     var self = this;
     console.log("joinGroup");
     console.log(invite_code);
-
+    var params = {
+      group_id: group_id,
+      invite_code: invite_code
+    }
+    if(invitor){
+      params['invitor'] = invitor
+    }
     requests.post({
       url: '/album/group/join',
-      data: {
-        group_id: group_id,
-        invite_code: invite_code
-      },
+      data: params,
       success: function (res) {
         // debugger;
         if (cb){

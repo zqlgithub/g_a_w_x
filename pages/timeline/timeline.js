@@ -1250,9 +1250,9 @@ Page({
                 member_count: resp.data.member_count
               })
               if (resp.data.live_mode){
-                wx.redirectTo({
-                  url: '../live/live?id=' + self.data.group_id,
-                });
+                  wx.navigateTo({
+                    url: '../live/live?action=' + options.action + '&id=' + options.id
+                })
               }else{
                 self.syncTimeline()
               }
@@ -1341,6 +1341,34 @@ Page({
         member_count: member_count - 1
       })
     })
+  },
+  joinGroup: function (invite_code, group_id, cb) {
+    var self = this;
+    console.log("joinGroup");
+    console.log(invite_code);
+
+    requests.post({
+      url: '/album/group/join',
+      data: {
+        group_id: group_id,
+        invite_code: invite_code
+      },
+      success: function (res) {
+        // debugger;
+        if (cb) {
+          cb();
+        }
+        console.log(res);
+      },
+      fail: function (err) {
+        // debugger;
+        wx.showModal({
+          title: '提示',
+          content: err.msg,
+        })
+        console.log(msg);
+      }
+    });
   },
   onReady:function(){
     // 页面渲染完成

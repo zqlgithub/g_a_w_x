@@ -22,7 +22,8 @@ Page({
     show_finger: false,
     is_master: false,
     showShareDialog:false,
-    shareData: false
+    shareData: false,
+    loadAllMembers:false,
   },
   onInputGroupName: function (e) {
     this.setData({
@@ -296,7 +297,9 @@ Page({
     if (loading) {
       return;
     }
-
+    if (this.data.loadAllMembers){
+      return;
+    }
     loading = true;
     if (init) {
       this.setData({
@@ -324,6 +327,12 @@ Page({
       success: function (res) {
         // debugger;
         loading = false;
+        if(res.data.length==0){
+          self.setData({
+            loadAllMembers:true
+          });
+        }
+        
         self.setData({
           member_data: self.data.member_data.concat(res.data),
           memberPageNum: res.data.length > 0 ? res.data[res.data.length - 1].pagination : null

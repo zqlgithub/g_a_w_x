@@ -251,10 +251,10 @@ Page({
         self.getMemberList(true, function(){
           self.websocketHandle(self.data.group_id);
         });
+
+        self.getPhotos(true);
+        self.refreshFeeds();
       });
-      
-      self.getPhotos(true);
-      self.refreshFeeds();
     })
     
   },
@@ -381,7 +381,7 @@ Page({
         console.log('GET MEMBER LIST SUCCESS');
         if(resp.data.live_mode === false){
           wx.redirectTo({
-            url: '../timeline/timeline?id=' + this.data.group_id,
+            url: '../timeline/timeline?id=' + self.data.group_id,
           });
           return;
         }
@@ -409,11 +409,12 @@ Page({
             loading:false
           });
         },10);
-      },
-      complete: function (e) {
+
         if (cb) {
           cb();
         }
+      },
+      complete: function (e) {
       }
     })    
   },

@@ -1,7 +1,7 @@
 {
 	"description": "项目配置文件。",
 	"setting": {
-		"urlCheck": false,
+		"urlCheck": true,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
@@ -58,6 +58,20 @@
 					"name": "group_settings",
 					"pathName": "pages/group/group_settings/group_settings",
 					"query": "id=33"
+				},
+				{
+					"id": -1,
+					"name": "live",
+					"pathName": "pages/live/live",
+					"query": "id=189",
+					"scene": "1011"
+				},
+				{
+					"id": 7,
+					"name": "group_list",
+					"pathName": "pages/group/group_list",
+					"query": "scene=id%3d35%26u%3d1",
+					"scene": "1011"
 				}
 			]
 		}
