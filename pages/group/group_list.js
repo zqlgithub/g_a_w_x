@@ -17,7 +17,8 @@ Page({
     create_panel_animation: {},
     panel_animation: {},
     to_create_group_name: null,
-    group_input_default: ""
+    group_input_default: "",
+    newPhotoMsg:{},
   },
   onSelectGroup: function(e){
     if(this.longtaping){
@@ -242,12 +243,15 @@ Page({
       duration: 100000
     })
 
+    
+
     var self = this
     getApp().getUserInfo(function(userInfo){
 
       self.setData({
         userInfo: app.globalData.userInfo
       })
+      
 
       self.syncGroupData()
       if(options.action == 'join_group'){
@@ -318,27 +322,52 @@ Page({
   onReady:function(){
     // 页面渲染完成
   },
+  handlerMsg:function(){
+    var self = this;
+    
+    self.setData({
+      newPhotoMsg:{}
+    });
+    var newPhotoMsg = self.data.newPhotoMsg;
+    requests.get({
+      url: '/user/msg/list',
+      data: {
+      },
+      success: function (resp) {
+        var msgs = resp.data;
+        if(msgs){
+          msgs.map((v,k)=>{
+            if (util.msgType[v.msg_type] == '系统消息'){
+              wx.showModal({
+                title: '系统消息',
+                content: v.msg,
+                showCancel:false
+              });
+              requests.post({
+                url: '/user/msg/read',
+                data: {
+                  msg_id: v.id
+                }
+              });
+            } else if (util.msgType[v.msg_type] == '新照片'){
+              newPhotoMsg[v.group_id] = true;
+            }
+          });
+          self.setData({
+            newPhotoMsg: newPhotoMsg
+          });
+        }
+      }
+    });
+
+  },
   onShow:function(){
     if(this.data.userInfo){
       this.syncGroupData()
     }
 
-    // var self = this
-    // requests.get({
-    //   url: '/user/msg/list',
-    //   success: function(resp) {
-    //     var group_new_msg = {}
-    //     for(var i in resp.data){
-    //       var msg = resp.data[i]
-    //       if(!msg.read && 'group_id' in msg){
-    //         group_new_msg[msg.group_id] = true
-    //       }
-    //     }
-    //     self.setData({
-    //         group_msg: group_new_msg
-    //     })
-    //   }
-    // })
+    this.handlerMsg();    
+
   },
   onHide:function(){
     // 页面隐藏

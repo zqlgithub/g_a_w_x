@@ -70,6 +70,10 @@ Page({
       uploadTips:'',
       uploadPercent:0,
 
+      // 新照片通知
+      photo_msg: [],
+      new_photo: {},
+
   },
   sendSocketMessage: function(msg) {
     if(socketOpen) {
@@ -88,7 +92,45 @@ Page({
       socketMsgQueue.push(msg)
     }
   },
+  handlerMsg: function () {
+    var self = this;
 
+    requests.get({
+      url: '/user/msg/list',
+      data: {
+        group_id: self.data.group_id
+      },
+      success: function (resp) {
+        // debugger;
+        var photo_msg = {}
+        var new_photo = {}
+        for (var i in resp.data) {
+          var msg = resp.data[i];
+
+          if (!msg.read && msg.msg_type == 10) {
+            var photo_ids = msg.data.photos;
+            for (var j in photo_ids) {
+              new_photo[photo_ids[j]] = true;
+            }
+            requests.post({
+              url: '/user/msg/read',
+              data: {
+                msg_id: msg.id
+              }
+            });
+          }
+          if (msg.msg_type == 11 || msg.msg_type == 12 || msg.msg_type == 13) {
+            photo_msg[msg.photo_id] = true;
+          }
+        }
+        self.setData({
+          photo_msg: photo_msg,  // 照片的评论等信息
+          new_photo: new_photo,      // 新照片
+        })
+      }
+    });
+
+  },
   websocketHandle: function (group_id){
     var self = this;
     websocket.connect(group_id);
@@ -123,6 +165,35 @@ Page({
         var photo = ret.data;
         var photo = self._renderTime(photo);
         self.addNewPhoto(photo);
+      } else if (ret.action == 'remove_photo') {
+        var id = ret.data.photo_ids[0];
+        var flag = -1;
+        // debugger;
+        self.data.photosLeft.map((v,k)=>{
+            if(id == v.id){
+              flag = k;
+            }
+        });
+
+        if(flag == -1){
+          self.data.photosRight.map((v, k) => {
+            if (id == v.id) {
+              flag = k;
+            }
+          });
+          self.data.photosRight.splice(flag, 1);
+          self.setData({
+            photosRight: self.data.photosRight
+          });
+
+        }else{
+          self.data.photosLeft.splice(flag,1);
+          self.setData({
+            photosLeft: self.data.photosLeft
+          });
+
+        }
+        
       } else if (ret.action == 'leave_group') {
         self.addFeed(ret.data.name, ret.action);
         var members = self.data.members;
@@ -211,6 +282,7 @@ Page({
         group_id: group_id
       });
       self.init();
+      self.handlerMsg();
     }else{
       wx.showToast({
         title: '链接无效，稍后再试试？'
@@ -757,6 +829,7 @@ Page({
         
       },
       complete: function (e) {
+        loadingMorePhoto = false;
       }
     }) 
   },
@@ -945,8 +1018,17 @@ Page({
     this.setData({
       keepConnecting: 1
     });
-
     var id = e.currentTarget.dataset.id;
+    // debugger;
+    var photo_msg = this.data.photo_msg;
+    if (photo_msg[id]) {
+      photo_msg[id] = null
+      this.setData({
+        photo_msg
+      });
+    }
+
+    
     wx.navigateTo({
       url: '/pages/photo/photo_detail?live=1&group_id=' + this.data.group_id + '&init_photo=' + id + '&order='+ this.data.mode.value
     });

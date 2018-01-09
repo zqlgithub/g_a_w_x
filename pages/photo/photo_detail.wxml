@@ -4,11 +4,11 @@
     <swiper class="photo-swiper" current="{{curr_photo_index}}" circular="true" bindchange="onPhotoSwiperChange" bindtap="onTapBg">
         <block wx:for="{{photos}}" wx:for-item="photo">
             <swiper-item>
-            <image class="photo" src="{{photo.url}}" mode="aspectFit" bindtap="onTapPhoto" data-index="{{index}}"></image>
+            <image class="photo" src="{{photo.showOrigin && photo.origin ? photo.origin : photo.url}}" mode="aspectFit" bindtap="onTapPhoto" data-index="{{index}}"></image>
             </swiper-item>
         </block>
     </swiper>
-    <image class="bg-blur" mode="aspectFill" src="{{photos[curr_photo_index].url}}"></image>
+    <image class="bg-blur" mode="aspectFill" hidden="{{photos[curr_photo_index].deleted}}" src="{{(photos[curr_photo_index].showOrigin && photos[curr_photo_index].origin) ?photos[curr_photo_index].origin : photos[curr_photo_index].url}}"></image>
 
     <!-- <text class="index-txt">{{curr_index_txt}}</text> -->
      <image class="bullet-fixed-0" src="{{user_avatar}}"></image> 
@@ -27,6 +27,10 @@
            
       </view> 
 
+      <view bindtap="onTapMore" class="bullet-fixed-4">
+          <image class="bullet-fixed-btn" src="/resource/more2.png"></image>
+      </view> 
+
     <!-- <view class="bottom-bar-bg"></view> -->
     <view class="bottom-bar">
         
@@ -41,6 +45,7 @@
         <button size="mini" style="float:right" bindtap="onComment" class="send" type="primary">发送</button>
          <input class="album-input" placeholder-style="color:#ccc;" bindinput="onInputComment" value="{{to_comment_content}}" placeholder="点击输入评论弹幕" style=""/> 
          
+        <view id="origin" bindtap='showOrigin' hidden="{{photos[curr_photo_index].showOrigin || !photos[curr_photo_index].origin}}">查看原图</view>
         
         <!-- <text class="bottom-txt-bullet" bindtap="onBulletChange" style="color:{{show_bullet ? '#4bbccc': '#999999'}};border:1rpx solid {{show_bullet ? '#4bbccc': '#999999'}}">弹幕</text>
         <text hidden="{{!show_bullet}}" class="bottom-btn-bullet" bindtap="onTapComment">发布</text>

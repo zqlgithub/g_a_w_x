@@ -1,4 +1,4 @@
-<!--pages/group/group_list.wxml-->
+<!--pagescr/group/group_list.wxml-->
 <view class="container">
     <view class="mask {{show_panel?'show':'hide'}}" bindtap='onTapCreate'></view>
     <image wx:if="{{loading}}" class="loading" src="/resource/loading.png"></image>
@@ -6,10 +6,10 @@
         <image class="default-img" src="/resource/album_bg.png"></image>
         <text class="default-title">{{default_title}}</text>
     </view>
-    <scroll-view wx:else class="group-scroll" scroll-y="true" bindtap="onTapBg">
+    <scroll-view enable-back-to-top="true" wx:else class="group-scroll" scroll-y="true" bindtap="onTapBg">
         <view wx:for="{{group_data}}" wx:for-item="group" class="group" bindtap="onSelectGroup" bindlongtap="onLongTapGroup" data-mode="{{group.live_mode}}" data-group="{{group.id}}">
             <image class="group-cover" src="{{group.front_cover || '/resource/group.png'}}" mode="aspectFill"></image>
-            <image hidden="{{!group_msg[group.id]}}" class="group-dot" src="/resource/dot.png"></image>
+            <image hidden="{{!newPhotoMsg[group.id]}}" class="group-dot" src="/resource/dot.png"></image>
             <view class="group-name-and-btn">
                 <view class="group_name_txt">{{group.name}}
                    <image hidden="{{!group.live_mode}}" class="live" src="/resource/live/live.png" mode="widthFix"> </image> 

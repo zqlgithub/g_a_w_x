@@ -70,6 +70,19 @@ function queryToDict(s){
     return len;
 }
 
+//  1	系统消息
+//  10	新照片
+//  11	照片被点赞
+//  12	照片被评论
+//  13	评论被回复
+
+const msgType = {
+  1:	'系统消息',
+  10: '新照片',
+  11:	'照片被点赞',
+  12: '照片被评论',
+  13:	'评论被回复'
+}
 module.exports = {
   formatTime: formatTime,
   formatDate: formatDate,
@@ -78,5 +91,6 @@ module.exports = {
   strToDate: strToDate,
   dictToQuery: dictToQuery,
   queryToDict: queryToDict,
-  strByteLen: strByteLen
+  strByteLen: strByteLen,
+  msgType
 }

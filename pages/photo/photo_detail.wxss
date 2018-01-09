@@ -81,19 +81,13 @@ button.send{
   height: 70rpx;
   line-height: 70rpx;
 }
-.bullet-fixed{
-  position: fixed;
-  bottom: 260rpx;
-  text-align: center;
-  right: 30rpx;
-  z-index: 200;
-}
+
 .bullet-fixed-0{
   width: 80rpx;
   height: 80rpx;
   border-radius: 100%;
   position: fixed;
-  bottom: 560rpx;
+  bottom: 630rpx;
   right: 40rpx;
   z-index: 200;
   /* border:2rpx solid #fff; */
@@ -101,18 +95,34 @@ button.send{
 }
 .bullet-fixed-2{
   position: fixed;
-  bottom: 400rpx;
+  bottom: 460rpx;
   text-align: center;
   right: 30rpx;
   z-index: 200;
 }
+.bullet-fixed{
+  position: fixed;
+  bottom: 320rpx;
+  text-align: center;
+  right: 30rpx;
+  z-index: 200;
+}
+
 .bullet-fixed-3{
   position: fixed;
-  bottom: 170rpx;
+  bottom: 220rpx;
   text-align: center;
   z-index: 200;
   right: 30rpx;
 }
+.bullet-fixed-4{
+  position: fixed;
+  bottom: 120rpx;
+  text-align: center;
+  z-index: 200;
+  right: 30rpx;
+}
+
 .bullet-fixed-btn{
   width: 100rpx;
   height: 100rpx;
@@ -236,4 +246,18 @@ button.send:hover{
   font-size:14pt;
   border: 1px solid #f4f4f4; 
   border-radius: 20rpx;
+}
+
+#origin{
+  width: 160rpx;
+  position: fixed;
+  left:50%;
+  margin-left: -80rpx;
+  font-size: 30rpx;
+  text-align: center;
+  border-radius: 10rpx;
+  padding: 5rpx 20rpx;
+  bottom: 120rpx;
+  border:1rpx solid #ccc;
+  color:#ccc;
 }

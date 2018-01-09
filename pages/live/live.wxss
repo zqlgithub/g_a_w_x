@@ -9,6 +9,22 @@ page{
 .page.show{
   display: block;
 }
+
+.photo-new {
+    width: 80rpx;
+    height: 80rpx;
+    position: absolute;
+    right: 0rpx;
+    top: 0rpx;
+}
+.photo-dot {
+    width: 28rpx;
+    height: 28rpx;
+    position: absolute;
+    right: 10rpx;
+    top: 10rpx;
+}
+r
 .header{
   
   background-position:  center center;
@@ -194,6 +210,7 @@ button.add-member-wrapper{
    transition: all 0.5s;
 }
 .flow-item-inner{
+  position: relative;
   background-color: white;
   border-radius: 20rpx;
   box-shadow: 0rpx 0rpx 10rpx #ccc;

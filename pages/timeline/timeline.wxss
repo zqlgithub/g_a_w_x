@@ -345,15 +345,15 @@ page {
     height: 80rpx;
     position: absolute;
     right: 0rpx;
-    top: -20rpx;
+    top: 0rpx;
 }
 
 .photo-dot {
-    width: 24rpx;
-    height: 24rpx;
+    width: 28rpx;
+    height: 28rpx;
     position: absolute;
-    right: 0rpx;
-    top: 0rpx;
+    right: 10rpx;
+    top: 10rpx;
 }
 
 .creator-avatar {
@@ -432,6 +432,7 @@ image.select-icon{
     height: 110rpx;
     position: relative;
     top:-20rpx;
+    z-index: 100;
 }
 
 .bottom-btn-txt { 

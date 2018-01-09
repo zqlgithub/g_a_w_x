@@ -333,7 +333,12 @@ Page({
   onTapPhoto: function(e) {
     var photos = this.data.photos
     var curr_index = this.data.curr_photo_index
-    var curr = photos[curr_index].url
+    var curr;
+    if (photos[curr_index].origin && photos[curr_index].showOrign){
+      curr = photos[curr_index].origin
+    }else{
+      curr = photos[curr_index].url
+    }
     
     wx.previewImage({
       current: curr,
@@ -503,6 +508,92 @@ Page({
   },
   onCancelPanel: function(e) {
     this.switchPanel(false)
+  },
+  onTapMore:function(){
+    var list = ['保存到本地'];
+    var photo = this.data.photos[this.data.curr_photo_index];
+    if (photo.creator.id == this.data.userInfo.id){
+      list.push('删除');
+    }    
+    var self = this;
+    wx.showActionSheet({
+      itemList: list,
+      success: function (res) {
+        console.log(res.tapIndex)
+        if(res.tapIndex==0){
+          wx.showLoading({
+            title: '图片保存中...',
+          });
+          var curr;
+          if (photo.origin && photo.showOrign) {
+            curr = photo.origin
+          } else {
+            curr = photo.url
+          }
+          wx.downloadFile({
+            url: curr, 
+            success: function (res) {
+              // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
+              if (res.statusCode === 200) {
+                wx.saveImageToPhotosAlbum({
+                  filePath: res.tempFilePath,
+                });
+                wx.hideLoading();
+              }else{
+                wx.showToast({
+                  title: '图片下载出错',
+                });
+              }
+            }
+          })
+        }else if(res.tapIndex==1){
+          wx.showModal({
+            title: "提示",
+            content: "您确定要删除这些照片吗？",
+            showCancel: true,
+            success: function (res) {
+              if (res.confirm) {
+                requests.post({
+                  url: '/album/photo/remove',
+                  data: {
+                    group_id: self.data.group_id,
+                    photo_list: JSON.stringify([photo.id])
+                  },
+                  success: function (resp) {
+                    // debugger;
+                    // photo.deleted = true;
+                    // var photos = self.data.photos;
+                    // photos[self.data.curr_photo_index] = photo;
+
+                    events.center.dispatch('remove_photo', {
+                      id: photo.id
+                    });
+
+                    var photos = self.data.photos;
+                    photos.splice(self.data.curr_photo_index,1);
+                    if (self.data.curr_photo_index >= photos.length){
+                      self.setData({
+                        curr_photo_index:0
+                      });
+                    }
+                    self.setData({
+                      photos
+                    });
+                    console.log('REMOVE PHOTO SUCCESS')
+                  }
+                })
+              }
+            }
+          })
+        }
+      },
+      fail: function (res) {
+        console.log(res.errMsg)
+      }
+    })
+    // this.setData({
+    //   showMore:true
+    // });
   },
 
   onLoad:function(options){
@@ -775,5 +866,17 @@ Page({
   },
   onUnload:function(){
     events.center.remove('update_photo', this)
+  },
+  showOrigin:function(){
+    debugger;
+    var photos = this.data.photos;
+    var photo = photos[this.data.curr_photo_index];
+    if(photo.origin){
+      photo.showOrigin = true;
+    }
+    photos[this.data.curr_photo_index] = photo;
+    this.setData({
+      photos
+    });
   }
 })

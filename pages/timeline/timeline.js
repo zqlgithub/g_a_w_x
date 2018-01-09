@@ -386,9 +386,18 @@ Page({
         }
         to_showing_photos.push(photos[i].url)
       }
+      var id = photos[photo_index].id
+
+      var photo_msg = this.data.photo_msg;
+      if (photo_msg[id]){
+        photo_msg[id] = null
+        this.setData({
+          photo_msg
+        });
+      }
 
       wx.navigateTo({
-        url: '/pages/photo/photo_detail?album_id='+album_id+'&init_photo='+photos[photo_index].id
+        url: '/pages/photo/photo_detail?group_id=' + this.data.group_id +'&album_id='+album_id+'&init_photo='+photos[photo_index].id
       })
 
     // 选择模式
@@ -615,6 +624,7 @@ Page({
     })
   },
   onCreateAlbum: function(e){
+    debugger;
     var self = this
     var to_create_album_name = this.data.to_create_album_name
     var to_create_album_date = this.data.to_create_album_date
@@ -700,15 +710,13 @@ Page({
     var page_state = this.data.page_state
     var onTimeout = function(){
       self.setData({
-        // show_panel: false
+        show_panel: false
       })
     }
     this.setData({
       panel_timer: setTimeout(onTimeout, 400),
-      // show_search_panel: false
     })
     this.switchPanel(false)
-      // this.switchPlusBtn(false)
   },
 
   onTapCreate: function(e) {
@@ -723,9 +731,9 @@ Page({
       // this.switchPlusBtn(true)
     }
 
-    this.setData({
-      show_search_panel:false
-    })
+    // this.setData({
+    //   show_search_panel:false
+    // })
   },
   onTapTrash: function(e) {
     if(this.data.page_state === 2){
@@ -1197,12 +1205,13 @@ Page({
       }
     })
   },
-
+ 
   onLoad:function(options){
     var self = this
     var group_id = options.id
 
     this.initSearchOptions()
+    
 
      wx.showToast({
       title: "加载中",
@@ -1231,6 +1240,8 @@ Page({
         this.setData({
           group_id: group_id
         })
+
+        this.handlerMsg();
 
         getApp().getUserInfo(function(userInfo){
           self.setData({
@@ -1271,6 +1282,32 @@ Page({
           }
         })
       }
+
+    events.center.listen('remove_photo', this, function (data) {
+        // debugger;
+        var id = data.id;
+        var timeline_data = self.data.timeline_data;
+        var flag = undefined;
+        self.data.timeline_data.map((group,k)=>{
+          if (!flag){
+            group.photos.map((photo, k2) => {
+              if (!flag) {
+                if(photo.id ==id){
+                  flag = [k,k2];
+                }
+              }
+            });
+          }
+            
+        });
+
+        timeline_data[flag[0]].photos.splice(flag[1],1);
+        self.setData({
+          timeline_data
+        });
+
+    })
+
     
     // 事件处理
     events.center.listen('update_album', this, function(data){
@@ -1373,6 +1410,54 @@ Page({
   onReady:function(){
     // 页面渲染完成
   },
+  handlerMsg: function () {
+    var self = this;
+    var newPhotoMsg = self.data.newPhotoMsg;
+
+    requests.get({
+      url: '/user/msg/list',
+      data: {
+        group_id: self.data.group_id
+      },
+      success: function (resp) {
+        // debugger;
+        var photo_msg = {}
+        var new_photo = {}
+        for (var i in resp.data) {
+          var msg = resp.data[i];
+
+          if (!msg.read && msg.msg_type == 10) {
+            var photo_ids = msg.data.photos;
+            for (var j in photo_ids) {
+              new_photo[photo_ids[j]] = true;
+            }
+            requests.post({
+              url: '/user/msg/read',
+              data: {
+                msg_id: msg.id
+              }
+            });
+          }
+          if (msg.msg_type == 11 || msg.msg_type == 12 || msg.msg_type == 13) {
+            photo_msg[msg.photo_id] = msg.id;
+            // requests.post({
+            //   url: '/user/msg/read',
+            //   data: {
+            //     msg_id: msg.id
+            //   }
+            // });
+          }
+        }
+        self.setData({
+          photo_msg: photo_msg,  // 照片的评论等信息
+          new_photo: new_photo,      // 新照片
+          // new_photo_count: new_photo_count
+        })
+      }
+    });
+
+  },
+
   onShow:function(){
     if (this.data.live_mode === true) {
       wx.redirectTo({
@@ -1386,48 +1471,9 @@ Page({
         title: this.data.group_name
       })
     }
-
-    var self = this
-    requests.get({
-      url: '/user/msg/list',
-      data: {
-        group_id: this.data.group_id
-      },
-      success: function(resp) {
-        var photo_new_msg = {}
-        var new_photo = {}
-        var new_photo_count = 0
-        for(var i in resp.data){
-          var msg = resp.data[i]
-          if(!msg.read && 'photo_id' in msg){
-            photo_new_msg[msg.photo_id] = true
-          }
-          if(!msg.read && msg.type == 'new_photo'){
-            var photo_ids = msg.data
-            for(var j in photo_ids){
-              new_photo[photo_ids[j]] = true
-              new_photo_count++
-            }
-          }
-        }
-        self.setData({
-            photo_msg: photo_new_msg,  // 照片的评论等信息
-            new_photo: new_photo,      // 新照片
-            new_photo_count: new_photo_count
-        })
-      }
-    })
+    
   },
   onHide:function(){
-    if(this.data.new_photo){
-      requests.post({
-          url: '/user/msg/read',
-          data: {
-            group_id: this.data.group_id,
-            msg_type: 'new_photo'
-          }
-        })
-    }
   },
   onUnload:function(){
     // 页面关闭
@@ -1435,6 +1481,7 @@ Page({
     events.center.remove('remove_album', this)
     events.center.remove('update_group', this)
     events.center.remove('remove_member', this)
+    events.center.remove('remove_photo', this)
   },
   onShareAppMessage: function () {
     console.log('inviting...')
@@ -1565,6 +1612,8 @@ Page({
   },
   onTapPhotoDetail: function(e){
     console.log('ON TAP: ', e)
+
+    
     if(!this.photo_tap_timeout){
       this.photo_tap_timeout = setTimeout(this.onSingleTapPhotoDetail, 200)
     }else{

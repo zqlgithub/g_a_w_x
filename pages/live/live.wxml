@@ -40,7 +40,7 @@
   </view>
 
 
-  <scroll-view  bindscroll="scrolling" scroll-y lower-threshold="200" bindscrolltolower="loadMorePhotos" style="height:{{scroll_height}}rpx;padding-bottom: 100rpx;">
+  <scroll-view enable-back-to-top="true"  bindscroll="scrolling" scroll-y lower-threshold="200" bindscrolltolower="loadMorePhotos" style="height:{{scroll_height}}rpx;padding-bottom: 100rpx;">
   
 
     <view class="header" bindtap='onSetFrontPic'>
@@ -59,7 +59,9 @@
 
     <view class="flow-list flow-left">
       <view class="flow-item" wx:for="{{photosLeft}}" wx:for-item="photo" wx:for-index="idx">
-        <view class="flow-item-inner">
+        <view class="flow-item-inner {{photo.id}}">
+          <image wx:if="{{photo_msg[photo.id]}}" class="photo-dot" src="/resource/dot.png"></image>
+        <image wx:elif="{{new_photo[photo.id]}}" class="photo-new" src="/resource/new.png"></image>
           <image mode="widthFix"  data-id="{{photo.id}}"  bindtap="tapPhoto" class="flow-image" src="{{photo.thumbnail}}"></image>
           <view class="flow-desc">
             
@@ -82,6 +84,8 @@
     <view class="flow-list flow-right">
       <view class="flow-item" wx:for="{{photosRight}}" wx:for-item="photo" wx:for-index="idx" >
         <view class="flow-item-inner">
+        <image wx:if="{{photo_msg[photo.id]}}" class="photo-dot" src="/resource/dot.png"></image>
+        <image wx:elif="{{new_photo[photo.id]}}" class="photo-new" src="/resource/new.png"></image>
           <image mode="widthFix" data-id="{{photo.id}}" bindtap="tapPhoto" class="flow-image" src="{{photo.thumbnail}}"></image>
           <view class="flow-desc">
             

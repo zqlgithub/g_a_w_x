@@ -63,11 +63,11 @@ page {
 }
 
 .group-dot {
-    width: 24rpx;
-    height: 24rpx;
+    width: 26rpx;
+    height: 26rpx;
     position: absolute;
-    top: 8rpx;
-    left: 128rpx;
+    top: 10rpx;
+    left: 125rpx;
 }
 
 .group-name-and-btn {
