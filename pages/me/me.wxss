@@ -137,4 +137,11 @@ page{
   background-color: #00BCCC;
   float: right;
 }
+.contact::after{
+  content: none;
+}
+button.contact{
+  padding: 0;
+  text-align: left;
+}
 /******** dialog ************/

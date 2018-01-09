@@ -19,6 +19,13 @@
         <image src="/resource/tucao.png" class="icon" ></image>
         <text>我要吐槽</text>
       </view>
+      <button class="contact" open-type="contact">
+      <view class="me-op-item">
+        <image src="/resource/kefu.png" class="icon" ></image>
+        <text>联系客服</text>
+      </view>
+      </button>
+      
     </view>
     <view class="dialog {{editing?'show':''}}">
         <view class="dialog-header">修改昵称</view>
