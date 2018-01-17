@@ -540,3 +540,14 @@ image.select-icon{
     margin-right: 20rpx;
     flex-grow: 0;
 }
+
+.sponsor{
+  position: absolute;
+   right: 20rpx;
+   bottom:100rpx;
+}
+.sponsor image{
+  width: 100rpx;
+  position: relative;
+  z-index: 5;
+}

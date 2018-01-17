@@ -57,7 +57,8 @@
 					"id": 5,
 					"name": "group_settings",
 					"pathName": "pages/group/group_settings/group_settings",
-					"query": "id=33"
+					"query": "id=194&is_master=1",
+					"scene": "1011"
 				},
 				{
 					"id": -1,
@@ -71,6 +72,13 @@
 					"name": "group_list",
 					"pathName": "pages/group/group_list",
 					"query": "scene=id%3d35%26u%3d1",
+					"scene": "1011"
+				},
+				{
+					"id": 8,
+					"name": "sponsor",
+					"pathName": "pages/sponsor/sponsor",
+					"query": "id=1",
 					"scene": "1011"
 				}
 			]

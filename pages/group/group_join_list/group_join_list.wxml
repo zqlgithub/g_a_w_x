@@ -1,0 +1,10 @@
+<!--pages/group/group_join_list/group_join_list.wxml-->
+<view class="page">
+  <view style="color:#999;text-align:center;margin:40rpx auto;" wx:if="{{list.length==0}}">暂无申请</view>
+  <view wx:for="{{list}}" wx:for-item="item" class="item" wx:for-index="idx">
+    <image class="avatar" src="{{item.user.avatar_thumbnail}}"></image>
+    <text class="name">{{item.user.name}}</text>
+    <button size='mini' type='primary' data-idx ="{{idx}}"  data-id="{{item.id}}" bindtap='tapConfirm'>允许</button>
+    <button size='mini' type='default' data-idx ="{{idx}}"  data-id="{{item.id}}" bindtap='tapIgnore' >忽略</button>
+  </view>
+</view>

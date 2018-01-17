@@ -9,6 +9,7 @@ Page({
   data: {
     co_edit: true,
     live_mode: false,
+    req_to_join:false,
     front_cover: undefined,
     deleting: false,
     group_data: {},
@@ -24,6 +25,7 @@ Page({
     showShareDialog:false,
     shareData: false,
     loadAllMembers:false,
+    reqCount:undefined
   },
   onInputGroupName: function (e) {
     this.setData({
@@ -81,7 +83,38 @@ Page({
       }
     })
   },
-
+  onSetJoin:function(e){
+    var self = this
+    var req_to_join = e.detail.value
+    requests.post({
+      url: "/album/group/update",
+      data: {
+        id: this.data.group_id,
+        req_to_join: req_to_join ? 1 : 0
+      },
+      success: function (resp) {
+        self.onTapBg()
+        var to_set_data = { 'req_to_join': req_to_join }
+        self.setData(to_set_data)
+      },
+      fail: function (resp) {
+        self.setData({
+          req_to_join: self.data.group_data.req_to_join
+        })
+        wx.showToast({
+          title: resp.msg,
+          icon: 'success',
+          duration: 2000
+        })
+      }
+    })
+    
+  },
+  tapJoin:function(){
+    wx.navigateTo({
+      url: '../group_join_list/group_join_list?id=' + this.data.group_id,
+    })
+  },
   onRemoveMember: function (e) {
     var self = this
     var member_id = e.currentTarget.dataset.member
@@ -256,6 +289,18 @@ Page({
         group_id: group_id,
         userInfo: app.globalData.userInfo,
         is_master: parseInt(options.is_master) == 1
+      });
+
+      requests.get({
+        url: "/album/group/join/req/count",
+        data: {
+          group_id: group_id
+        },
+        success: function (resp) {
+          self.setData({
+            reqCount:resp.data.count
+          });
+        }
       })
 
       requests.get({
@@ -268,7 +313,8 @@ Page({
             group_name: resp.data.name,
             front_cover: resp.data.front_cover,
             live_mode: resp.data.live_mode,
-            co_edit: resp.data.co_edit
+            co_edit: resp.data.co_edit,
+            req_to_join: resp.data.req_to_join
           })
 
           // events.center.dispatch('update_group', {
@@ -348,6 +394,7 @@ Page({
     // 页面渲染完成
   },
   onShow: function () {
+    
     // 页面显示
   },
   onHide: function () {

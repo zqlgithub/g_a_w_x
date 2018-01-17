@@ -7,7 +7,7 @@
         <text class="default-title">{{default_title}}</text>
     </view>
     <scroll-view enable-back-to-top="true" wx:else class="group-scroll" scroll-y="true" bindtap="onTapBg">
-        <view wx:for="{{group_data}}" wx:for-item="group" class="group" bindtap="onSelectGroup" bindlongtap="onLongTapGroup" data-mode="{{group.live_mode}}" data-group="{{group.id}}">
+        <view wx:for="{{group_data}}" wx:for-item="group" class="group" bindtap="onSelectGroup" bindlongtap="onLongTapGroup" data-mode="{{group.live_mode}}" data-role="{{group.role}}" data-group="{{group.id}}">
             <image class="group-cover" src="{{group.front_cover || '/resource/group.png'}}" mode="aspectFill"></image>
             <image hidden="{{!newPhotoMsg[group.id]}}" class="group-dot" src="/resource/dot.png"></image>
             <view class="group-name-and-btn">
@@ -19,9 +19,10 @@
                 </view>
             </view>
             <image wx:if="{{group.master}}" style="width:48rpx;height:48rpx;margin-right:8rpx" src="/resource/host.png"></image>
-            <image class="group_settings_btn" src="/resource/detail.png" catchtap="onTapSettings" data-groupid="{{group.id}}" data-groupname="{{group.name}}" data-master="{{group.master}}"></image>
+            <image wx:if="{{group.role!=4}}" class="group_settings_btn" src="/resource/detail.png" catchtap="onTapSettings" data-groupid="{{group.id}}" data-groupname="{{group.name}}" data-master="{{group.master}}"></image>
+            <text wx:if="{{group.master && group.join_req_count>0}}" class="new-join-num" catchtap="onTapSettings" data-groupid="{{group.id}}" data-groupname="{{group.name}}" data-master="{{group.master}}">{{group.join_req_count}}</text>
             <!--<image class="group_top_btn" src="/resource/top.png" catchtap="onTapTop" data-groupid="{{group.id}}"></image>-->
-            
+            <text class="join-tips" wx:if="{{group.role==4}}">待通过</text>
         </view>
         <view style="width:100%;height:160rpx;"></view>
     </scroll-view>

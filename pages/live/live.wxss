@@ -50,15 +50,29 @@ r
   width: 76rpx;
   height: 39rpx;
 }
+.sponsor{
+  position: absolute;
+   right: 20rpx;
+   bottom:20rpx;
+}
+.sponsor image{
+  width: 100rpx;
+  position: relative;
+  z-index: 5;
+}
 .add-member-btn{
   position: absolute;
   bottom: 20rpx;
   right: 20rpx;
 }
+.header{
+  position: relative;
+}
 .header .desc image{
     width: 35rpx;
     height: 35rpx;
     margin: 0 20rpx;
+
 }
 .header .title{
   padding:240rpx 20rpx 0 20rpx;

@@ -73,6 +73,7 @@ Page({
       // 新照片通知
       photo_msg: [],
       new_photo: {},
+      ad:{}
 
   },
   sendSocketMessage: function(msg) {
@@ -471,6 +472,7 @@ Page({
           live_mode: resp.data.live_mode,
           cover_pic: resp.data.front_cover,
           co_edit: resp.data.co_edit,
+          ad:resp.data.ad
         });
         
         wx.setNavigationBarTitle({
@@ -1246,5 +1248,15 @@ Page({
     this.setData({
       feedArray:feeds
     })
+  },
+  tapSponsor(e){
+    // debugger;
+    var id = e.currentTarget.dataset.id;
+    this.setData({
+      keepConnecting: 1
+    });
+    wx.navigateTo({
+      url: '../sponsor/sponsor?id='+id,
+    });
   }
 })

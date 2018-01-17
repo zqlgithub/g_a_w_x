@@ -1258,7 +1258,8 @@ Page({
                 cover_pic: resp.data.front_cover,
                 co_edit: resp.data.co_edit,
                 co_invite: resp.data.co_invite,
-                member_count: resp.data.member_count
+                member_count: resp.data.member_count,
+                ad:resp.data.ad
               })
               if (resp.data.live_mode){
                   wx.navigateTo({
@@ -1690,5 +1691,11 @@ Page({
       }
     });
     this.syncTimeline();
+  }, tapSponsor(e) {
+    // debugger;
+    var id = e.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: '../sponsor/sponsor?id=' + id,
+    });
   }
 })

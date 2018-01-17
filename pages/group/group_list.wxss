@@ -281,3 +281,23 @@ page {
   position: relative;
   top:5rpx;
 }
+.join-tips{
+  font-size: 30rpx;
+  color:#999;
+  margin-right:30rpx;
+}
+
+.new-join-num{
+  background-color: #e64340;
+  color: white;
+  display: inline-block;
+  margin:0 0rpx;
+  padding: 0 7rpx; 
+  min-width: 26rpx;
+  text-align: center;
+  border-radius: 100%;
+  position: absolute;
+  right: 10rpx;
+  top:40rpx;
+  font-size: 26rpx;
+}

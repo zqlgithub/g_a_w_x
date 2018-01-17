@@ -7,11 +7,14 @@
     "pages/group/group_list",
     "pages/group/group_settings/group_settings",
     "pages/group/group_feeds/group_feeds",
+    "pages/group/group_join_list/group_join_list",
+    
     "pages/photo/photo_detail",
     "pages/photo/photo_comments",
     "pages/photo/photo_edit",
     "pages/slider/slider",
     "pages/live/live",
+    "pages/sponsor/sponsor",
     "pages/me/me"
   ],
   "tabBar": {

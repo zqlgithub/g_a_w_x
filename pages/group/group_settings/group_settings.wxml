@@ -23,6 +23,15 @@
         <text class="group-name-title">切换成live模式</text>
         <switch bindchange="setLiveMode" checked='{{live_mode}}'/>
     </view>
+    <view class="group-setting" wx:if="{{is_master}}">
+        <text class="group-name-title">需要申请加入</text>
+        <switch bindchange="onSetJoin" checked='{{req_to_join}}'/>
+    </view>
+    <view class="group-setting" bindtap='tapJoin' style="margin-top:20rpx;" wx:if="{{is_master && req_to_join}}">
+        <text class="group-name-title">加入相册申请<text class="new-join-num" wx:if="{{reqCount}}">{{reqCount}}</text></text>
+        <text class="group-name-txt">查看</text>
+        <image class="group-name-edit" src="/resource/edit.png"></image>
+    </view>
 
     <view class="member-title">
       <text>成员列表</text>

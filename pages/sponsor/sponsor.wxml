@@ -1,0 +1,40 @@
+<!--pages/sponsor/sponsor.wxml-->
+<view class="page">
+  <image class="bg" mode="widthFix" src="{{sponsor.covers[0]}}"></image>
+  <view class="logo-wrapper">
+    <image class="logo" src="{{sponsor.logo}}"></image>
+  </view>
+  <view class="content">
+    <view class="title">{{sponsor.name}}</view>
+    <view hidden='{{!sponsor.phone}}' class="phone" bindtap='call'><image  class="phone-icon" src="/resource/sponsor/phone.png"></image> {{sponsor.phone}}
+    
+    <text class="make-call">拨打</text></view>
+    <view hidden='{{!sponsor.email}}' class="email" bindtap='copyEmail'><image  class="phone-icon" src="/resource/sponsor/email.png"></image> {{sponsor.email}} <text class="make-call">复制</text></view>
+    <view hidden='{{!sponsor.weixin}}' class="weixin" bindtap='copyWeixin'><image  class="phone-icon" src="/resource/sponsor/weixin.png"></image> {{sponsor.weixin}} <text class="make-call">复制</text></view>
+    <view class="hr-wrapper">
+      <image mode="widthFix" class="hr" src="/resource/sponsor/hr.png"></image>
+    </view>
+    <view class="desc">{{sponsor.desc}}</view>
+    <view class="sub-title"><text style="margin-right:80rpx;">/</text> 图册 <text  style="margin-left:80rpx;">/</text></view>
+
+    <swiper indicator-dots="true" style="height:600rpx">
+  <block wx:for="{{sponsor.covers}}" wx:for-item="item" wx:for-index="idx">
+    <swiper-item>
+      <image bindtap='preview' data-idx="{{idx}}" mode='aspectFill' src="{{item}}" class="slide-image" width="90%" height="300"/>
+    </swiper-item>
+  </block>
+</swiper>
+
+    <view class="sub-title"><text style="margin-right:80rpx;">/</text> 详细介绍 <text  style="margin-left:80rpx;">/</text></view>
+    <block wx:for="{{sponsor.homepage.body}}" wx:for-item="item" wx:for-inex="idx">
+          <view wx:if="{{item.contentType=='text'}}" class="text">
+            {{item.content}}
+          </view>
+          <image mode='widthFix' class="img" src="{{item.content}}" wx:if="{{item.contentType=='img'}}"></image>
+    </block>
+  </view>
+<!--   
+  <view class="fixed">
+    <button type='primary' class="guanzhu-btn">关注公众号</button>
+  </view> -->
+</view>

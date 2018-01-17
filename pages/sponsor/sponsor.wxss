@@ -1,0 +1,83 @@
+/* pages/sponsor/sponsor.wxss */
+.page{
+  padding-bottom: 120rpx;
+}
+.bg{
+  width: 100%;
+}
+.logo-wrapper{
+  background-color: white;
+  margin:0 auto 0;
+  width:166rpx;
+  text-align: center;
+  position: relative;
+  top:-90rpx;
+  border-radius: 100%;
+}
+.logo{
+  width:150rpx;
+  height: 150rpx;
+  border:8rpx solid #fff;
+  border-radius: 100%;
+  
+}
+.content{
+  text-align: center;
+  margin-top: -80rpx;
+   font-weight: lighter;
+}
+.title{
+  font-size: 36rpx;
+}
+.phone,.email,.weixin{
+  font-size: 30rpx;
+  margin:20rpx; 
+}
+.desc{
+  margin:30rpx 80rpx;
+  font-size: 30rpx;
+}
+
+button.guanzhu-btn[type="primary"]{
+  background-color: #4BBCCC;
+  margin:5%;
+  width: 90%;
+  
+}
+.hr-wrapper{
+
+}
+.hr{
+  margin:30rpx 0 0;
+  width: 400rpx;
+}
+.sub-title{
+  margin:50rpx 0;
+}
+.fixed{
+  position: fixed;
+  bottom: 0rpx;
+  width: 100%;
+}
+.text{
+  margin:20rpx 10%;
+  font-size: 30rpx;
+}
+.img{
+  width: 80%;
+  margin:20rpx 10%;
+  box-sizing: border-box;
+}
+
+.phone-icon{
+  width: 30rpx;
+  height: 30rpx;
+  position: relative;
+  top:2rpx;
+}
+.make-call{
+  color: white;
+  background-color: #51C332;
+  padding: 5rpx 15rpx;
+  border-radius: 20rpx;
+}

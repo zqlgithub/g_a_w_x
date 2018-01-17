@@ -29,7 +29,6 @@
       </view>
   </view>
 </scroll-view>
-    <!-- <view class="members-footer"></view> -->
   </view>
 
 
@@ -40,13 +39,16 @@
   </view>
 
 
-  <scroll-view enable-back-to-top="true"  bindscroll="scrolling" scroll-y lower-threshold="200" bindscrolltolower="loadMorePhotos" style="height:{{scroll_height}}rpx;padding-bottom: 100rpx;">
+  <scroll-view enable-back-to-top="true"  bindscroll="scrolling" scroll-y lower-threshold="200" bindscrolltolower="loadMorePhotos" style="height:{{scroll_height}}rpx;padding-bottom: 100rpx;padding-top:80rpx;">
   
 
     <view class="header" bindtap='onSetFrontPic'>
     <image class="header-image" mode="aspectFill" src="{{cover_pic?cover_pic:'http://ac-dxntna3i.clouddn.com/1f72cef7e94a22103b6a.jpg'}}"></image>
     <view class="setting">
       <image src="/resource/live/live.png"></image>
+    </view>
+    <view hidden='{{!ad.id}}' data-id="{{ad.id}}" catchtap='tapSponsor'  class="sponsor">
+      <image mode='widthFix' src="{{ad.logo}}"></image>
     </view>
   </view>
   

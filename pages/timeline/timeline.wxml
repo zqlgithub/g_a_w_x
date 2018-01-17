@@ -1,6 +1,9 @@
 <!--pages/timeline/timeline.wxml-->
 <view class="container">
-
+    <view hidden='{{!ad.id}}' data-id="{{ad.id}}" catchtap='tapSponsor'  class="sponsor">
+      <image mode='widthFix' src="{{ad.logo}}"></image>
+    </view>
+    
     <image wx:if="{{loading}}" class="loading" src="/resource/loading.png"></image>
     <view wx:elif="{{timeline_data.length == 0 && !search_txt && !search_date_txt && !show_search_panel}}" class="default-bg" bindtap="onTapBg">
         <image class="default-img" src="/resource/album_bg.png"></image>

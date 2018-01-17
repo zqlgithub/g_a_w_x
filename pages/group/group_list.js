@@ -27,6 +27,16 @@ Page({
     var curr_group_id = e.currentTarget.dataset.group;
     var live_mode = e.currentTarget.dataset.mode;
     // debugger;
+    var role = e.currentTarget.dataset.role;
+
+    if(role==4){
+      wx.showModal({
+        title: '提示',
+        showCancel:false,
+        content: '相册主人通过您的申请后才可以查看哦~',
+      });
+      return;
+    }
     if(live_mode){
       wx.navigateTo({
         url: '../live/live?id=' + curr_group_id
