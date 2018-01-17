@@ -83,22 +83,22 @@ App({
               that.login(code, userinfo, function(data){
                 // 如果用户信息有变动，就更新用户信息
                 // debugger;
-                if (userinfo.nickName != data.wx_name || userinfo.avatarUrl != data.wx_avatar){
-                  requests.post({
-                    url: '/user/update',
-                    data: {
-                      wx_name: userinfo.nickName,
-                      wx_avatar: userinfo.avatarUrl,
-                      gender: userinfo.gender,
-                      province: userinfo.province,
-                      city: userinfo.city,
-                      country: userinfo.country
-                    },
-                    success: function(resp){
-                      console.log('UPDATE USER INFO SUCCESS')
-                    }
-                  })
-                }
+                // if (userinfo.nickName != data.wx_name || userinfo.avatarUrl != data.wx_avatar){
+                //   requests.post({
+                //     url: '/user/update',
+                //     data: {
+                //       wx_name: userinfo.nickName,
+                //       wx_avatar: userinfo.avatarUrl,
+                //       gender: userinfo.gender,
+                //       province: userinfo.province,
+                //       city: userinfo.city,
+                //       country: userinfo.country
+                //     },
+                //     success: function(resp){
+                //       console.log('UPDATE USER INFO SUCCESS')
+                //     }
+                //   })
+                // }
                 var userInfo = data;
 
                 // userinfo.id = data.id

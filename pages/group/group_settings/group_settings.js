@@ -111,6 +111,16 @@ Page({
     
   },
   tapJoin:function(){
+    if (this.data.is_master && this.data.reqCount){
+      requests.post({
+        url: '/user/msg/read',
+        data: {
+          msg_type: 20,
+          group_id: this.data.group_id
+        }
+      });
+    }
+
     wx.navigateTo({
       url: '../group_join_list/group_join_list?id=' + this.data.group_id,
     })
@@ -272,12 +282,17 @@ Page({
   onLoad: function (options) {
     var self = this
     var group_id = options.id
+    this.setData({
+      group_id: group_id,
+      is_master: parseInt(options.is_master) == 1
+    })
 
     try {
       var res = wx.getSystemInfoSync()
       var scroll_height = Math.floor(750 * res.windowHeight / res.windowWidth) - 630
       this.setData({
         scroll_height: scroll_height,
+        
       })
     } catch (e) {
       // Do something when catch error
@@ -288,20 +303,7 @@ Page({
       self.setData({
         group_id: group_id,
         userInfo: app.globalData.userInfo,
-        is_master: parseInt(options.is_master) == 1
       });
-
-      requests.get({
-        url: "/album/group/join/req/count",
-        data: {
-          group_id: group_id
-        },
-        success: function (resp) {
-          self.setData({
-            reqCount:resp.data.count
-          });
-        }
-      })
 
       requests.get({
         url: '/album/group/detail?group_id=' + group_id,
@@ -327,9 +329,6 @@ Page({
       });
 
       self.getGroupMember();
-
-
-
 
     })
   },
@@ -394,8 +393,22 @@ Page({
     // 页面渲染完成
   },
   onShow: function () {
-    
-    // 页面显示
+    var self = this
+    if (self.data.is_master) {
+      requests.get({
+        url: '/user/msg/list',
+        data: {
+          'type': 20,
+          group_id: self.data.group_id
+        },
+        success: function (resp) {
+          var msgs = resp.data;
+          self.setData({
+            reqCount: msgs.length
+          })
+        }
+      });
+    }
   },
   onHide: function () {
     // 页面隐藏

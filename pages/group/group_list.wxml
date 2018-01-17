@@ -20,7 +20,7 @@
             </view>
             <image wx:if="{{group.master}}" style="width:48rpx;height:48rpx;margin-right:8rpx" src="/resource/host.png"></image>
             <image wx:if="{{group.role!=4}}" class="group_settings_btn" src="/resource/detail.png" catchtap="onTapSettings" data-groupid="{{group.id}}" data-groupname="{{group.name}}" data-master="{{group.master}}"></image>
-            <text wx:if="{{group.master && group.join_req_count>0}}" class="new-join-num" catchtap="onTapSettings" data-groupid="{{group.id}}" data-groupname="{{group.name}}" data-master="{{group.master}}">{{group.join_req_count}}</text>
+            <text wx:if="{{group.master && newJoinGroupReq[group.id] > 0}}" class="new-join-num" catchtap="onTapSettings" data-groupid="{{group.id}}" data-groupname="{{group.name}}" data-master="{{group.master}}">{{newJoinGroupReq[group.id]}}</text>
             <!--<image class="group_top_btn" src="/resource/top.png" catchtap="onTapTop" data-groupid="{{group.id}}"></image>-->
             <text class="join-tips" wx:if="{{group.role==4}}">待通过</text>
         </view>

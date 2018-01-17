@@ -23,7 +23,7 @@ function upload() {
           var upload_data = resp.data
           var bucket = upload_data.bucket
           delete upload_data.bucket
-          wx.uploadFile({
+          const uploadTask = wx.uploadFile({
             url: 'https://v0.api.upyun.com/'+bucket,
             filePath: file_path,
             name:'file',
@@ -47,6 +47,10 @@ function upload() {
               uploading = false
               doUpload()
             }
+          })
+
+          uploadTask.onProgressUpdate((res) => {
+            obj.progress(res)
           })
         },
         fail: function(resp) {

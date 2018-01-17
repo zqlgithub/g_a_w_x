@@ -37,6 +37,7 @@
             <view class="photo-container">
                 <view wx:for="{{album.photos}}" wx:for-item="photo" class="photo" style="position:relative;">
                     <image class="photo-img" src="{{photo.thumbnail}}" mode="aspectFill" style="opacity:{{photo.loading || (page_state == 2 && select_photo[photo.id]) ? 0.6 : 1}}" data-index="{{index}}" data-album="{{album.id}}" data-photo="{{photo}}" bindtap="onTapPhoto" bindlongtap="onLongTapPhoto"></image>
+                    <text wx:if="{{photo.loading && photo.progress && photo.progress > 0}}" class='photo-loading'>{{photo.progress}}%</text>
                     <image wx:if="{{photo_msg[photo.id]}}" class="photo-dot" src="/resource/dot.png"></image>
                     <image wx:elif="{{new_photo[photo.id]}}" class="photo-new" src="/resource/new.png"></image>
                     <!--<image class="photo-img" src="{{photo.thumbnail}}" mode="aspectFill" style="opacity:{{photo.loading || (page_state === 2 && photo.creator.id != userInfo.id && !is_master) ? 0.5 : 1}}" data-index="{{index}}" data-album="{{album.id}}" data-photo="{{photo}}" bindtap="onTapPhoto"></image>-->

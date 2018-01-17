@@ -122,7 +122,8 @@ Page({
       id: photo_id,
       url: photo_url,
       thumbnail: photo_url,
-      loading: loading
+      loading: loading,
+      progress: 0
     }
     var timeline = this.data.timeline_data
     timeline[i].photos.push(photo)
@@ -303,6 +304,20 @@ Page({
       data: {
         album_id: album_id
       },
+      progress: function(resp) {
+        console.info('uploading...', resp.progress)
+        var timeline_data = self.data.timeline_data
+        // 通过temp_id找到刚为了显示loading状态添加的图片，更新其上传成功后的参数
+        var i = self.getAlbumIndex(album_id)
+        var j = 0
+        for (; j < timeline_data[i].photos.length; j++) {
+          var photo = timeline_data[i].photos[j]
+          if (photo.id == temp_id) break
+        } 
+        var to_set = {}
+        to_set['timeline_data['+i+'].photos['+j+'].progress'] = resp.progress
+        self.setData(to_set)
+      },
       success: function(resp) {
         var data = resp.data
         requests.post({
@@ -378,7 +393,10 @@ Page({
     var page_state = this.data.page_state
     // 正常状态下
     if(page_state === 1){
-      
+      if(photos[photo_index].loading){
+        return;
+      }
+
       var to_showing_photos = [], current = null
       for(var i = 0; i < photos.length; i++){
         if( i == photo_index){

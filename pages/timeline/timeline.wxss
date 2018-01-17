@@ -340,6 +340,14 @@ page {
     top: 0rpx;
 }
 
+.photo-loading {
+  color: white;
+  position: absolute;
+  right: 0rpx;
+  bottom: 0rpx;
+  font-size: 10pt;
+}
+
 .photo-new {
     width: 80rpx;
     height: 80rpx;

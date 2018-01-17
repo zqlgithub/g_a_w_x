@@ -19,6 +19,7 @@ Page({
     to_create_group_name: null,
     group_input_default: "",
     newPhotoMsg:{},
+    newJoinGroupReq: {},
   },
   onSelectGroup: function(e){
     if(this.longtaping){
@@ -52,6 +53,7 @@ Page({
   onTapSettings: function(e) {
     var curr_group_id = e.currentTarget.dataset.groupid
     var is_master = e.currentTarget.dataset.master ? 1 : 0
+
     wx.navigateTo({
       url: 'group_settings/group_settings?id='+curr_group_id+'&is_master='+is_master
     })
@@ -336,9 +338,11 @@ Page({
     var self = this;
     
     self.setData({
-      newPhotoMsg:{}
+      newPhotoMsg:{},
+      newJoinGroupReq: {}
     });
-    var newPhotoMsg = self.data.newPhotoMsg;
+    var newPhotoMsg = {};
+    var newJoinGroupReq = {}
     requests.get({
       url: '/user/msg/list',
       data: {
@@ -361,10 +365,16 @@ Page({
               });
             } else if (util.msgType[v.msg_type] == '新照片'){
               newPhotoMsg[v.group_id] = true;
+            } else if (v.msg_type == 20){
+              if(!(v.group_id in newJoinGroupReq)){
+                newJoinGroupReq[v.group_id] = 0
+              }
+              newJoinGroupReq[v.group_id] += 1
             }
           });
           self.setData({
-            newPhotoMsg: newPhotoMsg
+            newPhotoMsg: newPhotoMsg,
+            newJoinGroupReq: newJoinGroupReq
           });
         }
       }
