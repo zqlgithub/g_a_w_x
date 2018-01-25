@@ -28,7 +28,7 @@
         <switch bindchange="onSetJoin" checked='{{req_to_join}}'/>
     </view>
     <view class="group-setting" bindtap='tapJoin' style="margin-top:20rpx;" wx:if="{{is_master && req_to_join}}">
-        <text class="group-name-title">加入相册申请<text class="new-join-num" wx:if="{{reqCount}}">{{reqCount}}</text></text>
+        <text class="group-name-title">加入申请<text class="new-join-num" wx:if="{{reqCount}}">{{reqCount}}</text></text>
         <text class="group-name-txt">查看</text>
         <image class="group-name-edit" src="/resource/edit.png"></image>
     </view>

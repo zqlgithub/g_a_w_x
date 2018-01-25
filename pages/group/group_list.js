@@ -255,8 +255,6 @@ Page({
       duration: 100000
     })
 
-    
-
     var self = this
     getApp().getUserInfo(function(userInfo){
 
@@ -264,7 +262,6 @@ Page({
         userInfo: app.globalData.userInfo
       })
       
-
       self.syncGroupData()
       if(options.action == 'join_group'){
         self.joinGroup(options.invite_code, options.id, function () {
@@ -384,10 +381,8 @@ Page({
   onShow:function(){
     if(this.data.userInfo){
       this.syncGroupData()
-    }
-
-    this.handlerMsg();    
-
+    } 
+    this.handlerMsg();
   },
   onHide:function(){
     // 页面隐藏

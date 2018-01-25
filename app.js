@@ -7,8 +7,8 @@ App({
       // requests.post({
       //     url: '/user/update',
       //     data: {
-      //       name: userinfo.nickName,
-      //       avatar: userinfo.avatarUrl,
+      //       wx_name: userinfo.nickName,
+      //       wx_avatar: userinfo.avatarUrl,
       //       gender: userinfo.gender,
       //       province: userinfo.province,
       //       city: userinfo.city,
@@ -83,22 +83,22 @@ App({
               that.login(code, userinfo, function(data){
                 // 如果用户信息有变动，就更新用户信息
                 // debugger;
-                // if (userinfo.nickName != data.wx_name || userinfo.avatarUrl != data.wx_avatar){
-                //   requests.post({
-                //     url: '/user/update',
-                //     data: {
-                //       wx_name: userinfo.nickName,
-                //       wx_avatar: userinfo.avatarUrl,
-                //       gender: userinfo.gender,
-                //       province: userinfo.province,
-                //       city: userinfo.city,
-                //       country: userinfo.country
-                //     },
-                //     success: function(resp){
-                //       console.log('UPDATE USER INFO SUCCESS')
-                //     }
-                //   })
-                // }
+                if (userinfo.nickName != data.wx_name || userinfo.avatarUrl != data.wx_avatar){
+                  requests.post({
+                    url: '/user/update',
+                    data: {
+                      wx_name: userinfo.nickName,
+                      wx_avatar: userinfo.avatarUrl,
+                      gender: userinfo.gender,
+                      province: userinfo.province,
+                      city: userinfo.city,
+                      country: userinfo.country
+                    },
+                    success: function(resp){
+                      console.log('UPDATE USER INFO SUCCESS')
+                    }
+                  })
+                }
                 var userInfo = data;
 
                 // userinfo.id = data.id
@@ -109,8 +109,9 @@ App({
               })
             },
             fail: function() {
-              wx.showToast({
-                title: "获取用户信息失败"
+              wx.showModal({
+                title: '获取授权失败',
+                content: '一刻相册只获取用户的公开信息，如果拒绝，将无法正常使用一刻相册的功能。重新允许授权可以试试删除小程序后重新进入。',
               })
             }
           })
