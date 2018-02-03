@@ -92,7 +92,7 @@
     <view class="create-panel" animation="{{panel_animation}}" hidden="{{!show_panel}}">
         <view class="submit">
             <view class="input-form">
-                <input class="album-input" placeholder="某次旅行，某次活动，某次聚会..." bindinput="onInputAlbumName" value="{{album_input_default}}"/>
+                <input class="album-input" placeholder="输入照片描述，可以方便搜索哦" bindinput="onInputAlbumName" value="{{album_input_default}}"/>
                 <picker mode="date" value="{{to_create_album_date}}" start="1970-01-01" bindchange="onChangeDate">
                     <view class="album-input">
                     选择日期: {{to_create_album_date}}
@@ -100,7 +100,7 @@
                 </picker>
                 <!--<image id="confirm-btn" bindtap="onCreateAlbum" src="/resource/arrow.png"></image>-->
             </view>
-            <button id="panel-confirm-btn" bindtap="onCreateAlbum" >创建相册</button>
+            <button id="panel-confirm-btn" bindtap="onCreateAlbum" >上传照片</button>
         </view>
         <icon id="panel-cancel" type="cancel" bindtap="onCancelPanel"></icon>
     </view>
