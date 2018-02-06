@@ -53,9 +53,13 @@
                     <image src="/resource/selected.png" hidden="{{page_state != 2 || !select_photo[photo.id]}}" class="select-icon" bindtap="onTapPhoto" data-index="{{index}}" data-album="{{album.id}}" data-photo="{{photo}}"></image>
                     <!-- <icon hidden="{{page_state != 2 || !select_photo[photo.id]}}" class="select-icon" type="success"  color="#4bbccc" bindtap="onTapPhoto" data-index="{{index}}" data-album="{{album.id}}" data-photo="{{photo}}"></icon> -->
                 </view>
-                <view class="photo" id="add-photo-btn" style="opacity:{{page_state === 2 ? 0.5 : 1}}" bindtap="onAddPhoto" data-album="{{album.id}}">
+                <view class="photo" id="add-photo-btn" style="opacity:{{page_state === 2 ? 0.5 : 1}}" bindtap="onAddPhoto" data-album="{{album.id}}" data-index="{{index}}">
                     <image src="/resource/add.png" style="width:64rpx;height:64rpx;"></image>
                 </view>
+                
+            </view>
+            <view hidden='{{!album.simplify}}' class='more-photos' bindtap='onExpandAlbum' data-album_index="{{index}}">
+              <image class='more-photo-img' src='/resource/more_photos.png'></image>
             </view>
         </view>
         <view style="width:100%;height:180rpx;text-align:center">

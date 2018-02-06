@@ -514,6 +514,20 @@ Page({
       })
     }
   },
+  onTapWenhaoSetJoin: function() {
+    wx.showModal({
+      title: '提示',
+      content: "设置该项，新用户加入相册需要经过相册主的同意，相册主在申请列表中可以查看和处理加入申请。",
+      showCancel: false,
+    })
+  },
+  onTapWenhaoLive: function() {
+    wx.showModal({
+      title: '提示',
+      content: "live模式是一种现场实时直播的模式。用户可以实时查看上传的照片和用户的在线状态，比较适合婚庆，聚会，年会等对实时性有需求的场景。",
+      showCancel: false,
+    })
+  },
   getQrcode:function(){
     Share.show(this, {
       group_name: this.data.group_name,

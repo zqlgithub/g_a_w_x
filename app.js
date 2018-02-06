@@ -84,20 +84,20 @@ App({
                 // 如果用户信息有变动，就更新用户信息
                 // debugger;
                 if (userinfo.nickName != data.wx_name || userinfo.avatarUrl != data.wx_avatar){
-                  requests.post({
-                    url: '/user/update',
-                    data: {
-                      wx_name: userinfo.nickName,
-                      wx_avatar: userinfo.avatarUrl,
-                      gender: userinfo.gender,
-                      province: userinfo.province,
-                      city: userinfo.city,
-                      country: userinfo.country
-                    },
-                    success: function(resp){
-                      console.log('UPDATE USER INFO SUCCESS')
-                    }
-                  })
+                  // requests.post({
+                  //   url: '/user/update',
+                  //   data: {
+                  //     wx_name: userinfo.nickName,
+                  //     wx_avatar: userinfo.avatarUrl,
+                  //     gender: userinfo.gender,
+                  //     province: userinfo.province,
+                  //     city: userinfo.city,
+                  //     country: userinfo.country
+                  //   },
+                  //   success: function(resp){
+                  //     console.log('UPDATE USER INFO SUCCESS')
+                  //   }
+                  // })
                 }
                 var userInfo = data;
 
@@ -109,9 +109,8 @@ App({
               })
             },
             fail: function() {
-              wx.showModal({
-                title: '获取授权失败',
-                content: '不允许授权在相册中将无法显示你的头像和姓名，为了',
+              wx.navigateTo({
+                url: '/pages/index/authfail',
               })
             }
           })

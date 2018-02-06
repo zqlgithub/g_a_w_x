@@ -6,6 +6,7 @@
         <image class="default-img" src="/resource/album_bg.png"></image>
         <text class="default-title">{{default_title}}</text>
     </view>
+    
     <scroll-view enable-back-to-top="true" wx:else class="group-scroll" scroll-y="true" bindtap="onTapBg">
       <view class="gonggao" hidden='{{gonggao.length==0}}'>
       <image class="gonggao-icon" src="/resource/gonggao.png"/>公告栏

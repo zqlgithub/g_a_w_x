@@ -8,7 +8,6 @@
     "pages/group/group_settings/group_settings",
     "pages/group/group_feeds/group_feeds",
     "pages/group/group_join_list/group_join_list",
-    
     "pages/photo/photo_detail",
     "pages/photo/photo_comments",
     "pages/photo/photo_edit",
@@ -16,23 +15,25 @@
     "pages/live/live",
     "pages/article/article",
     "pages/sponsor/sponsor",
-    "pages/me/me"
+    "pages/me/me",
+    "pages/index/authfail"
   ],
   "tabBar": {
-    "color":"#333",
-    "backgroundColor":"#FFFFFF",
-
-    "list": [{
-      "pagePath": "pages/group/group_list",
-      "text": "相册",
-      "iconPath": "resource/tabbar/album.png",
-      "selectedIconPath": "resource/tabbar/album_on.png"
-    },{
-      "pagePath": "pages/me/me",
-      "text": "我的",
-      "iconPath": "resource/tabbar/me.png",
-      "selectedIconPath": "resource/tabbar/me_on.png"
-    }
+    "color": "#333",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "pagePath": "pages/group/group_list",
+        "text": "相册",
+        "iconPath": "resource/tabbar/album.png",
+        "selectedIconPath": "resource/tabbar/album_on.png"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "text": "我的",
+        "iconPath": "resource/tabbar/me.png",
+        "selectedIconPath": "resource/tabbar/me_on.png"
+      }
     ]
   },
   "window": {

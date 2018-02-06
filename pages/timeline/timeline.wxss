@@ -406,6 +406,20 @@ height:61rpx;
     top: 10rpx;
 }
 
+.more-photos {
+  height: 60rpx;
+  width: 100%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+}
+
+.more-photo-img {
+  width: 32rpx;
+  height: 32rpx;
+  margin: auto;
+}
+
 .creator-avatar {
     width: 40rpx;
     height: 40rpx;

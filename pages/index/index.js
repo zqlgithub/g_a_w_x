@@ -21,12 +21,13 @@ Page({
       })
 
       // wx.redirectTo({
-      //   url: '../video/video'
+      //   url: '/pages/index/authfail'
       // })
 
       wx.switchTab({
         url: '../group/group_list'
       })
+      
     })
   },
 

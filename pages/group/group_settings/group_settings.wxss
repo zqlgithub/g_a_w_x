@@ -34,6 +34,11 @@ page {
   align-items: center;
 }
 
+.group_settings-title {
+  display: flex;
+  align-items: center; 
+}
+
 .group-name-hover {
   background-color: #8a8a8a;
 }
@@ -42,6 +47,12 @@ page {
   margin-left: 20rpx;
   flex-grow: 1;
   font-size: 12pt;
+}
+
+.group-name-wenhao {
+  margin-left: 10rpx;
+  width: 30rpx;
+  height: 30rpx;
 }
 
 .group-name-txt {
@@ -61,10 +72,9 @@ page {
 }
 
 .gray { 
-    
-     filter: grayscale(50%); 
-    opacity: 0.5;
-     filter: gray; 
+  filter: grayscale(50%); 
+  opacity: 0.5;
+  filter: gray; 
 }
 .offline{
   position: absolute;

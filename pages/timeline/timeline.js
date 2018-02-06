@@ -16,7 +16,9 @@ Page({
     default_title: "点击+按钮，分享你们值得纪念的瞬间", 
     bottom_tip: '',
     item_per_row: 3,
-    timeline_data: [],
+    timeline_data: [],       // 这个是展示出来的照片数据，部分折叠
+    full_timeline_data: [],  // 这个是所有的相册数据
+    full_album_map: {},      // 记录那些album被打开了
     page_state: 1,  //1 正常 2 选择删除模式
     select_photo: {},
     show_scroll_to_end: false, // 是否展示滚到底部的标识
@@ -56,8 +58,8 @@ Page({
   //---------------
   // 公共函数
   getAlbumIndex: function(album_id) {
-    for(var i in this.data.timeline_data){
-      if(this.data.timeline_data[i].id == album_id){
+    for(var i in this.data.full_timeline_data){
+      if(this.data.full_timeline_data[i].id == album_id){
         return i
       }
     }
@@ -70,7 +72,7 @@ Page({
   },
   makeTop: function(album_id, photo_id) {
     var index = this.getAlbumIndex(album_id)
-    var photos = this.data.timeline_data[index].photos
+    var photos = this.data.full_timeline_data[index].photos
     for(var i in photos){
       if(photos[i].id == photo_id){
         photos[i].order = Date.now() / 1000
@@ -84,8 +86,9 @@ Page({
       return 0
     })
     var to_set_data = {}
-    to_set_data['timeline_data['+index+'].photos'] = photos
+    to_set_data['full_timeline_data['+index+'].photos'] = photos
     this.setData(to_set_data)
+    this.displayAlbum(index)
   },
 
   batchMakeTop: function(album_id, photo_ids) {
@@ -95,7 +98,7 @@ Page({
     }
 
     var index = this.getAlbumIndex(album_id)
-    var photos = this.data.timeline_data[index].photos
+    var photos = this.data.full_timeline_data[index].photos
 
     var curr_order = photos[0].order
     for(var j = photos.length-1; j >= 0; j--){
@@ -110,8 +113,9 @@ Page({
       return 0
     })
     var to_set_data = {}
-    to_set_data['timeline_data['+index+'].photos'] = photos
+    to_set_data['full_timeline_data['+index+'].photos'] = photos
     this.setData(to_set_data)
+    this.displayAlbum(index)
   },
 
   addPhoto: function(album_id, photo_id, photo_url, loading=false){
@@ -125,11 +129,12 @@ Page({
       loading: loading,
       progress: 0
     }
-    var timeline = this.data.timeline_data
+    var timeline = this.data.full_timeline_data
     timeline[i].photos.push(photo)
     this.setData({
-      timeline_data: timeline
+      full_timeline_data: timeline
     })
+    this.displayAlbum(i)
   },
   removePhoto: function(album_id, photo_id){
     var i = this.getAlbumIndex(album_id)
@@ -329,16 +334,15 @@ Page({
           },
           success: function(resp) {
             console.log(resp)
-            var timeline_data = self.data.timeline_data
+            var full_timeline = self.data.full_timeline_data
             // 通过temp_id找到刚为了显示loading状态添加的图片，更新其上传成功后的参数
             var i = self.getAlbumIndex(album_id)
             var j = 0
-            for(; j < timeline_data[i].photos.length; j++){
-              var photo = timeline_data[i].photos[j]
+            for (; j < full_timeline[i].photos.length; j++){
+              var photo = full_timeline[i].photos[j]
               if(photo.id == temp_id) break
             } 
-            
-            timeline_data[i].photos[j] = {
+            var new_photo = {
               id: resp.data.id,
               url: resp.data.url,
               thumbnail: resp.data.thumbnail,
@@ -349,10 +353,11 @@ Page({
               },
               loading: false
             }
+            full_timeline[i].photos[j] = new_photo
             self.setData({
-              timeline_data: timeline_data
+              full_timeline_data: full_timeline
             })
-            
+            self.displayAlbum(i)
           },
           fail: function(resp) {
             console.log('UPLOAD FAILLLLL!')
@@ -493,6 +498,7 @@ Page({
 
       var self = this
       var select_album_id = e.currentTarget.dataset.album
+      var select_album_index = e.currentTarget.dataset.index
 
       wx.chooseImage({
         count: 9, 
@@ -502,6 +508,7 @@ Page({
           // success
           console.log('SELECT PHOTO SUCCESS')
           console.log(res)
+          self.expandAlbum(select_album_index)
           for(var i = 0; i < res.tempFilePaths.length; i++){
             self.uploadPhoto(select_album_id, res.tempFilePaths[i])
           }
@@ -1038,6 +1045,48 @@ Page({
     return year + "年" + month + "月" + day + '日'
   },
 
+  simplifyTimeline:function(timeline_data){
+    var new_timeline = []
+    for(var i in timeline_data){
+      new_timeline.push(this.simplifyAlbum(timeline_data[i]))
+    }
+    return new_timeline
+  },
+
+  simplifyAlbum: function(album) {
+    var album_copy = JSON.parse(JSON.stringify(album))
+    if (album_copy.photos.length > 15) {
+      album_copy.photos = album_copy.photos.slice(0, 15)
+      album_copy.simplify = true
+    }
+    return album_copy
+  },
+
+  displayAlbum: function(index) {
+    var album = this.data.full_timeline_data[index]
+    if(!this.data.full_album_map[album.id]){
+      album = this.simplifyAlbum(album)
+    }
+    var to_set = {}
+    to_set['timeline_data[' + index + ']'] = album
+    this.setData(to_set)
+  },
+
+  displayTimeline: function(simplify = true){
+    var timeline_data = []
+    for (var i in this.data.full_timeline_data){
+      var album = this.data.full_timeline_data[i]
+      if (this.data.full_album_map[album.id]){
+        timeline_data.push(album)
+      }else{
+        timeline_data.push(this.simplifyAlbum(album))
+      }
+    }
+    this.setData({
+      timeline_data: timeline_data
+    })
+  },
+
   syncTimeline: function(){
     var self = this
     var params = {
@@ -1085,15 +1134,16 @@ Page({
           co_edit: resp.data.co_edit,
           co_invite: resp.data.co_invite,
           is_master: resp.data.master,
-          timeline_data: resp.data.timeline,
+          full_timeline_data: resp.data.timeline,
           member_count: resp.data.member_count
         })
-        
+        self.displayTimeline()
       },
       fail: function(resp) {
         self.setData({
           loading: false,
           timeline_data: [],
+          full_timeline_data: []
         })
         if(resp.code && resp.code == 9) {
           wx.hideToast()
@@ -1150,8 +1200,9 @@ Page({
             album.date_txt = self.formatAlbumDate(date)
           }
           self.setData({
-            timeline_data: resp.data
+            full_timeline_data: resp.data
           })
+          self.displayTimeline()
 
           self.scrollAlbumToTop(album_id)
         }
@@ -1161,7 +1212,7 @@ Page({
   // 向上(1)或者向下(-1)扩展时间轴
   extendTimeline: function(direction=-1){
     var self = this
-    var timeline = this.data.timeline_data
+    var timeline = this.data.full_timeline_data
     var album_id = direction > 0 ? timeline[0].id : timeline[timeline.length-1].id
 
     var params = {
@@ -1196,7 +1247,10 @@ Page({
             album.date_txt = self.formatAlbumDate(date)
           }
           var curr_time_line = self.data.timeline_data
+          var curr_full_timeline = self.data.full_timeline_data
 
+          var this_timeline = resp.data
+          var this_simplify_timeline = self.simplifyTimeline(this_timeline)
           if(direction == 1){
             self.setData({
               scroll_start_txt: '加载中...'
@@ -1204,13 +1258,15 @@ Page({
             
             setTimeout(function(){
               self.setData({
-                timeline_data: resp.data.concat(curr_time_line),
+                full_timeline_data: this_timeline.concat(curr_full_timeline),
+                timeline_data: this_simplify_timeline.concat(curr_time_line),
                 scroll_start_txt: ''
               })
             }, 500)
           }else if(direction == -1){
             self.setData({
-              timeline_data: curr_time_line.concat(resp.data)
+              timeline_data: curr_time_line.concat(this_simplify_timeline),
+              full_timeline_data: curr_full_timeline.concat(this_timeline)
             })
           }
         }
@@ -1222,6 +1278,19 @@ Page({
         }
       }
     })
+  },
+
+  expandAlbum: function (album_index) {
+    var album = this.data.full_timeline_data[album_index]
+    var to_set = {}
+    to_set['timeline_data[' + album_index + ']'] = album
+    to_set['full_album_map[' + album.id + ']'] = true
+    this.setData(to_set)
+  },
+
+  onExpandAlbum: function(e) {
+    var album_index = e.currentTarget.dataset.album_index
+    this.expandAlbum(album_index)
   },
  
   onLoad:function(options){
@@ -1322,7 +1391,7 @@ Page({
 
         timeline_data[flag[0]].photos.splice(flag[1],1);
         self.setData({
-          timeline_data
+          'timeline_data': timeline_data
         });
 
     })
@@ -1366,11 +1435,12 @@ Page({
       if(index < 0) {
         return
       }
-      var timeline_data = self.data.timeline_data
+      var timeline_data = self.data.full_timeline_data
       timeline_data.splice(index, 1)
       self.setData({
-        timeline_data: timeline_data
+        full_timeline_data: timeline_data
       })
+      self.displayTimeline()
     })
 
     events.center.listen('update_group', this, function(data){
