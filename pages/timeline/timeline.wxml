@@ -12,16 +12,22 @@
 
     <scroll-view wx:else class="album-scroll" scroll-y="true" bindscrolltoupper="onScrollToTop" bindscrolltolower="onScrollToBottom"   bindscroll="onScroll" bindtap="onTapBg" scroll-into-view="{{top_album_id}}" style="height:{{scroll_height}}rpx;" enable-back-to-top="true">
      <view class="search-bar">
-        <view class="search-input-container">
+        
+         <view class="search-input-container">
             <text class="search-bar-date" bindtap='onSearch' hidden="{{!search_date_txt}}" >{{search_date_txt}}</text>
             <input class="search-input"  placeholder="{{show_search_panel?'输入相册名字':'搜索'}}" placeholder-style="color:#ddd" value="{{search_txt}}" bindinput="onSearchInput" bindfocus="showSearchPanel" bindblur="onSearchBlur" />
-        </view>
-        <view class="search-bar-right" style="flex-basis:{{show_search_panel? '200rpx;':'100rpx'}}">
+        </view> 
+         <view class="search-bar-right" style="flex-basis:{{show_search_panel? '200rpx;':'100rpx'}}">
           <image hidden="{{show_search_panel}}" src="/resource/search2.png" bindtap='showSearchPanel'></image>
           <image  hidden="{{!show_search_panel}}" src="/resource/cancel.png" bindtap='cancelSearchPanel'></image>
           <image  hidden="{{!show_search_panel}}" src="/resource/confirm.png" bindtap='onSearch'></image>
           
         </view>
+         <image hidden='{{member_count>2 || show_search_panel}}' mode="widthFix" class="share2" src="/resource/share2.png" ></image> 
+         <button open-type='share' class="share-btn" hidden="{{show_search_panel}}"> 
+         邀请
+         
+          </button> 
     </view> 
     <view wx:if="{{timeline_data.length == 0}}" class="not-found-tips">找不到内容哦，重新搜索试试</view>
         <view style="width:100%;text-align:center">

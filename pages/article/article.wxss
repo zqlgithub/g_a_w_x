@@ -1,0 +1,375 @@
+
+.main{
+  font-size: 32rpx;
+  padding-bottom: 40rpx;
+  background-color: white;
+}
+.article-title{
+  font-size: 40rpx;
+  margin: 55rpx ;
+  line-height: 60rpx;
+  font-weight: bold;
+}
+.time{
+  color:#999;
+  margin:0  50rpx;
+}
+.owner{
+  position: relative;
+  margin: 50rpx 50rpx;
+  padding: 30rpx;
+  height: 80rpx;
+  
+  border:1rpx solid #f3f3f3;
+  background-color: #f3f3f3;
+  border-radius: 20rpx;
+}
+.owner .onwer-avatar{
+  width: 100rpx;
+  height: 100rpx;
+  position: absolute;
+  left:10px;
+  top:20rpx;
+}
+.owner .onwer-name{
+  padding-left:130rpx;
+  display: block;
+  line-height: 40rpx;
+}
+.owner .onwer-id{
+    font-size: 24rpx;
+    color:#999;
+    padding-left:130rpx;
+}
+.owner button{
+  position: absolute;
+  top:40rpx;
+  right: 40rpx;
+
+}
+.h1{
+  border-left: 15rpx solid #00BCCC;
+  font-size: 38rpx;
+  padding-left: 20rpx;
+  margin: 60rpx 0 ;
+  font-weight: bold;
+  color:#00BCCC;
+}
+.h2{
+  border-left: 10rpx solid  rgba(0, 188, 204,0.6);
+  padding-left: 20rpx;
+  font-size: 36rpx;
+  font-weight: bold;
+  margin: 60rpx 0;
+}
+.h3{
+  border-left: 8rpx solid  rgba(0, 188, 204,0.2);
+  font-size: 34rpx;
+  margin: 60rpx 0;
+  font-weight: bold;
+  color:#888;
+  padding-left: 20rpx;
+}
+
+.h4{
+  text-align: center;
+  font-size: 38rpx;
+  margin: 60rpx 0;
+  color:#00BCCC;
+  font-weight: bold;
+}
+.h5{
+  text-align: center;
+  font-size: 36rpx;
+  font-weight: bold;
+  margin: 60rpx 0;
+}
+
+.h6{
+  font-size: 30rpx;
+  color:#888;
+  margin: 10rpx 0 60rpx;
+  text-align: center;
+}
+
+
+.content {
+  margin:20rpx 50rpx;
+}
+.article-image{
+  width: 100%;
+  margin:20rpx 0;
+}
+.para{
+  font-size: 32rpx;
+  line-height: 1.6;
+  margin:20rpx 0;
+  padding: 20rpx 0;
+  color:#333;
+  position: relative
+}
+.para.note .text{
+  border-bottom: 1rpx dashed #aaa;
+}
+.para.note .strong{
+  border-bottom: 1rpx dashed #aaa;
+}
+.para.note .stronger{
+  border-bottom: 1rpx dashed #aaa;
+}
+.para.note .em{
+  border-bottom: 1rpx dashed #aaa;
+}
+.para.current{
+  background-color: #FDFBED;
+
+}
+.quote2{
+  padding: 15rpx 20rpx;
+  max-height: 78rpx;
+  color: #999;
+  line-height: 36rpx;
+  background-color: #f3f3f3;
+  overflow: hidden;
+}
+.quote2-image{
+  background-color: #f3f3f3;
+  height: 150rpx;
+  width: 150rpx;
+  padding: 15rpx;
+}
+.quote2-image image{
+  height: 150rpx;
+  width:150rpx;
+}
+.para.current .note-panel{
+  position: absolute;
+  width: 80%;
+  margin:10%;
+  
+  background-color: black;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  top:-220rpx;
+  border-radius: 20rpx;
+   box-shadow: 4rpx 4rpx 10rpx #ccc;
+}
+.para.current .note-panel-item{
+  text-align: center;
+  font-size: 26rpx;
+}
+.para.current .bg-bottom{
+  position: absolute;
+  bottom: -18rpx;
+  width: 40rpx;
+  height: 20rpx;
+}
+.note-panel-item image{
+  width: 50rpx;
+  margin-top:20rpx;
+  height: 50rpx;
+}
+
+.note-panel-item text{
+  text-align: center;
+  display: block;
+  color:white;
+  margin-bottom:15rpx;
+}
+.ul{
+  list-style-type: disc;
+}
+.ul .li{
+   margin:20rpx 0 20rpx 50rpx;
+
+  display: list-item;
+}
+.ol{
+  list-style-type:decimal;
+}
+.ol .li{
+  padding-left: 10rpx;
+  margin:20rpx 0 20rpx 50rpx;
+  display: list-item;
+}
+.hr{
+  margin:50rpx 0 ;
+  border:1rpx solid #f3f3f3;
+}
+.text{
+
+}
+.strong{
+   font-weight: bold; 
+
+  margin:0 5rpx;
+  color:#000;
+}
+.em{
+   font-weight: bold;
+  margin:0 5rpx;
+  color:#00BCCC;
+}
+
+.quote{
+  background-color: #8CB7CA;
+  color:white;
+  padding: 80rpx 40rpx 40rpx 40rpx;
+  position: relative;
+  margin-top:80rpx;
+  font-size: 32rpx;
+  line-height: 1.6;
+}
+.quote image{
+  position: absolute;
+  top:-50rpx;
+  left:50%;
+  margin-left:-50rpx;
+  width:100rpx;
+  height: 100rpx;
+}
+
+.link-icon{
+  width:36rpx;height:36rpx;margin-right:10rpx;position:relative;top:-1rpx;
+}
+.link{
+line-height:1.3;
+text-align: left;
+color:#00BCCC;
+font-size:30rpx;
+}
+.recomment-panel{
+  background-color: white;
+  margin-bottom: 120rpx;
+
+}
+.recomment-panel .recoment-title{
+  padding: 20rpx 0 10rpx 80rpx;
+  border-bottom: 1rpx solid #f3f3f3;
+  font-size: 16px;
+}
+.title-icon{
+  position: absolute;
+  width: 40rpx;
+  height: 40rpx;
+  left:30rpx;
+}
+
+/******************** bottom ****************/
+.bottom{
+  background-color: #fafafa;
+  border-top:1rpx solid #f3f3f3;
+  height: 80rpx;
+  line-height: 80rpx;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 22;
+}
+
+.bottom image {
+  width: 30rpx;
+  height: 30rpx;
+  position: relative;
+  top:-3rpx;
+  margin-right: 5rpx;
+}
+.bottom .btn{
+  color:#999;
+   padding: 6px 12px;
+  font-size: 30rpx;
+}
+.bottom .origin-btn{
+  float: right;
+  position: relative;
+  width: 200rpx;
+  height: 84rpx;
+  font-size: 30rpx;
+  border-radius: 0;
+  top:4rpx;
+}
+.bottom button.origin-btn image{
+  left:0;
+}
+.bottom button.origin-btn text{
+  padding-left: 42rpx;
+  top:  6rpx;
+}
+.bottom .origin-btn image{
+  width: 200rpx;
+  height: 80rpx;
+  top:-1rpx;
+  position: absolute;
+}
+.bottom .origin-btn text{
+  color: white;
+  position: relative;
+  padding-left: 50rpx;
+  display: block;
+  
+}
+.note-position{
+  width: 15rpx;
+  height: 15rpx;
+  position: fixed;
+  border-radius: 100%;
+  right:15rpx;
+  z-index: 10;
+  background-color: #00BCCC;
+  opacity: 0.4;
+}   
+.userAvatar{
+  width: 40rpx;
+  height: 40rpx;
+  position: fixed;
+  border-radius: 100%;
+  right:5rpx;
+  transition: all 0.2s ease;
+  z-index: 20;
+  
+}
+/******************** bottom end ****************/
+
+/******** note-dialog *****/
+.note-dialog{
+  position: fixed;
+  width: 80%;
+  left:10%;
+  display: none;
+
+  top:10%;
+  transition: opacity 1s;
+  opacity: 0;
+  z-index: 200;
+  box-sizing: border-box;
+}
+.note-dialog.show{
+  display: block;
+  opacity: 1;
+  background-color: white;
+  padding: 20rpx 30rpx;
+  border-radius: 20rpx;
+}
+.note-main{
+    margin:30rpx 0;
+  
+}
+.note-avatar{
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 100%;
+}
+.note-head{
+  font-size: 28rpx;
+  color:#999;
+  margin-bottom: 10rpx;
+}
+.note-head image{
+  position: relative;
+  margin-right: 20rpx;
+  top:-3rpx;
+}
+.note-body{
+  font-size: 30rpx;
+}

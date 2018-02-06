@@ -1,0 +1,88 @@
+
+<view class="page">
+  <scroll-view class="main" bindtap='tapBody' style="height:{{availableHeight}}px;" scroll-y bindscroll="scrolling">
+    <view class="header">
+
+      <view class="article-title">
+        {{article.title}}
+      </view>
+      <view class="time">{{time}}</view>
+    </view>
+
+    <view class="content">
+      <block wx:for="{{content}}" wx:for-index="idx" wx:for-item="item">
+
+        <view class="title h{{item[1].level}}" wx:if="{{item[0]=='header'}}">{{item[2]}}</view>
+        <view class="ul" wx:if="{{item[0]=='bulletlist'}}">
+
+          <view class="li" wx:for-item="listItem" wx:for-index="itemIndex" wx:for="{{item}}" wx:if="{{itemIndex>0}}">
+            <block wx:for-item="listInnerItem" wx:for-index="listInnerItemIndex" wx:for="{{listItem}}" wx:if="{{listInnerItemIndex>0}}">
+              <text class="text" wx:if="{{render.isString(listInnerItem)}}">{{listInnerItem}}</text>
+              <block wx:if="{{listInnerItem[0] =='para'}}">
+                <block wx:for="{{listInnerItem[1]}}" wx:for-item="paraItem" wx:for-index="paraIndex" wx:if="{{paraIndex>0}}">
+                  <text class="strong" wx:if="{{paraItem[0] =='strong'}}">{{paraItem[1]}}</text>
+                  <text class="em" wx:if="{{paraItem[0] =='em'}}">{{paraItem[1]}}</text>
+                  <text class="text" wx:if="{{render.isString(paraItem)}}">{{paraItem}}</text>
+                </block>
+              </block>
+
+              <text class="strong" wx:if="{{listInnerItem[0] =='strong'}}">{{listInnerItem[1]}}</text>
+              <text class="em" wx:if="{{listInnerItem[0] =='em'}}">{{listInnerItem[1]}}</text>
+            </block>
+          </view>
+        </view>
+        <view class="ol" wx:if="{{item[0]=='numberlist' }}">
+          <view class="li" wx:for-item="listItem" wx:for-index="itemIndex" wx:for="{{item}}" wx:if="{{itemIndex>0}}">
+            <block wx:for-item="listInnerItem" wx:for-index="listInnerItemIndex" wx:for="{{listItem}}" wx:if="{{listInnerItemIndex>0}}">
+              <text class="text" wx:if="{{render.isString(listInnerItem)}}">{{listInnerItem}}</text>
+              <block wx:if="{{listInnerItem[0] =='para'}}">
+                <block wx:for="{{listInnerItem[1]}}" wx:for-item="paraItem" wx:for-index="paraIndex" wx:if="{{paraIndex>0}}">
+                  <text class="strong" wx:if="{{paraItem[0] =='strong'}}">{{paraItem[1]}}</text>
+                  <text class="em" wx:if="{{paraItem[0] =='em'}}">{{paraItem[1]}}</text>
+                  <text class="text" wx:if="{{render.isString(paraItem)}}">{{paraItem}}</text>
+                </block>
+              </block>
+
+              <text class="strong" wx:if="{{listInnerItem[0] =='strong'}}">{{listInnerItem[1]}}</text>
+              <text class="em" wx:if="{{listInnerItem[0] =='em'}}">{{listInnerItem[1]}}</text>
+            </block>
+          </view>
+        </view>
+        <view class="hr" wx:if="{{item[0]=='hr'}}"></view>
+        <block wx:if="{{item[0]=='blockquote'}}">
+          <view class="quote">
+            <image src="https://dn-dxntna3i.qbox.me/0f01d48c227a24cef7c7.png" />{{item[1][1]}}</view>
+        </block>
+        <block wx:if="{{item[0]=='para'}}">
+          <view class="para para{{idx}} {{currentPara==idx?'current':''}} {{notes[idx]?'note':''}}" data-idx="{{idx}}">
+            <block wx:for="{{item}}" wx:for-index="itemIndex" wx:for-item="listItem" wx:if="{{itemIndex>0}}">
+              <text class="text" wx:if="{{render.isString(listItem)}}">{{listItem}}</text>
+              <text class="strong" wx:if="{{listItem[0] =='strong'}}">{{listItem[1]}}</text>
+              <text class="em" wx:if="{{listItem[0] =='em'}}">{{listItem[1]}}</text>
+              <image wx:if="{{listItem[0]=='img'}}" src="{{listItem[1].href}}" mode="widthFix" class="article-image"></image>
+
+              <block wx:if="{{listItem[0]=='link'}}">
+                <block wx:if="{{render.indexOf(listItem[1].href,'http')}}">
+                  <button class="link share-btn" session-from='{"type": "link","title":"{{item[1][2]}}","url": "{{item[1][1].href}}"}' open-type='contact'>
+                    <image src="/img/link.png" class="link-icon"></image>{{item[1][2]}}</button>
+                </block>
+                <block wx:else>
+                  <navigator class="link" url="{{listItem[1].href}}">
+                    <image src="/img/link.png" class="link-icon"></image>{{item[1][2]}}
+                  </navigator>
+                </block>
+              </block>
+            </block>
+          </view>
+
+        </block>
+      </block>
+      <!-- end content -->
+    </view>
+
+
+
+
+    <!--endmain  -->
+  </scroll-view>
+</view>

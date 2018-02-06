@@ -301,3 +301,55 @@ page {
   top:40rpx;
   font-size: 26rpx;
 }
+
+.gonggao{
+  background-color: white;
+  font-size: 30rpx;
+  padding: 20rpx 20rpx;
+  border-top:1rpx solid #f3f3f3;
+}
+.gonggao-icon{
+  width: 35rpx;
+  height: 35rpx;
+  margin-right: 10rpx;
+  position: relative;
+  top:2rpx;
+
+}
+.article-top-item{
+  color:#333;
+  position: absolute;
+  right: 20rpx;
+  top:4rpx;
+  font-size:30rpx;
+  opacity: 0;
+}
+.article-top-item.show{
+  opacity: 1;
+  animation: gundongshow 1s forwards;
+}
+.article-top-item.hide{
+  opacity: 0;
+  animation: gundonghide 1s forwards;
+}
+@keyframes gundongshow{
+  0% {
+      transform: translateY(-100%);
+      opacity: 0;
+  }
+  100%{
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes gundonghide{
+  0% {
+      transform: translateY(0);
+      opacity: 1;
+  }
+  100%{
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}

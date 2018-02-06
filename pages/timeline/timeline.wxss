@@ -14,7 +14,49 @@ page {
     margin: auto;
     margin-top: 20rpx;
 }
+button.share-btn{
+  flex-basis: 150rpx;
+  width: 150rpx;
+  /* color:white; */
+  background-color: white;
+  color:#4bbccc;
+  height: 50rpx;
+  font-size: 30rpx;
+  margin-top:5rpx;
+  text-align: center;
+  padding: 15rpx 10rpx 15rpx;
+  border-radius: 20rpx;
+  /* padding-top: 20rpx; */
+   margin-right: 40rpx; 
+}
+.share2{
+  position: absolute;
+  width: 240rpx;
+  height: 40rpx;
+  right: 10rpx;
+  top:80rpx;
+  animation: hahaha 2s infinite;
+  z-index: 100;
+}
+@keyframes hahaha{
+  from{
+    transform: translateY(20%);
+  }
+  50%{
+    transform: translateY(0);
+  }
+  to{
+    transform: translateY(20%);
+  }
+}
+.share-btn::after{
+  content: none;
+}
+ /* .share-btn image{
+  width:80rpx;
+height:61rpx;
 
+}  */
 .search-bar {
     width: 100%;
     padding: 20rpx 0 5rpx 20rpx;

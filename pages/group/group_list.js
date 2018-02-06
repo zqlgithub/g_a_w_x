@@ -8,7 +8,9 @@ Page({
     loading: true,
     default_title: "点击+按钮，创建一个与好友共享的群相册",
     group_icon_width: 114,
-
+    gonggao:[
+    ],
+    currentArticleIndex: -1,
     group_data: [],
     group_msg: {},
     show_panel: false,
@@ -20,6 +22,21 @@ Page({
     group_input_default: "",
     newPhotoMsg:{},
     newJoinGroupReq: {},
+  },
+  getBillboard:function(){
+    var self= this;
+    requests.get({
+      url: '/user/billboard/list',
+      data: {
+      },
+      success: function (resp) {
+
+        self.setData({
+          gonggao:resp.data
+        });
+        self.gundong();
+      }
+    })
   },
   onSelectGroup: function(e){
     if(this.longtaping){
@@ -256,6 +273,8 @@ Page({
     })
 
     var self = this
+    
+    this.getBillboard();
     getApp().getUserInfo(function(userInfo){
 
       self.setData({
@@ -399,5 +418,43 @@ Page({
     this.setData({
       live_mode: !this.data.live_mode
     })
-  }
+  },
+  tapGonggao(e){
+    var index = e.currentTarget.dataset.index;
+    // debugger;
+    var item = this.data.gonggao[index];
+    if (item.action == 1){
+      wx.navigateTo({
+        url: '../article/article?id=' + item.id,
+      });
+    }else if(item.action ==2){
+      wx.navigateTo({
+        url: item.url,
+      });
+    } else if (item.action == 3) {
+      // debugger
+      var attach = JSON.parse(item.attach);
+      wx.navigateToMiniProgram({
+        appId: attach.appid,
+        path:item.url
+      });
+    } else if (item.action == 4) {
+
+    }
+  },
+  gundong: function () {
+
+    var self = this;
+    setInterval(function () {
+      if (self.data.currentArticleIndex >= self.data.gonggao.length -1){
+        self.setData({
+          currentArticleIndex: 0
+        });
+      }else{
+        self.setData({
+          currentArticleIndex: self.data.currentArticleIndex + 1
+        });
+      }
+    }, 5000);
+  },
 })

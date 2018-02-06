@@ -14,6 +14,7 @@
     "pages/photo/photo_edit",
     "pages/slider/slider",
     "pages/live/live",
+    "pages/article/article",
     "pages/sponsor/sponsor",
     "pages/me/me"
   ],

@@ -7,6 +7,12 @@
         <text class="default-title">{{default_title}}</text>
     </view>
     <scroll-view enable-back-to-top="true" wx:else class="group-scroll" scroll-y="true" bindtap="onTapBg">
+      <view class="gonggao" hidden='{{gonggao.length==0}}'>
+      <image class="gonggao-icon" src="/resource/gonggao.png"/>公告栏
+        <view wx:for-index="idx" data-index="{{idx}}" class="article-top-item {{idx==currentArticleIndex? 'show':'hide' }}" wx:for="{{gonggao}}" data-index="{{idx}}" wx:if="{{currentArticleIndex>=0}}" bindtap="tapGonggao" wx:for-item="article">
+      <image src="/resource/new2.png" style="width:50rpx;position:relative;top:12rpx;" mode="widthFix"></image> {{article.title}}
+      </view>
+      </view>
         <view wx:for="{{group_data}}" wx:for-item="group" class="group" bindtap="onSelectGroup" bindlongtap="onLongTapGroup" data-mode="{{group.live_mode}}" data-role="{{group.role}}" data-group="{{group.id}}">
             <image class="group-cover" src="{{group.front_cover || '/resource/group.png'}}" mode="aspectFill"></image>
             <image hidden="{{!newPhotoMsg[group.id]}}" class="group-dot" src="/resource/dot.png"></image>
