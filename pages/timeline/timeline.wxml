@@ -23,7 +23,7 @@
           <image  hidden="{{!show_search_panel}}" src="/resource/confirm.png" bindtap='onSearch'></image>
           
         </view>
-         <image hidden='{{member_count>2 || show_search_panel}}' mode="widthFix" class="share2" src="/resource/share2.png" ></image> 
+         <image wx:if='{{!show_search_panel && show_tip}}' mode="widthFix" class="share2" src="/resource/share2.png" ></image> 
          <button open-type='share' class="share-btn" hidden="{{show_search_panel}}"> 
          邀请
          

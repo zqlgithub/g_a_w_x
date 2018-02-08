@@ -578,7 +578,7 @@ Page({
         bottom_tip: ''
       })
       clearTimeout(self.tip_timer)
-    }, 3000)
+    }, 5000)
   },
   switchPlusBtn:function(is_open){
     if(!this.plus_animation){
@@ -711,18 +711,7 @@ Page({
             },
             complete: function(){
               // 邀请好友的提示
-              wx.getStorage({
-                key: 'has_invited',
-                success: function(res){
-                  console.log('get key: ', res)
-                  if(!res.data){
-                    self.showTip('点击右上角的分享按钮，与朋友共享你的相册吧')
-                  }
-                },
-                fail: function() {
-                  self.showTip('点击右上角的分享按钮，与朋友共享你的相册吧')
-                }
-              })
+              
             }
           })
         }
@@ -1299,8 +1288,7 @@ Page({
 
     this.initSearchOptions()
     
-
-     wx.showToast({
+    wx.showToast({
       title: "加载中",
       icon: "loading",
       duration: 100000
@@ -1315,6 +1303,19 @@ Page({
     } catch (e) {
       // Do something when catch error
     }
+
+    wx.getStorage({
+      key: 'has_invited',
+      success: function (res) {
+        console.log('get key: ', res)
+        if (!res.data) {
+          self.showTip('点击右上角的分享按钮，与朋友共享你的相册吧')
+        }
+      },
+      fail: function () {
+        self.showTip('点击右上角的分享按钮，与朋友共享你的相册吧')
+      }
+    })
 
     if(options.action == 'join_group'){
       self.setData({
