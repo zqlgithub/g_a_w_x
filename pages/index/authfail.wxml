@@ -1,0 +1,6 @@
+<!--pages/index/authfail.wxml-->
+<view class="container">
+  <text class='tips'>相册里面需要显示你的头像和姓名哦，你刚才没有同意授权，点击下面的按钮重新同意授权。</text>
+  <button class='auth-btn' bindtap='onAuth'>去授权</button>
+</view>
+

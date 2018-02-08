@@ -1,0 +1,25 @@
+/* pages/index/authfail.wxss */
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.tips {
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+  margin-top: 200rpx;
+  text-align:center;
+  font-size: 12pt;
+  color: #999999;
+}
+
+.auth-btn {
+  height: 80rpx;
+  width: 180rpx;
+  text-align: center;
+  margin-top: 30rpx;
+}
